@@ -28,17 +28,21 @@ router.post(
   async (req, res) => {
       validateBody(req);
 
-      const user = await User.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
+      await User.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
       res.status(201).end();
   });
 
-router.put('/:id', (req, res) => {
-  userRepository.updateUser(req.params.id, req.body);
-  res.status(204).end();
+router.put('/', async (req, res) => {
+    await User.update({ lastName: "Doe" }, {
+        where: {
+            firstName: "Jean"
+        }
+    });
+    res.status(204).end();
 });
 
 router.delete('/', async (req, res) => {
-    const user = await User.destroy({
+    await User.destroy({
         where: {
             firstName: req.body.firstName
         }
