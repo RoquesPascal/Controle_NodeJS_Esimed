@@ -35,3 +35,4 @@ exports.deleteUser = (id) => {
 
   users.splice(userIndex, 1);
 }
+
