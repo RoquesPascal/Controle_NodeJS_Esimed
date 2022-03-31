@@ -6,18 +6,19 @@ const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
 const User = require("../models/user.model")
 
-router.get('/', (req, res) => {
-  res.send(userRepository.getUsers());
+
+router.get('/', async (req, res) => {
+    const allUsers = await User.findAll();
+    res.send(allUsers);
 });
 
-router.get('/:firstName', (req, res) => {
-  const foundUser = userRepository.getUserByFirstName(req.params.firstName);
-
-  if (!foundUser) {
-    throw new Error('User not found');
-  }
-
-  res.send(foundUser);
+router.get('/:firstName', async (req, res) => {
+    const foundUser = await User.findAll({
+        where:{
+            firstName: req.params.firstName
+        }
+    })
+    res.send(foundUser);
 });
 
 router.post(
