@@ -24,7 +24,7 @@ router.post('/login',
         }
     })
 
-    if(!utilisateur)
+    if(!utilisateur || !passwordsAreEqual(req.body.motDePasse, utilisateur.motDePasse))
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
     const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
