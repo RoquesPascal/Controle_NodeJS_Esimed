@@ -20,26 +20,6 @@ router.post('/login',
     if(!errors.isEmpty())
         return res.status(400).json({ errors: errors.array() });
 
-    /*try
-    {
-        const utilisateur = await Table_Utilisateurs.findAll({
-            where:{
-                email: req.body.email
-            }
-        })
-        const token = generateAuthToken(utilisateur);
-        res.status(200).send("Connexion réussie !").json({ token });
-    }
-    catch(e)
-    {
-        res.status(401).send("Erreur ! Au moins un des champs saisis est incorrect.");
-    }*/
-
-
-
-
-
-
     const utilisateur = await Table_Utilisateurs.findOne({
         where:{
             email: req.body.email
