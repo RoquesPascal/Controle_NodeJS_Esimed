@@ -21,17 +21,17 @@ router.get('/:firstName', async (req, res) => {
     res.send(foundUser);
 });
 
-router.post(
-  '/',
-  body('firstName').notEmpty(),
-  body('lastName').notEmpty(),
-  body('password').notEmpty().isLength({ min: 5 }),
-  async (req, res) => {
-      validateBody(req);
+router.post('/',
+            body('firstName').notEmpty(),
+            body('lastName').notEmpty(),
+            body('password').notEmpty().isLength({ min: 5 }),
+            async (req, res) =>
+{
+    validateBody(req);
 
-      await User.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
-      res.status(201).end();
-  });
+    await User.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
+    res.status(201).end();
+});
 
 router.put('/', async (req, res) => {
     await User.update({ lastName: "Doe" }, {
