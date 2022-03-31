@@ -4,16 +4,16 @@ const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
-const User = require("../models/user.model")
+const Table_Utilisateurs = require("../models/user.model")
 
 
 router.get('/', async (req, res) => {
-    const allUsers = await User.findAll();
+    const allUsers = await Table_Utilisateurs.findAll();
     res.send(allUsers);
 });
 
 router.get('/:firstName', async (req, res) => {
-    const foundUser = await User.findAll({
+    const foundUser = await Table_Utilisateurs.findAll({
         where:{
             firstName: req.params.firstName
         }
@@ -29,12 +29,12 @@ router.post('/',
 {
     validateBody(req);
 
-    await User.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
+    await Table_Utilisateurs.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
     res.status(201).end();
 });
 
 router.put('/', async (req, res) => {
-    await User.update({ lastName: "Doe" }, {
+    await Table_Utilisateurs.update({ lastName: "Doe" }, {
         where: {
             firstName: "Jean"
         }
@@ -43,7 +43,7 @@ router.put('/', async (req, res) => {
 });
 
 router.delete('/', async (req, res) => {
-    await User.destroy({
+    await Table_Utilisateurs.destroy({
         where: {
             firstName: req.body.firstName
         }

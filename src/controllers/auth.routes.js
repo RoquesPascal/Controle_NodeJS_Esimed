@@ -1,27 +1,82 @@
 const express = require('express');
 const router = express.Router();
 const userRepository = require('../models/user-repository');
-const { passwordsAreEqual } = require('../security/crypto');
+const { passwordsAreEqual, generateHashedPassword} = require('../security/crypto');
 const { generateAuthToken } = require('../security/auth');
 const {body, validationResult} = require("express-validator");
+const uuid = require('uuid');
+const Table_Utilisateurs = require("../models/user.model");
+const bcrypt = require('bcryptjs');
+const salt = 12;
 
-router.post('/login', body('firstName').isString(), body('password').isLength({min : 1}), (req, res) => {
+
+
+router.post('/login',
+            body('email').notEmpty(),
+            body('motDePasse').notEmpty(),
+            async (req, res) =>
+{
     const errors = validationResult(req);
-    if (!errors.isEmpty()) {
+    if(!errors.isEmpty())
         return res.status(400).json({ errors: errors.array() });
+
+    /*try
+    {
+        const utilisateur = await Table_Utilisateurs.findAll({
+            where:{
+                email: req.body.email
+            }
+        })
+        const token = generateAuthToken(utilisateur);
+        res.status(200).send("Connexion réussie !").json({ token });
     }
+    catch(e)
+    {
+        res.status(401).send("Erreur ! Au moins un des champs saisis est incorrect.");
+    }*/
 
-    const { firstName, password } = req.body;
 
-    const user = userRepository.getUserByFirstName(firstName);
-    if (!user || !passwordsAreEqual(password, user.password)) {
-        res.status(401).send('Unauthorized');
-        return;
+
+
+
+
+    const utilisateur = await Table_Utilisateurs.findOne({
+        where:{
+            email: req.body.email
+        }
+    })
+
+    if(!utilisateur)
+        return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
+
+    console.log(utilisateur);
+    console.log(utilisateur.id, utilisateur.pseudo, utilisateur.email);
+    const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
+    res.status(200).send(`Connexion réussie ! Token = ${token}`);
+});
+
+router.post('/signin',
+            body('pseudo').isString().notEmpty(),
+            body('email').isEmail().notEmpty(),
+            body('motDePasse').isLength({min : 5}).notEmpty(),
+            async (req, res) =>
+{
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
+    try
+    {
+        await Table_Utilisateurs.create({id         : uuid.v4(),
+                                               pseudo     : req.body.pseudo,
+                                               email      : req.body.email,
+                                               motDePasse : generateHashedPassword(req.body.motDePasse)});
+        res.status(201).send("Utilisateur créé !");
     }
-
-    const token = generateAuthToken(user.id, user.firstName, user.roles);
-
-    res.json({ token });
+    catch(e)
+    {
+        res.status(409).send("Un utilisateur avec cet e-mail existe déjà. Veuillez en entrer un autre.");
+    }
 });
 
 exports.initializeRoutes = () => router;
