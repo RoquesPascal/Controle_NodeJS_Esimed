@@ -29,8 +29,6 @@ router.post('/login',
     if(!utilisateur)
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
-    console.log(utilisateur);
-    console.log(utilisateur.id, utilisateur.pseudo, utilisateur.email);
     const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
     res.status(200).send(`Connexion réussie ! Token = ${token}`);
 });
