@@ -13,19 +13,19 @@ l'application vous permet de sauvegarder vos remarques et notes (de 1 à 10) de 
 
 ##### Identification en ligne
 
-- [ ]  Enregistrement :
+- [x]  Enregistrement :
   
-  - [ ]  Adresse e-mail
+  - [x]  Adresse e-mail
   
-  - [ ]  Pseudo
+  - [x]  Pseudo
   
-  - [ ]  Mot de passe
+  - [x]  Mot de passe
 
-- [ ]  Connexion : 
+- [x]  Connexion : 
   
-  - [ ]  Adresse e-mail
+  - [x]  Adresse e-mail
   
-  - [ ]  Mot de passe
+  - [x]  Mot de passe
 
 L'identification ainsi que l'enregistrement seront gérés côté serveur par un service d'authentification.
 
