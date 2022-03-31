@@ -6,8 +6,6 @@ const { generateAuthToken } = require('../security/auth');
 const {body, validationResult} = require("express-validator");
 const uuid = require('uuid');
 const Table_Utilisateurs = require("../models/user.model");
-const bcrypt = require('bcryptjs');
-const salt = 12;
 
 
 

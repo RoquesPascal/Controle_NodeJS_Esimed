@@ -4,7 +4,9 @@ const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
-const Table_Utilisateurs = require("../models/user.model")
+const Table_Utilisateurs = require("../models/user.model");
+const Table_Rencontres = require("../models/rencontre.model");
+const Table_SessionsRencontres = require("../models/session-rencontre.model");
 
 
 router.get('/', async (req, res) => {
