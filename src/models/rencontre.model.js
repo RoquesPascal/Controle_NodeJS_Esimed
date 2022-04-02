@@ -26,15 +26,15 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
     },
     sexe :
     {
-        type      : DataTypes.STRING,
+        type      : DataTypes.INTEGER,
         allowNull : false,
         required  : true
     },
     dateNaissance :
     {
         type      : DataTypes.DATEONLY,
-        allowNull : false,
-        required  : true
+        allowNull : true,
+        required  : false
     },
     dateRencontre :
     {
@@ -51,8 +51,8 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
     commentaire :
     {
         type      : DataTypes.STRING,
-        allowNull : false,
-        required  : true
+        allowNull : true,
+        required  : false
     }
 }, {
     // Other model options go here

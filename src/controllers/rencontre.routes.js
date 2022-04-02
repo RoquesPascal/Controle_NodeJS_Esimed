@@ -8,43 +8,54 @@ const Table_Utilisateurs = require("../models/utilisateur.model");
 const Table_Rencontres = require("../models/rencontre.model");
 const Table_SessionsRencontres = require("../models/session-rencontre.model");
 const jwtDecode = require("jwt-decode");
+const {generateHashedPassword} = require("../security/crypto");
 
 
 
 router.get('/',
-           body('token').isJWT(),
            async (req, res) =>
+{
+    const allUsers = await Table_Utilisateurs.findAll();
+    res.send(allUsers);
+});
+
+router.post('/',
+            body('nom').isString().notEmpty(),
+            body('prenom').isString().notEmpty(),
+            body('sexe').isInt().notEmpty(),
+            body('dateRencontreJour').isInt().notEmpty(),
+            body('dateRencontreMois').isInt().notEmpty(),
+            body('dateRencontreAnnee').isInt().notEmpty(),
+            body('note').isInt(),
+            async (req, res) =>
 {
     const errors = validationResult(req);
     if(!errors.isEmpty())
         return res.status(400).json({ errors: errors.array() });
 
-    const decodedToken = jwtDecode(req.body.token);
-    console.log(decodedToken);
+    try
+    {
+        let dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+        let dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
+        const rencontre = await Table_Rencontres.create({id            : uuid.v4(),
+                                                                 nom           : req.body.nom,
+                                                                 prenom        : req.body.prenom,
+                                                                 sexe          : req.body.sexe,
+                                                                 dateNaissance : dateDeNaissance,
+                                                                 dateRencontre : dateDeLaRencontre,
+                                                                 note          : req.body.note,
+                                                                 commentaire   : req.body.commentaire});
 
-    const allUsers = await Table_Utilisateurs.findAll();
-    res.send(allUsers);
-});
-
-router.get('/:firstName', async (req, res) => {
-    const foundUser = await Table_Utilisateurs.findAll({
-        where:{
-            firstName: req.params.firstName
-        }
-    })
-    res.send(foundUser);
-});
-
-router.post('/',
-            body('firstName').notEmpty(),
-            body('lastName').notEmpty(),
-            body('password').notEmpty().isLength({ min: 5 }),
-            async (req, res) =>
-{
-    validateBody(req);
-
-    await Table_Utilisateurs.create({id:uuid.v4(), firstName: req.body.firstName, lastName: req.body.lastName, password: req.body.password});
-    res.status(201).end();
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        await Table_SessionsRencontres.create({id            : uuid.v4(),
+                                                     idUtilisateur : tokenDecode.id,
+                                                     idRencontre   : rencontre.id})
+        res.status(201).send("Rencontre Ajoutée !");
+    }
+    catch(e)
+    {
+        res.status(409).send("Erreur lors de l'ajout de la rencontre");
+    }
 });
 
 router.put('/', async (req, res) => {
