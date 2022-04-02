@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const {sequelize} = require('./db')
+const {sequelize} = require('./db');
+const Table_Utilisateurs = require("../models/utilisateur.model");
+const Table_PersonnesARencontrer = require("./personnes-a-rencontrer.model");
 
 
 
@@ -12,48 +14,50 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
         allowNull    : false,
         defaultValue : DataTypes.UUIDV4
     },
-    nom :
+    idUtilisateur :
     {
-        type      : DataTypes.STRING,
+        type      : DataTypes.UUID,
         allowNull : false,
-        required  : true
+        required  : true,
+
+        references:
+        {
+            model : Table_Utilisateurs,
+            key   : 'id',
+            onDelete : 'CASCADE'
+        }
     },
-    prenom :
+    idPersonneRencontree :
     {
-        type      : DataTypes.STRING,
+        type      : DataTypes.UUID,
         allowNull : false,
-        required  : true
-    },
-    sexe :
-    {
-        type      : DataTypes.INTEGER,
-        allowNull : false,
-        required  : true
-    },
-    dateNaissance :
-    {
-        type      : DataTypes.DATEONLY,
-        allowNull : true,
-        required  : false
+        required  : true,
+
+        references:
+        {
+            model : Table_PersonnesARencontrer,
+            key   : 'id',
+            onDelete : 'CASCADE'
+        }
     },
     dateRencontre :
-    {
-        type      : DataTypes.DATEONLY,
-        allowNull : false,
-        required  : true
-    },
+        {
+            type      : DataTypes.DATEONLY,
+            allowNull : false,
+            required  : true
+        },
     note :
-    {
-        type      : DataTypes.INTEGER,
-        allowNull : false,
-        required  : true
-    },
+        {
+            type      : DataTypes.INTEGER,
+            allowNull : false,
+            required  : true
+        },
     commentaire :
-    {
-        type      : DataTypes.STRING,
-        allowNull : true,
-        required  : false
-    }
+        {
+            type      : DataTypes.STRING,
+            allowNull : true,
+            required  : false
+        }
 }, {
     // Other model options go here
 });

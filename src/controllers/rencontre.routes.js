@@ -4,25 +4,14 @@ const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
-const Table_Utilisateurs = require("../models/utilisateur.model");
 const Table_Rencontres = require("../models/rencontre.model");
-const Table_SessionsRencontres = require("../models/session-rencontre.model");
 const jwtDecode = require("jwt-decode");
 const {generateHashedPassword} = require("../security/crypto");
 
 
 
-router.get('/',
-           async (req, res) =>
-{
-    const allUsers = await Table_Utilisateurs.findAll();
-    res.send(allUsers);
-});
-
 router.post('/',
-            body('nom').isString().notEmpty(),
-            body('prenom').isString().notEmpty(),
-            body('sexe').isInt().notEmpty(),
+            body('idPersonneRencontree').isString().notEmpty(),
             body('dateRencontreJour').isInt().notEmpty(),
             body('dateRencontreMois').isInt().notEmpty(),
             body('dateRencontreAnnee').isInt().notEmpty(),
@@ -35,21 +24,14 @@ router.post('/',
 
     try
     {
-        let dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
         let dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
-        const rencontre = await Table_Rencontres.create({id            : uuid.v4(),
-                                                               nom           : req.body.nom,
-                                                               prenom        : req.body.prenom,
-                                                               sexe          : req.body.sexe,
-                                                               dateNaissance : dateDeNaissance,
-                                                               dateRencontre : dateDeLaRencontre,
-                                                               note          : req.body.note,
-                                                               commentaire   : req.body.commentaire});
-
         const tokenDecode = jwtDecode(req.headers.authorization);
-        await Table_SessionsRencontres.create({id            : uuid.v4(),
-                                                     idUtilisateur : tokenDecode.id,
-                                                     idRencontre   : rencontre.id})
+        await Table_Rencontres.create({id                   : uuid.v4(),
+                                             idUtilisateur        : tokenDecode.id,
+                                             idPersonneRencontree : req.body.idPersonneRencontree,
+                                             dateRencontre        : dateDeLaRencontre,
+                                             note                 : req.body.note,
+                                             commentaire          : req.body.commentaire});
         res.status(201).send("Rencontre Ajoutée !");
     }
     catch(e)
@@ -59,10 +41,7 @@ router.post('/',
 });
 
 router.put('/',
-           body('id').isString().notEmpty(),
-           body('nom').isString().notEmpty(),
-           body('prenom').isString().notEmpty(),
-           body('sexe').isInt().notEmpty(),
+           body('idRencontre').isString().notEmpty(),
            body('dateRencontreJour').isInt().notEmpty(),
            body('dateRencontreMois').isInt().notEmpty(),
            body('dateRencontreAnnee').isInt().notEmpty(),
@@ -75,24 +54,20 @@ router.put('/',
 
     try
     {
-        let dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
         let dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
         await Table_Rencontres.update(
             {
-                nom           : req.body.nom,
-                prenom        : req.body.prenom,
-                sexe          : req.body.sexe,
-                dateNaissance : dateDeNaissance,
-                dateRencontre : dateDeLaRencontre,
-                note          : req.body.note,
-                commentaire   : req.body.commentaire
+                idPersonneRencontree : req.body.idPersonneRencontree,
+                dateRencontre        : dateDeLaRencontre,
+                note                 : req.body.note,
+                commentaire          : req.body.commentaire
             }, {
             where :
             {
-                id : req.body.id
+                id : req.body.idRencontre
             }
         });
-        res.status(204).send("Rencontre modifiée !");
+        res.status(200).send("Rencontre modifiée !");
     }
     catch(e)
     {
@@ -100,13 +75,24 @@ router.put('/',
     }
 });
 
-router.delete('/', async (req, res) => {
-    await Table_Utilisateurs.destroy({
-        where: {
-            firstName: req.body.firstName
-        }
-    })
-    res.status(204).end();
+router.delete('/',
+              body('idRencontre').isString().notEmpty(),
+              async (req, res) =>
+{
+    try
+    {
+        await Table_Rencontres.destroy({
+            where :
+                {
+                    id : req.body.idRencontre
+                }
+        })
+        res.status(200).send("Rencontre Supprimée !");
+    }
+    catch(e)
+    {
+        res.status(400).send("Erreur lors de la suppression de la rencontre");
+    }
 });
 
 exports.initializeRoutes = () => router;
