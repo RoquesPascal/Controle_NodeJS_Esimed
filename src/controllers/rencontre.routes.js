@@ -1,16 +1,27 @@
 const express = require('express');
-const { body } = require('express-validator');
+const { body, validationResult} = require('express-validator');
 const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
-const Table_Utilisateurs = require("../models/user.model");
+const Table_Utilisateurs = require("../models/utilisateur.model");
 const Table_Rencontres = require("../models/rencontre.model");
 const Table_SessionsRencontres = require("../models/session-rencontre.model");
+const jwtDecode = require("jwt-decode");
 
 
 
-router.get('/', async (req, res) => {
+router.get('/',
+           body('token').isJWT(),
+           async (req, res) =>
+{
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
+    const decodedToken = jwtDecode(req.body.token);
+    console.log(decodedToken);
+
     const allUsers = await Table_Utilisateurs.findAll();
     res.send(allUsers);
 });
