@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userRepository = require('../models/user-repository');
 const { passwordsAreEqual, generateHashedPassword} = require('../security/crypto');
 const { generateAuthToken } = require('../security/auth');
 const {body, validationResult} = require("express-validator");
 const uuid = require('uuid');
 const Table_Utilisateurs = require("../models/user.model");
+const jwtDecode = require("jwt-decode");
 
 
 
@@ -28,6 +28,8 @@ router.post('/login',
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
     const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
+    const decodedToken = jwtDecode(token);
+    console.log(decodedToken.pseudo);
     res.status(200).send(`Connexion réussie ! Token = ${token}`);
 });
 

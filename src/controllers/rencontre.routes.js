@@ -9,6 +9,7 @@ const Table_Rencontres = require("../models/rencontre.model");
 const Table_SessionsRencontres = require("../models/session-rencontre.model");
 
 
+
 router.get('/', async (req, res) => {
     const allUsers = await Table_Utilisateurs.findAll();
     res.send(allUsers);
