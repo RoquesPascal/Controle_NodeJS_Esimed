@@ -23,8 +23,7 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
         references:
         {
             model : Table_Utilisateurs,
-            key   : 'id',
-            onDelete : 'CASCADE'
+            key   : 'id'
         }
     },
     idPersonneRencontree :
@@ -36,8 +35,7 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
         references:
         {
             model : Table_PersonnesARencontrer,
-            key   : 'id',
-            onDelete : 'CASCADE'
+            key   : 'id'
         }
     },
     dateRencontre :

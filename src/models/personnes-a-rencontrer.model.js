@@ -39,10 +39,6 @@ const Table_PersonnesARencontrer = sequelize.define('Table_PersonnesARencontrer'
     }
 }, {
     // Other model options go here
-    /*associate : function(Table_Rencontres)
-    {
-        Table_PersonnesARencontrer.hasMany(Table_Rencontres, { onDelete: 'cascade' });
-    }*/
 });
 
 module.exports = Table_PersonnesARencontrer;

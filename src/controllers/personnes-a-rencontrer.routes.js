@@ -4,6 +4,7 @@ const router = express.Router();
 const userRepository = require('../models/user-repository');
 const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
+const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const jwtDecode = require("jwt-decode");
 const {generateHashedPassword} = require("../security/crypto");
@@ -74,8 +75,15 @@ router.delete('/',
               body('idPersonneARencontrer').isString().notEmpty(),
               async (req, res) =>
 {
-    /*try
+    try
     {
+        await Table_Rencontres.destroy({
+            where :
+                {
+                    idPersonneRencontree : req.body.idPersonneARencontrer
+                }
+        })
+
         await Table_PersonnesARencontrer.destroy({
             where :
                 {
@@ -86,8 +94,11 @@ router.delete('/',
     }
     catch(e)
     {
+        console.log(`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`)
+        console.log(`${e}`)
+        console.log(`AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`)
         res.status(400).send("Erreur lors de la suppression de la personne");
-    }*/
+    }
 });
 
 exports.initializeRoutes = () => router;
