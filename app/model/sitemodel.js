@@ -5,15 +5,16 @@ class Sitemodel
         this.api = new SiteAPI()
     }
 
-    async Login(params)
+    async Login(body)
     {
         try
         {
-            return await this.api.Login(params)
+            return await this.api.Login(JSON.stringify(body))
         }
-        catch
+        catch (e)
         {
-            return  undefined
+            console.log("AAAAAAAAAAAAAAAAAaa")
+            return e
         }
     }
 }

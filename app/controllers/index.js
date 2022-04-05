@@ -15,26 +15,18 @@ class IndexController extends BaseController
         console.log(inputMotDePasse.value)
 
         const Result = await this.model.Login({
-            "email"      : inputEmail.value,
-            "motDePasse" : inputMotDePasse.value
+            'email'      : inputEmail.value,
+            'motDePasse' : inputMotDePasse.value
         })
-       /* const Result = await this.model.Login(`
-            "email"      : ${inputEmail.value},
-            "motDePasse" : ${inputMotDePasse.value}
-        `)*/
-        if(Result !== undefined)
-        {
-            console.log(`Result = ${Result}`)
-        }
-        else
-        {
-            console.log(`Result = ${Result}`)
-        }
-    }
 
-    sayHello()
-    {
-        this.toast("bonjourToast")
+       if(Result !== undefined)
+       {
+           console.log(`Result = ${Result}`)
+       }
+       else
+       {
+           console.log(`Result = ${Result}`)
+       }
     }
 }
 
