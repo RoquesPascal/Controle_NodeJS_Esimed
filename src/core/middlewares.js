@@ -30,7 +30,7 @@ const initLoggerMiddlware = (app) => {
 };
 
 const initJwtMiddleware = (app) => {
-  app.use(jwtExpress({ secret: process.env.JWT_SECRET, algorithms: ['HS256']}).unless({path : ['/login', '/signin']}));
+  app.use(jwtExpress({ secret: process.env.JWT_SECRET, algorithms: ['HS256']}).unless({path : ['/login', '/signup']}));
 };
 
 exports.initializeConfigMiddlewares = (app) => {

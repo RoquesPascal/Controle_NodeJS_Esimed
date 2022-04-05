@@ -36,7 +36,7 @@ router.post('/login',
     res.status(200).send(`Connexion réussie ! Token = ${token}`);
 });
 
-router.post('/signin',
+router.post('/signup',
             body('pseudo').isString().notEmpty(),
             body('email').isEmail().notEmpty(),
             body('motDePasse').isLength({min : 5}).notEmpty(),

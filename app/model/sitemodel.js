@@ -16,4 +16,16 @@ class Sitemodel
             return e
         }
     }
+
+    async Signup(body)
+    {
+        try
+        {
+            return await this.api.Signup(JSON.stringify(body))
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
 }

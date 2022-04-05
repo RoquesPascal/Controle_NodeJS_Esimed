@@ -2,7 +2,7 @@ class BaseController
 {
     constructor()
     {
-        this.setBackButtonView('index')
+        this.setBackButtonView('login')
     }
 
     toast(elemId)
