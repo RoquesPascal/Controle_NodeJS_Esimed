@@ -8,10 +8,16 @@ const Table_Utilisateurs = require("../models/utilisateur.model");
 
 
 
+router.all('/', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+});
+
 router.post('/login',
             body('email').notEmpty(),
             body('motDePasse').notEmpty(),
-            async (req, res) =>
+            async (req, res, next) =>
 {
     const errors = validationResult(req);
     if(!errors.isEmpty())

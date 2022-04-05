@@ -23,7 +23,7 @@ class SiteAPI
                     else
                     {
                         console.log(response)
-                        resolve(response.json())
+                        resolve()
                     }
                 }).catch(error => reject(error))
         }))

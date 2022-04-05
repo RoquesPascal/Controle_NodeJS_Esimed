@@ -13,7 +13,6 @@ class Sitemodel
         }
         catch (e)
         {
-            console.log("AAAAAAAAAAAAAAAAAaa")
             return e
         }
     }
