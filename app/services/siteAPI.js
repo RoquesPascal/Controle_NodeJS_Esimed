@@ -16,14 +16,12 @@ class SiteAPI
                                                               headers : this.headers,
                                                               body    : body})
                 .then(async response => {
-                    if (response.status !== 200)
+                    if(response.status !== 200)
                     {
-                        console.log(response)
                         reject(await response.text())
                     }
                     else
                     {
-                        console.log(response)
                         resolve(response.text())
                     }
                 }).catch(error => reject(error))
@@ -36,16 +34,14 @@ class SiteAPI
             fetch(`${this.api}/${this.lienSignup}`, {method  : "POST",
                                                                headers : this.headers,
                                                                body    : body})
-                .then(response => {
+                .then(async response => {
                     if(response.status !== 201)
                     {
-                        console.log(response)
-                        reject(response.status)
+                        reject(await response.text())
                     }
                     else
                     {
-                        console.log(response)
-                        resolve()
+                        resolve(response.text())
                     }
                 }).catch(error => reject(error))
         }))

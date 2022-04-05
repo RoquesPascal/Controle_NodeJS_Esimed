@@ -27,7 +27,7 @@ router.post('/login',
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
     const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
-    return res.status(200).send(`Connexion réussie ! Token = ${token}`);
+    return res.status(200).send(token);
 });
 
 router.post('/signup',
@@ -42,11 +42,13 @@ router.post('/signup',
 
     try
     {
-        await Table_Utilisateurs.create({id         : uuid.v4(),
-                                               pseudo     : req.body.pseudo,
-                                               email      : req.body.email,
-                                               motDePasse : generateHashedPassword(req.body.motDePasse)});
-        res.status(201).send("Utilisateur créé !");
+        const utilisateur = await Table_Utilisateurs.create({id         : uuid.v4(),
+                                                                   pseudo     : req.body.pseudo,
+                                                                   email      : req.body.email,
+                                                                   motDePasse : generateHashedPassword(req.body.motDePasse)});
+
+        const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
+        return res.status(201).send(token);
     }
     catch(e)
     {

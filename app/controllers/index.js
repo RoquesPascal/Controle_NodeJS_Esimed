@@ -1,3 +1,13 @@
+let   Historique       = []
+const HistoriqueCle    = "HistoriqueAppliRencontre"
+const AncienHistorique = localStorage.getItem(HistoriqueCle)
+if(AncienHistorique != null)
+{
+    Historique = JSON.parse(AncienHistorique)
+}
+
+
+
 class IndexController extends BaseController
 {
     constructor()
@@ -13,26 +23,23 @@ class IndexController extends BaseController
 
         try
         {
-            const Result = await this.model.Login({
+            const token = await this.model.Login({
                 'email'      : inputEmail.value,
                 'motDePasse' : inputMotDePasse.value
             })
-            console.log(Result);
+
+            const jwtEstValide = this.ParseJwt(token);
+            const currentTimestamp = new Date().getTime() / 1000;
+            if(jwtEstValide.id && (jwtEstValide.exp > currentTimestamp))
+            {
+                localStorage.setItem(HistoriqueCle, JSON.stringify(token));
+                navigate("index");
+            }
         }
         catch(e)
         {
             console.log(e);
         }
-
-       /*if(Result !== undefined) //Si c'est undefined c'est qu'on a pu trouver l'utilisateur, sinon ça renvoi l'erreur 404
-       {
-           //navigate('index');
-           console.log(Result);
-       }
-       else
-       {
-           console.log(`Connexion  pas ok`)
-       }*/
     }
 
     async Signup()
@@ -41,21 +48,43 @@ class IndexController extends BaseController
         const inputEmail      = document.getElementById("inputEmail")
         const inputMotDePasse = document.getElementById("inputMotDePasse")
 
-        const Result = await this.model.Signup({
-            "pseudo"     : inputPseudo.value,
-            'email'      : inputEmail.value,
-            'motDePasse' : inputMotDePasse.value
-        })
+        try
+        {
+            const token = await this.model.Signup({
+                "pseudo"     : inputPseudo.value,
+                'email'      : inputEmail.value,
+                'motDePasse' : inputMotDePasse.value
+            })
 
-        if(Result == undefined) //Si c'est undefined c'est qu'on a pu créer l'utilisateur, sinon ça renvoi un code erreur
-        {
-            console.log(`Creation OK !`)
+            const jwtEstValide = this.ParseJwt(token);
+            const currentTimestamp = new Date().getTime() / 1000;
+            if(jwtEstValide.id && (jwtEstValide.exp > currentTimestamp))
+            {
+                localStorage.setItem(HistoriqueCle, JSON.stringify(token));
+                navigate("index");
+            }
         }
-        else
+        catch(e)
         {
-            console.log(`Création  pas ok`)
+            console.log(e);
+        }
+        finally
+        {
+            this.toast("bonjourToast");
         }
     }
+
+    ParseJwt(token)
+    {
+        let base64Url = token.split('.')[1];
+        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    }
+
 }
 
 window.indexController = new IndexController()
