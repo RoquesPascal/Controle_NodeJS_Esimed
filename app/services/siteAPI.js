@@ -15,16 +15,16 @@ class SiteAPI
             fetch(`${this.api}/${this.lienLogin}`, {method  : "POST",
                                                               headers : this.headers,
                                                               body    : body})
-                .then(response => {
-                    if(response.status !== 200)
+                .then(async response => {
+                    if (response.status !== 200)
                     {
                         console.log(response)
-                        reject(response.status)
+                        reject(await response.text())
                     }
                     else
                     {
                         console.log(response)
-                        resolve()
+                        resolve(response.text())
                     }
                 }).catch(error => reject(error))
         }))

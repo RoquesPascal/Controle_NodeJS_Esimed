@@ -11,19 +11,28 @@ class IndexController extends BaseController
         const inputEmail      = document.getElementById("inputEmail")
         const inputMotDePasse = document.getElementById("inputMotDePasse")
 
-        const Result = await this.model.Login({
-            'email'      : inputEmail.value,
-            'motDePasse' : inputMotDePasse.value
-        })
+        try
+        {
+            const Result = await this.model.Login({
+                'email'      : inputEmail.value,
+                'motDePasse' : inputMotDePasse.value
+            })
+            console.log(Result);
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
 
-       if(Result == undefined) //Si c'est undefined c'est qu'on a pu trouver l'utilisateur, sinon ça renvoi l'erreur 404
+       /*if(Result !== undefined) //Si c'est undefined c'est qu'on a pu trouver l'utilisateur, sinon ça renvoi l'erreur 404
        {
-           console.log(`Connexion OK !`)
+           //navigate('index');
+           console.log(Result);
        }
        else
        {
            console.log(`Connexion  pas ok`)
-       }
+       }*/
     }
 
     async Signup()

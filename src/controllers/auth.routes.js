@@ -8,16 +8,10 @@ const Table_Utilisateurs = require("../models/utilisateur.model");
 
 
 
-router.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next()
-});
-
 router.post('/login',
             body('email').notEmpty(),
             body('motDePasse').notEmpty(),
-            async (req, res, next) =>
+            async (req, res) =>
 {
     const errors = validationResult(req);
     if(!errors.isEmpty())
@@ -33,7 +27,7 @@ router.post('/login',
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
     const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
-    res.status(200).send(`Connexion réussie ! Token = ${token}`);
+    return res.status(200).send(`Connexion réussie ! Token = ${token}`);
 });
 
 router.post('/signup',
