@@ -1,7 +1,26 @@
 let   Historique       = []
 const HistoriqueCle    = "HistoriqueAppliRencontre"
 const AncienHistorique = localStorage.getItem(HistoriqueCle)
-if((AncienHistorique != null) && indexController.JwtEstValide(AncienHistorique))
+
+function ParseJwt(token)
+{
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+function JwtEstValide(token)
+{
+    const jwtEstValide = ParseJwt(token);
+    const currentTimestamp = new Date().getTime() / 1000;
+    return (jwtEstValide.id && (jwtEstValide.exp > currentTimestamp));
+}
+
+if((AncienHistorique != null) && JwtEstValide(AncienHistorique))
 {
     Historique = JSON.parse(AncienHistorique)
 }
@@ -16,13 +35,6 @@ class IndexController extends BaseController
         this.model = new Sitemodel()
     }
 
-    JwtEstValide(token)
-    {
-        const jwtEstValide = this.ParseJwt(token);
-        const currentTimestamp = new Date().getTime() / 1000;
-        return (jwtEstValide.id && (jwtEstValide.exp > currentTimestamp));
-    }
-
     async Login()
     {
         const inputEmail      = document.getElementById("inputEmail")
@@ -35,7 +47,7 @@ class IndexController extends BaseController
                 'motDePasse' : inputMotDePasse.value
             })
 
-            if(this.JwtEstValide(token))
+            if(JwtEstValide(token))
             {
                 localStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
@@ -65,7 +77,7 @@ class IndexController extends BaseController
                 'motDePasse' : inputMotDePasse.value
             })
 
-            if(this.JwtEstValide(token))
+            if(JwtEstValide(token))
             {
                 localStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
@@ -80,18 +92,6 @@ class IndexController extends BaseController
             this.toast("toastErreurSignup");
         }
     }
-
-    ParseJwt(token)
-    {
-        let base64Url = token.split('.')[1];
-        let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(jsonPayload);
-    }
-
 }
 
 window.indexController = new IndexController()
