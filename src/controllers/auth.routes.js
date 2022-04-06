@@ -52,7 +52,7 @@ router.post('/signup',
     }
     catch(e)
     {
-        res.status(409).send("Un utilisateur avec cet e-mail existe déjà. Veuillez en entrer un autre.");
+        return res.status(409).send("Un utilisateur avec cet e-mail existe déjà. Veuillez en entrer un autre.");
     }
 });
 

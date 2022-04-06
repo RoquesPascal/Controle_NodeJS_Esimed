@@ -11,6 +11,39 @@ const {generateHashedPassword} = require("../security/crypto");
 
 
 
+router.get('/',
+           async (req, res) =>
+{
+    try
+    {
+        const toutesLesPersonnesARencontrer = await Table_PersonnesARencontrer.findAll();
+        return res.status(200).send(toutesLesPersonnesARencontrer);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération des personnes");
+    }
+});
+
+router.get('/:id',
+           async (req, res) =>
+{
+    try
+    {
+        const personne = await Table_PersonnesARencontrer.findAll({
+            where :
+            {
+                id : req.params.id
+            }
+        });
+        return res.status(200).send(personne);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération de la personne");
+    }
+});
+
 router.post('/',
             body('nom').isString().notEmpty(),
             body('prenom').isString().notEmpty(),

@@ -7,8 +7,42 @@ const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const jwtDecode = require("jwt-decode");
 const {generateHashedPassword} = require("../security/crypto");
+const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 
 
+
+router.get('/',
+           async (req, res) =>
+{
+    try
+    {
+        const toutesLesrencontres = await Table_Rencontres.findAll();
+        return res.status(200).send(toutesLesrencontres);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération des personnes");
+    }
+});
+
+router.get('/:id',
+           async (req, res) =>
+{
+    try
+    {
+        const rencontre = await Table_Rencontres.findAll({
+            where :
+                {
+                    id : req.params.id
+                }
+        });
+        return res.status(200).send(rencontre);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération de la personne");
+    }
+});
 
 router.post('/',
             body('idPersonneRencontree').isString().notEmpty(),
