@@ -1,6 +1,8 @@
 let   Historique       = []
 const HistoriqueCle    = "HistoriqueAppliRencontre"
-const AncienHistorique = localStorage.getItem(HistoriqueCle)
+const AncienHistorique = sessionStorage.getItem(HistoriqueCle)
+
+
 
 function ParseJwt(token)
 {
@@ -25,6 +27,20 @@ if((AncienHistorique != null) && JwtEstValide(AncienHistorique))
     Historique = JSON.parse(AncienHistorique)
 }
 
+function AfficherPseudo()
+{
+    try
+    {
+        let affichagePseudo = document.getElementById("dropDownMenu");
+        const token = ParseJwt(Historique);
+        affichagePseudo.innerText = token.pseudo;
+    }
+    catch(e)
+    {
+        console.log(e);
+    }
+}
+
 
 
 class IndexController extends BaseController
@@ -33,6 +49,13 @@ class IndexController extends BaseController
     {
         super()
         this.model = new Sitemodel()
+        AfficherPseudo()
+    }
+
+    Deconexion()
+    {
+        sessionStorage.clear();
+        navigate("login");
     }
 
     async Login()
@@ -49,7 +72,7 @@ class IndexController extends BaseController
 
             if(JwtEstValide(token))
             {
-                localStorage.setItem(HistoriqueCle, JSON.stringify(token));
+                sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
             }
         }
@@ -79,7 +102,7 @@ class IndexController extends BaseController
 
             if(JwtEstValide(token))
             {
-                localStorage.setItem(HistoriqueCle, JSON.stringify(token));
+                sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
             }
         }

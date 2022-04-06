@@ -1,25 +1,11 @@
-<div class="container">
-    <div class="row" style="margin-bottom: 20px;">
-        <div class="col"><h1>Listes de courses</h1></div>
-        <div class="col-md-auto"><button class="form-control">Nouvelle liste</button></div>
-        <div class="col-md-auto"><button class="form-control">Historique</button></div>
-    </div>
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropDownMenu" data-bs-toggle="dropdown" aria-expanded="false">
 
-    <div class="container">
-        <ul id="ulListeCourses"></ul> <!-- Liste des produits -->
-
-        <ul> <!-- Formulaire en bas pour ajouter un produit à la liste -->
-            <li>
-                <div class="row" style="margin-bottom: 20px;">
-                    <div class="col-2"><input type="number" class="form-control" id="inputQuantite" min="0" placeholder="quantit&eacute;"/></div> <!-- Input quantité -->
-                    <div class="col"><input type="text" class="form-control" id="inputArticle" placeholder="article"/></div> <!-- Input article -->
-                    <div class="col-1"> <!-- Boutton ajouter -->
-                        <button type="button" class="btn btn-success" onclick="AjouterLigne()">
-                            <img src="../Images/IconeAjout.png" height="25px"/>
-                        </button>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item">Profil</a></li>
+        <li><a class="dropdown-item">Rencontres</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" onclick="indexController.Deconexion()">Se d&eacute;conecter</a></li>
+    </ul>
 </div>
