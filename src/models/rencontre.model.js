@@ -39,23 +39,23 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
         }
     },
     dateRencontre :
-        {
-            type      : DataTypes.DATEONLY,
-            allowNull : false,
-            required  : true
-        },
+    {
+        type      : DataTypes.DATEONLY,
+        allowNull : false,
+        required  : true
+    },
     note :
-        {
-            type      : DataTypes.INTEGER,
-            allowNull : false,
-            required  : true
-        },
+    {
+        type      : DataTypes.INTEGER,
+        allowNull : false,
+        required  : true
+    },
     commentaire :
-        {
-            type      : DataTypes.STRING,
-            allowNull : true,
-            required  : false
-        }
+    {
+        type      : DataTypes.STRING,
+        allowNull : true,
+        required  : false
+    }
 }, {
     // Other model options go here
 });

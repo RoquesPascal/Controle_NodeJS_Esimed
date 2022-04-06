@@ -1,7 +1,7 @@
 let   Historique       = []
 const HistoriqueCle    = "HistoriqueAppliRencontre"
 const AncienHistorique = localStorage.getItem(HistoriqueCle)
-if(AncienHistorique != null)
+if((AncienHistorique != null) && indexController.JwtEstValide(AncienHistorique))
 {
     Historique = JSON.parse(AncienHistorique)
 }
@@ -16,6 +16,13 @@ class IndexController extends BaseController
         this.model = new Sitemodel()
     }
 
+    JwtEstValide(token)
+    {
+        const jwtEstValide = this.ParseJwt(token);
+        const currentTimestamp = new Date().getTime() / 1000;
+        return (jwtEstValide.id && (jwtEstValide.exp > currentTimestamp));
+    }
+
     async Login()
     {
         const inputEmail      = document.getElementById("inputEmail")
@@ -28,9 +35,7 @@ class IndexController extends BaseController
                 'motDePasse' : inputMotDePasse.value
             })
 
-            const jwtEstValide = this.ParseJwt(token);
-            const currentTimestamp = new Date().getTime() / 1000;
-            if(jwtEstValide.id && (jwtEstValide.exp > currentTimestamp))
+            if(this.JwtEstValide(token))
             {
                 localStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
@@ -39,6 +44,10 @@ class IndexController extends BaseController
         catch(e)
         {
             console.log(e);
+        }
+        finally
+        {
+            this.toast("toastErreurLogin");
         }
     }
 
@@ -56,9 +65,7 @@ class IndexController extends BaseController
                 'motDePasse' : inputMotDePasse.value
             })
 
-            const jwtEstValide = this.ParseJwt(token);
-            const currentTimestamp = new Date().getTime() / 1000;
-            if(jwtEstValide.id && (jwtEstValide.exp > currentTimestamp))
+            if(this.JwtEstValide(token))
             {
                 localStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
@@ -70,7 +77,7 @@ class IndexController extends BaseController
         }
         finally
         {
-            this.toast("bonjourToast");
+            this.toast("toastErreurSignup");
         }
     }
 
