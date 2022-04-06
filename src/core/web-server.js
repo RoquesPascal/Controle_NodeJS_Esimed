@@ -3,6 +3,7 @@ const { initializeConfigMiddlewares, initializeErrorMiddlwares } = require('./mi
 const authRoutes = require('../controllers/auth.routes');
 const rencontreRoutes = require('../controllers/rencontre.routes');
 const personnesARencontrerRoutes = require('../controllers/personnes-a-rencontrer.routes');
+const utilisateur = require('../controllers/utilisateur.routes');
 const { sequelize } = require('../models/db');
 
 
@@ -38,8 +39,9 @@ class WebServer
 
     _initializeRoutes() {
         this.app.use(authRoutes.initializeRoutes());
-        this.app.use('/rencontres', rencontreRoutes.initializeRoutes());
         this.app.use('/personnes', personnesARencontrerRoutes.initializeRoutes());
+        this.app.use('/rencontres', rencontreRoutes.initializeRoutes());
+        this.app.use('/utilisateurs', utilisateur.initializeRoutes());
     }
 }
 

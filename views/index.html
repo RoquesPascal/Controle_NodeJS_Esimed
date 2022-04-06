@@ -9,3 +9,33 @@
         <li><a class="dropdown-item" onclick="indexController.Deconexion()">Se d&eacute;conecter</a></li>
     </ul>
 </div>
+
+<div class="container">
+    <ul id="ulListeRencontres"></ul>
+
+    <ul>
+        <li>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-2"><input type="number" class="form-control" id="inputQuantite" min="0" placeholder="quantit&eacute;"/></div>
+                <div class="col"><input type="text" class="form-control" id="inputArticle" placeholder="article"/></div>
+                <div class="col-1">
+                    <button type="button" class="btn btn-success" onclick="AjouterLigne()">
+                        <img src="../Images/IconeAjout.png" height="25px"/>
+                    </button>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<button type="button" class="btn btn-success" onclick="indexController.AfficherListeRencontres()">
+    Tester une fonction
+</button>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastErreurGetListeRencontres" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Erreur lors de la récupération des rencontres.
+        </div>
+    </div>
+</div>

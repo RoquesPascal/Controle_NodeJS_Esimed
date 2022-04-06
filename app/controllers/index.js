@@ -52,6 +52,47 @@ class IndexController extends BaseController
         AfficherPseudo()
     }
 
+    async AfficherListeRencontres()
+    {
+        try
+        {
+            let ulListeRencontres = document.getElementById("ulListeRencontres");
+            const listeRencontres = await this.model.GetListeRencontres();
+            console.log(listeRencontres);
+
+            ulListeRencontres.innerHTML = ""
+
+            for(const rencontre of listeRencontres)
+            {
+                const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur);
+                const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree);
+                ulListeRencontres.innerHTML += this.CreerLigne(rencontre, utilisateur, personne)
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurGetListeRencontres");
+        }
+    }
+
+    CreerLigne(rencontre, utilisateur, personne)
+    {
+        return `<li id="rencontre_${rencontre.id}">
+                    <div class="row">
+                        <div class="col">
+                            ${utilisateur.pseudo} &agrave; rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
+                        </div>
+                        <div class="col-1"> <!-- Boutton supprimer -->
+                            <button type="button" class="btn btn-danger">
+                                <img src="../Images/IconeSuppression.png" height="25px"/>
+                            </button>
+                        </div>
+                    </div>
+                </li>`
+    }
+
     Deconexion()
     {
         sessionStorage.clear();

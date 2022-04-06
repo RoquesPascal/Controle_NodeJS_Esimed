@@ -30,7 +30,7 @@ router.get('/:id',
 {
     try
     {
-        const rencontre = await Table_Rencontres.findAll({
+        const rencontre = await Table_Rencontres.findOne({
             where :
                 {
                     id : req.params.id

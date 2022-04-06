@@ -30,7 +30,7 @@ router.get('/:id',
 {
     try
     {
-        const personne = await Table_PersonnesARencontrer.findAll({
+        const personne = await Table_PersonnesARencontrer.findOne({
             where :
             {
                 id : req.params.id
