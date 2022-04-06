@@ -3,7 +3,6 @@ const HistoriqueCle    = "HistoriqueAppliRencontre"
 const AncienHistorique = sessionStorage.getItem(HistoriqueCle)
 
 
-
 function ParseJwt(token)
 {
     let base64Url = token.split('.')[1];
@@ -29,15 +28,18 @@ if((AncienHistorique != null) && JwtEstValide(AncienHistorique))
 
 function AfficherPseudo()
 {
-    try
+    let affichagePseudo = document.getElementById("dropDownMenu");
+    if(affichagePseudo != null)
     {
-        let affichagePseudo = document.getElementById("dropDownMenu");
-        const token = ParseJwt(Historique);
-        affichagePseudo.innerText = token.pseudo;
-    }
-    catch(e)
-    {
-        console.log(e);
+        try
+        {
+            const token = ParseJwt(Historique);
+            affichagePseudo.innerText = token.pseudo;
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
     }
 }
 
@@ -50,43 +52,53 @@ class IndexController extends BaseController
         super()
         this.model = new Sitemodel()
         AfficherPseudo()
+        this.AfficherListeRencontres().then(r => {})
     }
 
     async AfficherListeRencontres()
     {
-        try
+        let ulListeRencontres = document.getElementById("ulListeRencontres");
+        if(ulListeRencontres != null)
         {
-            let ulListeRencontres = document.getElementById("ulListeRencontres");
-            const listeRencontres = await this.model.GetListeRencontres();
-            console.log(listeRencontres);
-
-            ulListeRencontres.innerHTML = ""
-
-            for(const rencontre of listeRencontres)
+            try
             {
-                const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur);
-                const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree);
-                ulListeRencontres.innerHTML += this.CreerLigne(rencontre, utilisateur, personne)
+                const token = Historique;
+                const listeRencontres = await this.model.GetListeRencontres(token);
+                let listeHtmlRencontres = "";
+
+                ulListeRencontres.innerHTML = '<img src="../../res/Loader.gif"/>';
+
+                for(const rencontre of listeRencontres)
+                {
+                    const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, token);
+                    const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, token);
+                    listeHtmlRencontres += this.CreerLigne(rencontre, utilisateur, personne)
+                }
+
+                ulListeRencontres.innerHTML = listeHtmlRencontres;
             }
-        }
-        catch(e)
-        {
-            console.log(e);
-            this.toast("toastErreurGetListeRencontres");
+            catch(e)
+            {
+                console.log(e);
+                this.toast("toastErreurGetListeRencontres");
+            }
         }
     }
 
     CreerLigne(rencontre, utilisateur, personne)
     {
-        return `<li id="rencontre_${rencontre.id}">
+        return `<li class="liRencontre" id="rencontre_${rencontre.id}">
                     <div class="row">
                         <div class="col">
-                            ${utilisateur.pseudo} &agrave; rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                            ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
                             La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
                         </div>
-                        <div class="col-1"> <!-- Boutton supprimer -->
-                            <button type="button" class="btn btn-danger">
-                                <img src="../Images/IconeSuppression.png" height="25px"/>
+                        <div class="col-1">
+                            <button type="button" class="btn btn btn-primary boutonModifierOuSupprimerRencontre">
+                                <img src="../res/IconeModification.png" height="25px"/>
+                            </button>
+                            <button type="button" class="btn btn-danger boutonModifierOuSupprimerRencontre">
+                                <img src="../res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
                     </div>

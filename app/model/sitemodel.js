@@ -5,11 +5,11 @@ class Sitemodel
         this.api = new SiteAPI()
     }
 
-    async GetListeRencontres()
+    async GetListeRencontres(jwt)
     {
         try
         {
-            return await this.api.GetListeRencontres()
+            return await this.api.GetListeRencontres(jwt)
         }
         catch (e)
         {
@@ -17,11 +17,11 @@ class Sitemodel
         }
     }
 
-    async GetPersonne(id)
+    async GetPersonne(id, jwt)
     {
         try
         {
-            return await this.api.GetPersonne(id)
+            return await this.api.GetPersonne(id, jwt)
         }
         catch (e)
         {
@@ -29,11 +29,11 @@ class Sitemodel
         }
     }
 
-    async GetUtilisateur(id)
+    async GetUtilisateur(id, jwt)
     {
         try
         {
-            return await this.api.GetUtilisateur(id)
+            return await this.api.GetUtilisateur(id, jwt)
         }
         catch (e)
         {

@@ -16,7 +16,7 @@ router.get('/',
 {
     try
     {
-        const toutesLesrencontres = await Table_Rencontres.findAll();
+        const toutesLesrencontres = await Table_Rencontres.findAll({order: [['updatedAt', 'DESC']]});
         return res.status(200).send(toutesLesrencontres);
     }
     catch(e)

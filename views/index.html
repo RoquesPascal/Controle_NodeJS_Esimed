@@ -3,8 +3,8 @@
 
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item">Profil</a></li>
-        <li><a class="dropdown-item">Rencontres</a></li>
+        <li><a class="dropdown-item">Profil (pas encore programm&eacute;)</a></li>
+        <li><a class="dropdown-item">Rencontres (pas encore programm&eacute;)</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" onclick="indexController.Deconexion()">Se d&eacute;conecter</a></li>
     </ul>
@@ -20,17 +20,13 @@
                 <div class="col"><input type="text" class="form-control" id="inputArticle" placeholder="article"/></div>
                 <div class="col-1">
                     <button type="button" class="btn btn-success" onclick="AjouterLigne()">
-                        <img src="../Images/IconeAjout.png" height="25px"/>
+                        <img src="../res/IconeAjout.png" height="25px"/>
                     </button>
                 </div>
             </div>
         </li>
     </ul>
 </div>
-
-<button type="button" class="btn btn-success" onclick="indexController.AfficherListeRencontres()">
-    Tester une fonction
-</button>
 
 <div class="position-fixed top-0 end-0" style="z-index: 11">
     <div id="toastErreurGetListeRencontres" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
