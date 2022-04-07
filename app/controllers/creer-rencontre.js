@@ -65,14 +65,14 @@ class CreerRencontreController extends BaseController
             {
                 const token = Historique;
                 const listePersonnesARencontrer = await this.model.GetListePersonnesARencontrer(token);
-                let listeHtmlPersonnesARencontrer = "";
+                let listeHtmlPersonnesARencontrer = `<option value=""></option>`;
 
                 for(const personne of listePersonnesARencontrer)
                 {
                     listeHtmlPersonnesARencontrer += this.CreerLigne(personne)
                 }
 
-                selectPersonnesARencontrer.innerHTML += listeHtmlPersonnesARencontrer;
+                selectPersonnesARencontrer.innerHTML = listeHtmlPersonnesARencontrer;
             }
             catch(e)
             {
@@ -89,6 +89,9 @@ class CreerRencontreController extends BaseController
 
     CreerLesSelectPourLesRencontres()
     {
+        const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+        const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+        const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
         const selectDateJour  = document.getElementById("selectDateJour");
         const selectDateMois  = document.getElementById("selectDateMois");
         const selectDateAnnee = document.getElementById("selectDateAnnee");
@@ -100,10 +103,19 @@ class CreerRencontreController extends BaseController
 
 
 
-        for(let i = 0 ; i <= valeurNote ; i++)
+        for(let i = 1 ; i <= valeurJour ; i++)
         {
-            selectNote.innerHTML += `<option value="${i}">${i}</option>`;
+            selectDateNaissanceJour.innerHTML += `<option value="${i}">${i}</option>`;
         }
+        for(let i = 1 ; i <= valeurMois ; i++)
+        {
+            selectDateNaissanceMois.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        for(let i = valeurAnnee ; i >= 1900 ; i--)
+        {
+            selectDateNaissanceAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+
         for(let i = 1 ; i <= valeurJour ; i++)
         {
             selectDateJour.innerHTML += `<option value="${i}">${i}</option>`;
@@ -115,6 +127,50 @@ class CreerRencontreController extends BaseController
         for(let i = valeurAnnee ; i >= 1900 ; i--)
         {
             selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+
+        for(let i = 0 ; i <= valeurNote ; i++)
+        {
+            selectNote.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+    }
+
+    async CreerPersonne()
+    {
+        const inputNom                   = document.getElementById("inputNom");
+        const inputPrenom                = document.getElementById("inputPrenom");
+        const selectSexe                 = document.getElementById("selectSexe");
+        const selectDateNaissanceJour    = document.getElementById("selectDateNaissanceJour");
+        const selectDateNaissanceMois    = document.getElementById("selectDateNaissanceMois");
+        const selectDateNaissanceAnnee   = document.getElementById("selectDateNaissanceAnnee");
+
+        try
+        {
+            const token = Historique;
+
+            const Result = await this.model.CreerPersonne({
+                'nom'                : inputNom.value,
+                'prenom'             : inputPrenom.value,
+                'sexe'               : selectSexe.value,
+                'dateNaissanceJour'  : selectDateNaissanceJour.value,
+                'dateNaissanceMois'  : selectDateNaissanceMois.value,
+                'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
+            }, token);
+
+            if(Result === 201)
+            {
+                this.toast("toastSuccesCreerPersonne");
+                await this.AfficherListePersonnesARencontrer();
+            }
+            else if(Result === 400)
+            {
+                this.toast("toastErreurCreerPersonne");
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurCreerPersonne");
         }
     }
 

@@ -16,10 +16,13 @@
     </div>
     <div class="row marginBottom10px">
         <div class="col-5">Personne rencontr&eacute;e</div>
-        <div class="col-7">
-            <select id="selectPersonnesARencontrer">
-                <option value=""></option>
-            </select>
+        <div class="col-6">
+            <select id="selectPersonnesARencontrer"></select>
+        </div>
+        <div class="col-1">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="">
+                <img src="../res/IconeAjout.png" height="25px"/>
+            </button>
         </div>
     </div>
     <div class="row marginBottom10px">
@@ -58,8 +61,70 @@
         <div class="col-3"></div>
         <div class="col-6">
             <button type="button" class="btn btn-success" onclick="creerRencontreController.CreerRencontre()">
-                <img src="../res/IconeAjout.png" height="25px"/> Cr&eacute;er votre rencontre
+                <img src="../res/IconeAjout.png" height="25px"/> Cr&eacute;ez votre rencontre
             </button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCreerPersonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitre">Cr&eacute;ez une personne &agrave; rencontrer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Nom</div>
+                <div class="col-7">
+                    <input type="text" class="form-control" id="inputNom"/>
+                </div>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Pr&eacute;nom</div>
+                <div class="col-7">
+                    <input type="text" class="form-control" id="inputPrenom"/>
+                </div>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Sexe</div>
+                <div class="col-7">
+                    <select id="selectSexe">
+                        <option value="">Sexe</option>
+                        <option value="1">Homme</option>
+                        <option value="0">Femme</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Date de naissance</div>
+                <div class="col-2">
+                    <select id="selectDateNaissanceJour">
+                        <option value="">Jour</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <select id="selectDateNaissanceMois">
+                        <option value="">Mois</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <select id="selectDateNaissanceAnnee">
+                        <option value="">Ann&eacute;e</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="creerRencontreController.CreerPersonne()">
+                        <img src="../res/IconeAjout.png" height="25px"/> Ajouter
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -76,6 +141,22 @@
     <div id="toastErreurCreerRencontre" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
             Erreur lors de la cr&eacute;ation de la rencontre.
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastSuccesCreerPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Personne Ajoutée !
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastErreurCreerPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Erreur lors de la cr&eacute;ation de la personne.
         </div>
     </div>
 </div>

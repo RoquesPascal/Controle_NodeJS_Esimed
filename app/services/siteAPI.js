@@ -17,12 +17,31 @@ class SiteAPI
                                 'Content-Type'  : 'application/json'})
     }
 
+    CreerPersonne(body, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienPersonnes}`, {method  : "POST",
+                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                  body    : body})
+                .then(async response => {
+                    if(response.status !== 201)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
     CreerRencontre(body, jwt)
     {
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}`, {method  : "POST",
-                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
-                                                                  body    : body})
+                headers : this.AjouterLeJwtDansLeHeader(jwt),
+                body    : body})
                 .then(async response => {
                     if(response.status !== 201)
                     {
