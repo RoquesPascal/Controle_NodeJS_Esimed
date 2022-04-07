@@ -112,4 +112,16 @@ class Sitemodel
             return e
         }
     }
+
+    async SupprimerRencontre(body, jwt)
+    {
+        try
+        {
+            return await this.api.SupprimerRencontre(JSON.stringify(body), jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
 }

@@ -182,4 +182,23 @@ class SiteAPI
                 }).catch(error => reject(error))
         }))
     }
+
+    SupprimerRencontre(body, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}`, {method  : "DELETE",
+                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                  body    : body})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
 }

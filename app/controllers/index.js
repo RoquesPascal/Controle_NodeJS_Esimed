@@ -98,10 +98,10 @@ class IndexController extends BaseController
         {
             let liBoutons =
                             `<div class="col-1">
-                                <button type="button" class="btn btn btn-primary boutonModifierRencontre">
+                                <button type="button" class="btn btn btn-primary boutonModifierRencontre")">
                                     <img src="../res/IconeModification.png" height="25px"/>
                                 </button>
-                                <button type="button" class="btn btn-danger">
+                                <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
                                     <img src="../res/IconeSuppression.png" height="25px"/>
                                 </button>
                             </div>`
@@ -175,6 +175,41 @@ class IndexController extends BaseController
         finally
         {
             this.toast("toastErreurSignup");
+        }
+    }
+
+    async SupprimerRencontre(idRencontre)
+    {
+        if(confirm('Voulez-vous supprimer cette rencontre ?'))
+        {
+            try
+            {
+                const token = Historique;
+
+                const Result = await this.model.SupprimerRencontre({
+                    'idRencontre' : idRencontre
+                }, token);
+
+                if(Result === 200)
+                {
+                    this.toast("toastSuccesSupprimerRencontre");
+
+                    const li = document.getElementById(`rencontre_${idRencontre}`);
+                    if(li.parentNode)
+                    {
+                        li.parentNode.removeChild(li);
+                    }
+                }
+                else if(Result === 400)
+                {
+                    this.toast("toastErreurSupprimerRencontre");
+                }
+            }
+            catch(e)
+            {
+                console.log(e);
+                this.toast("toastErreurSupprimerRencontre");
+            }
         }
     }
 }
