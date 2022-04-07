@@ -25,15 +25,15 @@ router.get('/',
     }
 });
 
-router.get('/:id',
+router.get('/:idUtilisateur',
            async (req, res) =>
 {
     try
     {
-        const rencontre = await Table_Rencontres.findOne({
+        const rencontre = await Table_Rencontres.findAll({
             where :
                 {
-                    id : req.params.id
+                    idUtilisateur : req.params.idUtilisateur
                 }
         });
         return res.status(200).send(rencontre);

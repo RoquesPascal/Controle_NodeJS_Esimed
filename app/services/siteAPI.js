@@ -35,6 +35,24 @@ class SiteAPI
         }))
     }
 
+    GetListeRencontresDeUtilisateurConnecte(jwt, idUtilisateur)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}/${idUtilisateur}`, {method  : "GET",
+                                                                             headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(await response.text())
+                    }
+                    else
+                    {
+                        resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
     GetPersonne(id, jwt)
     {
         return new Promise(((resolve, reject) => {
