@@ -155,9 +155,10 @@ class IndexController extends BaseController
                 selectNote.innerHTML += `<option value="${i}">${i}</option>`;
             }
 
-            /*selectDateJour.value      = `${rencontre.dateRencontre.getDate()}`;
-            selectDateMois.value      = `${rencontre.dateRencontre.getMonth()}`;
-            selectDateAnnee.value     = `${rencontre.dateRencontre.getFullYear()}`;*/
+            const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+            selectDateJour.value      = `${parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])}`;
+            selectDateMois.value      = `${parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])}`;
+            selectDateAnnee.value     = `${parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])}`;
             selectNote.value          = `${rencontre.note}`;
             textAreaCommentaire.value = `${rencontre.commentaire}`;
 
