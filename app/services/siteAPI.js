@@ -3,6 +3,7 @@ class SiteAPI
     constructor()
     {
         this.api = "http://localhost:3000"
+        this.lienListeRencontreUtilisateur = "idUtilisateur"
         this.lienLogin = "login"
         this.lienPersonnes = "personnes"
         this.lienRencontres = "rencontres"
@@ -94,8 +95,8 @@ class SiteAPI
     GetListeRencontresDeUtilisateurConnecte(jwt, idUtilisateur)
     {
         return new Promise(((resolve, reject) => {
-            fetch(`${this.api}/${this.lienRencontres}/${idUtilisateur}`, {method  : "GET",
-                                                                             headers : this.AjouterLeJwtDansLeHeader(jwt)})
+            fetch(`${this.api}/${this.lienRencontres}/${this.lienListeRencontreUtilisateur}/${idUtilisateur}`, {method  : "GET",
+                                                                                                                          headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
                     if(response.status !== 200)
                     {
@@ -113,7 +114,25 @@ class SiteAPI
     {
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienPersonnes}/${id}`, {method  : "GET",
-                                                                        headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(await response.text())
+                    }
+                    else
+                    {
+                        resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    GetRencontre(id, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}/${id}`, {method  : "GET",
+                                                                         headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
                     if(response.status !== 200)
                     {
@@ -159,6 +178,25 @@ class SiteAPI
                     else
                     {
                         resolve(response.text())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    ModifierRencontre(body, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}`, {method  : "PUT",
+                                                                   headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                   body    : body})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
                     }
                 }).catch(error => reject(error))
         }))

@@ -98,7 +98,7 @@ class IndexController extends BaseController
         {
             let liBoutons =
                             `<div class="col-1">
-                                <button type="button" class="btn btn btn-primary boutonModifierRencontre")">
+                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" onclick="indexController.ModifierRencontre('${rencontre.id}')">
                                     <img src="../res/IconeModification.png" height="25px"/>
                                 </button>
                                 <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
@@ -148,6 +148,35 @@ class IndexController extends BaseController
         }
     }
 
+    async ModifierRencontre(idRencontre)
+    {
+        try
+        {
+            const token = Historique;
+
+            const rencontre = await this.model.GetRencontre(idRencontre, token);
+
+            if(Result === 200)
+            {
+                /*const li = document.getElementById(`rencontre_${idRencontre}`);
+                if(li.parentNode)
+                {
+                    li.parentNode.removeChild(li);
+                }
+                this.toast("toastSuccesModifierRencontre");*/
+            }
+            else if(Result === 400)
+            {
+                this.toast("toastErreurModifierRencontre");
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurModifierRencontre");
+        }
+    }
+
     async Signup()
     {
         const inputPseudo     = document.getElementById("inputPseudo")
@@ -192,13 +221,12 @@ class IndexController extends BaseController
 
                 if(Result === 200)
                 {
-                    this.toast("toastSuccesSupprimerRencontre");
-
                     const li = document.getElementById(`rencontre_${idRencontre}`);
                     if(li.parentNode)
                     {
                         li.parentNode.removeChild(li);
                     }
+                    this.toast("toastSuccesSupprimerRencontre");
                 }
                 else if(Result === 400)
                 {

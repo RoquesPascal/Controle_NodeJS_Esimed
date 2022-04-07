@@ -77,6 +77,18 @@ class Sitemodel
         }
     }
 
+    async GetRencontre(id, jwt)
+    {
+        try
+        {
+            return await this.api.GetRencontre(id, jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async GetUtilisateur(id, jwt)
     {
         try
@@ -94,6 +106,18 @@ class Sitemodel
         try
         {
             return await this.api.Login(JSON.stringify(body))
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
+    async ModifierRencontre(body, jwt)
+    {
+        try
+        {
+            return await this.api.ModifierRencontre(JSON.stringify(body), jwt)
         }
         catch (e)
         {

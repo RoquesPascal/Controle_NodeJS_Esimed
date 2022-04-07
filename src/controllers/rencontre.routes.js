@@ -25,25 +25,44 @@ router.get('/',
     }
 });
 
-router.get('/:idUtilisateur',
+router.get('/:idRencontre',
            async (req, res) =>
 {
     try
     {
-        const rencontre = await Table_Rencontres.findAll({
+        const rencontre = await Table_Rencontres.findOne({
             where :
             {
-                idUtilisateur : req.params.idUtilisateur
-            },
-            order: [['createdAt', 'DESC']]
+                id : req.params.idRencontre
+            }
         });
         return res.status(200).send(rencontre);
     }
     catch(e)
     {
-        return res.status(400).send("Erreur lors de la récupération de la personne");
+        return res.status(400).send("Erreur lors de la récupération de la rencontre");
     }
 });
+
+router.get('/idUtilisateur/:idUtilisateur',
+    async (req, res) =>
+    {
+        try
+        {
+            const rencontre = await Table_Rencontres.findAll({
+                where :
+                    {
+                        idUtilisateur : req.params.idUtilisateur
+                    },
+                order: [['createdAt', 'DESC']]
+            });
+            return res.status(200).send(rencontre);
+        }
+        catch(e)
+        {
+            return res.status(400).send("Erreur lors de la récupération de la personne");
+        }
+    });
 
 router.post('/',
             body('idPersonneRencontree').isString().notEmpty(),
