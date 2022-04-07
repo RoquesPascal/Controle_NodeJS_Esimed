@@ -97,7 +97,7 @@ class RencontreUtilisateurController extends BaseController
                             <button type="button" class="btn btn btn-primary boutonModifierRencontre">
                                 <img src="../res/IconeModification.png" height="25px"/>
                             </button>
-                            <button type="button" class="btn btn-danger">
+                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
                                 <img src="../res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
