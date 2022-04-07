@@ -108,6 +108,7 @@ class IndexController extends BaseController
     Deconexion()
     {
         sessionStorage.clear();
+        localStorage.clear();
         navigate("login");
     }
 
