@@ -161,8 +161,11 @@ class IndexController extends BaseController
             selectNote.value          = `${rencontre.note}`;
             textAreaCommentaire.value = `${rencontre.commentaire}`;
 
-            boutonModifierRencontreModal.innerHTML += `
-                    <button type="button" class="btn btn-success" onclick="indexController.ModifierRencontre('${rencontre.id}')">
+            boutonModifierRencontreModal.innerHTML = `
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                    </button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.ModifierRencontre('${rencontre.id}')">
                         <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
                     </button>`;
         }
