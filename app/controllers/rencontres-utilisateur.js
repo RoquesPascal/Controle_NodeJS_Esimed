@@ -94,10 +94,10 @@ class RencontreUtilisateurController extends BaseController
                             La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierOuSupprimerRencontre">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre">
                                 <img src="../res/IconeModification.png" height="25px"/>
                             </button>
-                            <button type="button" class="btn btn-danger boutonModifierOuSupprimerRencontre">
+                            <button type="button" class="btn btn-danger">
                                 <img src="../res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>

@@ -53,6 +53,7 @@ class CreerRencontreController extends BaseController
         this.model = new Sitemodel()
         AfficherPseudo()
         this.AfficherListePersonnesARencontrer().then(r => {})
+        this.CreerLesSelectPourLesRencontres()
     }
 
     async AfficherListePersonnesARencontrer()
@@ -84,6 +85,75 @@ class CreerRencontreController extends BaseController
     CreerLigne(personne)
     {
         return `<option value="${personne.id}">${personne.prenom} ${personne.nom}</option>`;
+    }
+
+    CreerLesSelectPourLesRencontres()
+    {
+        const selectDateJour  = document.getElementById("selectDateJour");
+        const selectDateMois  = document.getElementById("selectDateMois");
+        const selectDateAnnee = document.getElementById("selectDateAnnee");
+        const selectNote      = document.getElementById("selectNote");
+        const valeurJour      = 31;
+        const valeurMois      = 12;
+        const valeurAnnee     = 2022;
+        const valeurNote      = 10;
+
+
+
+        for(let i = 0 ; i <= valeurNote ; i++)
+        {
+            selectNote.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        for(let i = 1 ; i <= valeurJour ; i++)
+        {
+            selectDateJour.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        for(let i = 1 ; i <= valeurMois ; i++)
+        {
+            selectDateMois.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+        for(let i = valeurAnnee ; i >= 1900 ; i--)
+        {
+            selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+    }
+
+    async CreerRencontre()
+    {
+        const selectPersonnesARencontrer = document.getElementById("selectPersonnesARencontrer");
+        const selectDateJour             = document.getElementById("selectDateJour");
+        const selectDateMois             = document.getElementById("selectDateMois");
+        const selectDateAnnee            = document.getElementById("selectDateAnnee");
+        const selectNote                 = document.getElementById("selectNote");
+        const textAreaCommentaire        = document.getElementById("textAreaCommentaire");
+
+        try
+        {
+            const token = Historique;
+
+            const Result = await this.model.CreerRencontre({
+                'idPersonneRencontree' : selectPersonnesARencontrer.value,
+                'dateRencontreJour'    : selectDateJour.value,
+                'dateRencontreMois'    : selectDateMois.value,
+                'dateRencontreAnnee'   : selectDateAnnee.value,
+                'note'                 : selectNote.value,
+                'commentaire'          : textAreaCommentaire.value
+            }, token);
+
+            if(Result === 201)
+            {
+                this.toast("toastSuccesCreerRencontre");
+            }
+            else if(Result === 400)
+            {
+                this.toast("toastErreurCreerRencontre");
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurCreerRencontre");
+        }
     }
 }
 

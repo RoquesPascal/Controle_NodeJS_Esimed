@@ -5,6 +5,18 @@ class Sitemodel
         this.api = new SiteAPI()
     }
 
+    async CreerRencontre(body, jwt)
+    {
+        try
+        {
+            return await this.api.CreerRencontre(JSON.stringify(body), jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async GetListePersonnesARencontrer(jwt)
     {
         try

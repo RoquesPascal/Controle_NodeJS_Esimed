@@ -16,7 +16,7 @@ router.get('/',
 {
     try
     {
-        const toutesLesrencontres = await Table_Rencontres.findAll({order: [['updatedAt', 'DESC']]});
+        const toutesLesrencontres = await Table_Rencontres.findAll({order: [['createdAt', 'DESC']]});
         return res.status(200).send(toutesLesrencontres);
     }
     catch(e)
@@ -32,9 +32,10 @@ router.get('/:idUtilisateur',
     {
         const rencontre = await Table_Rencontres.findAll({
             where :
-                {
-                    idUtilisateur : req.params.idUtilisateur
-                }
+            {
+                idUtilisateur : req.params.idUtilisateur
+            },
+            order: [['createdAt', 'DESC']]
         });
         return res.status(200).send(rencontre);
     }
