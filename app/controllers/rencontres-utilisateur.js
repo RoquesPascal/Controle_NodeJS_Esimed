@@ -90,7 +90,7 @@ class RencontreUtilisateurController extends BaseController
         return `<li class="liRencontre" id="rencontre_${rencontre.id}">
                     <div class="row">
                         <div class="col">
-                            ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                            Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
                             La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
                         </div>
                         <div class="col-1">

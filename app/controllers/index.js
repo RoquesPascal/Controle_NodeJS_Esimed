@@ -72,7 +72,8 @@ class IndexController extends BaseController
                 {
                     const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, token);
                     const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, token);
-                    listeHtmlRencontres += this.CreerLigne(rencontre, utilisateur, personne)
+                    const estProprietaireRencontre = (utilisateur.id === ParseJwt(token).id); //Permet de savoir si la personne connectée a créé cette rencontre pour ajouter les boutons modifier et supprmier
+                    listeHtmlRencontres += this.CreerLigne(rencontre, utilisateur, personne, estProprietaireRencontre)
                 }
 
                 ulListeRencontres.innerHTML = listeHtmlRencontres;
@@ -85,24 +86,31 @@ class IndexController extends BaseController
         }
     }
 
-    CreerLigne(rencontre, utilisateur, personne)
+    CreerLigne(rencontre, utilisateur, personne, estProprietaireRencontre)
     {
-        return `<li class="liRencontre" id="rencontre_${rencontre.id}">
-                    <div class="row">
-                        <div class="col">
-                            ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
-                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
+        let li =   `<li class="liRencontre" id="rencontre_${rencontre.id}">
+                        <div class="row">
+                            <div class="col">
+                                ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                                La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
+                            </div>`
+        if(estProprietaireRencontre)
+        {
+            let liBoutons =
+                            `<div class="col-1">
+                                <button type="button" class="btn btn btn-primary boutonModifierOuSupprimerRencontre">
+                                    <img src="../res/IconeModification.png" height="25px"/>
+                                </button>
+                                <button type="button" class="btn btn-danger boutonModifierOuSupprimerRencontre">
+                                    <img src="../res/IconeSuppression.png" height="25px"/>
+                                </button>
+                            </div>`
+            li += liBoutons;
+        }
+        li += `
                         </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierOuSupprimerRencontre">
-                                <img src="../res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger boutonModifierOuSupprimerRencontre">
-                                <img src="../res/IconeSuppression.png" height="25px"/>
-                            </button>
-                        </div>
-                    </div>
-                </li>`
+                    </li>`;
+        return li;
     }
 
     Deconexion()
