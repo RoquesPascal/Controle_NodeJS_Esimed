@@ -17,6 +17,24 @@ class SiteAPI
                                 'Content-Type'  : 'application/json'})
     }
 
+    GetListePersonnesARencontrer(jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienPersonnes}`, {method  : "GET",
+                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(await response.text())
+                    }
+                    else
+                    {
+                        resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
     GetListeRencontres(jwt)
     {
         return new Promise(((resolve, reject) => {

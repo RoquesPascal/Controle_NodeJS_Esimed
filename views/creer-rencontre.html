@@ -14,15 +14,30 @@
     <img src="../res/IconeAjout.png" height="25px"/> Cr&eacute;er votre rencontre
 </button>
 
-<div class="container">
-    <h1>Liste des rencontres</h1>
-    <ul id="ulListeRencontres"></ul>
+<div class="container connexion">
+    <div class="row marginBottom10px">
+        <div class="col-5">Personne rencontr&eacute;e</div>
+        <div class="col-7">
+            <select id="selectPersonnesARencontrer">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="row marginBottom10px">
+        <div class="col-5">Mot de passe</div>
+        <div class="col-7"><input type="password" class="form-control" id="inputMotDePasse" value="123456789" required/></div>
+    </div>
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"><input type="button" class="btn btn-success" onclick="indexController.Login()" value="Se connecter"></div>
+        <div class="col-4"></div>
+    </div>
 </div>
 
 <div class="position-fixed top-0 end-0" style="z-index: 11">
-    <div id="toastErreurGetListeRencontres" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div id="toastErreurGetListePersonnesARencontrer" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
-            Erreur lors de la r&eacute;cup&eacute;ration des rencontres.
+            Erreur lors de la cr&eacute;ation de la rencontre.
         </div>
     </div>
 </div>

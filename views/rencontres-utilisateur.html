@@ -1,8 +1,7 @@
 <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropDownMenu" data-bs-toggle="dropdown" aria-expanded="false">
-
-    </button>
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropDownMenu" data-bs-toggle="dropdown" aria-expanded="false"></button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li><a class="dropdown-item" onclick="navigate('creer-rencontre');">Cr&eacute;er votre rencontre</a></li>
         <li><a class="dropdown-item" onclick="navigate('index');">Menu principal</a></li>
         <li><a class="dropdown-item">Profil (pas encore programm&eacute;)</a></li>
         <li><a class="dropdown-item" onclick="navigate('rencontres-utilisateur');">Rencontres</a></li>
@@ -11,22 +10,13 @@
     </ul>
 </div>
 
-<div class="container">
-    <ul id="ulListeRencontres"></ul>
+<button type="button" class="btn btn-success" onclick="navigate('creer-rencontre');">
+    <img src="../res/IconeAjout.png" height="25px"/> Cr&eacute;er votre rencontre
+</button>
 
-    <ul>
-        <li>
-            <div class="row" style="margin-bottom: 20px;">
-                <div class="col-2"><input type="number" class="form-control" id="inputQuantite" min="0" placeholder="quantit&eacute;"/></div>
-                <div class="col"><input type="text" class="form-control" id="inputArticle" placeholder="article"/></div>
-                <div class="col-1">
-                    <button type="button" class="btn btn-success" onclick="AjouterLigne()">
-                        <img src="../res/IconeAjout.png" height="25px"/>
-                    </button>
-                </div>
-            </div>
-        </li>
-    </ul>
+<div class="container">
+    <h1>Liste de vos rencontres</h1>
+    <ul id="ulListeRencontres"></ul>
 </div>
 
 <div class="position-fixed top-0 end-0" style="z-index: 11">

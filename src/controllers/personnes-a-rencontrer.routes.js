@@ -16,7 +16,7 @@ router.get('/',
 {
     try
     {
-        const toutesLesPersonnesARencontrer = await Table_PersonnesARencontrer.findAll();
+        const toutesLesPersonnesARencontrer = await Table_PersonnesARencontrer.findAll({order: [['nom', 'ASC']]});
         return res.status(200).send(toutesLesPersonnesARencontrer);
     }
     catch(e)
