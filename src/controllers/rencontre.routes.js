@@ -111,7 +111,6 @@ router.put('/',
         let dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
         await Table_Rencontres.update(
             {
-                idPersonneRencontree : req.body.idPersonneRencontree,
                 dateRencontre        : dateDeLaRencontre,
                 note                 : req.body.note,
                 commentaire          : req.body.commentaire

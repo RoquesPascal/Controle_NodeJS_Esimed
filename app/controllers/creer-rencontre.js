@@ -102,7 +102,6 @@ class CreerRencontreController extends BaseController
         const valeurNote      = 10;
 
 
-
         for(let i = 1 ; i <= valeurJour ; i++)
         {
             selectDateNaissanceJour.innerHTML += `<option value="${i}">${i}</option>`;
@@ -116,6 +115,8 @@ class CreerRencontreController extends BaseController
             selectDateNaissanceAnnee.innerHTML += `<option value="${i}">${i}</option>`;
         }
 
+
+
         for(let i = 1 ; i <= valeurJour ; i++)
         {
             selectDateJour.innerHTML += `<option value="${i}">${i}</option>`;
@@ -128,6 +129,8 @@ class CreerRencontreController extends BaseController
         {
             selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
         }
+
+
 
         for(let i = 0 ; i <= valeurNote ; i++)
         {

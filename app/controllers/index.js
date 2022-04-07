@@ -98,7 +98,7 @@ class IndexController extends BaseController
         {
             let liBoutons =
                             `<div class="col-1">
-                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" onclick="indexController.ModifierRencontre('${rencontre.id}')">
+                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChamps('${rencontre.id}')">
                                     <img src="../res/IconeModification.png" height="25px"/>
                                 </button>
                                 <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
@@ -118,6 +118,59 @@ class IndexController extends BaseController
         sessionStorage.clear();
         localStorage.clear();
         navigate("login");
+    }
+
+    async InitialiserChamps(idRencontre)
+    {
+        try
+        {
+            const token = Historique;
+            const rencontre = await this.model.GetRencontre(idRencontre, token);
+
+            let selectDateJour               = document.getElementById("selectDateJour");
+            let selectDateMois               = document.getElementById("selectDateMois");
+            let selectDateAnnee              = document.getElementById("selectDateAnnee");
+            let selectNote                   = document.getElementById("selectNote");
+            let textAreaCommentaire          = document.getElementById("textAreaCommentaire");
+            let boutonModifierRencontreModal = document.getElementById("boutonModifierRencontreModal");
+            const valeurJour        = 31;
+            const valeurMois        = 12;
+            const valeurAnnee       = 2022;
+            const valeurNote        = 10;
+
+            for(let i = 1 ; i <= valeurJour ; i++)
+            {
+                selectDateJour.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = 1 ; i <= valeurMois ; i++)
+            {
+                selectDateMois.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = valeurAnnee ; i >= 1900 ; i--)
+            {
+                selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = 0 ; i <= valeurNote ; i++)
+            {
+                selectNote.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+
+            /*selectDateJour.value      = `${rencontre.dateRencontre.getDate()}`;
+            selectDateMois.value      = `${rencontre.dateRencontre.getMonth()}`;
+            selectDateAnnee.value     = `${rencontre.dateRencontre.getFullYear()}`;*/
+            selectNote.value          = `${rencontre.note}`;
+            textAreaCommentaire.value = `${rencontre.commentaire}`;
+
+            boutonModifierRencontreModal.innerHTML += `
+                    <button type="button" class="btn btn-success" onclick="indexController.ModifierRencontre('${rencontre.id}')">
+                        <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
+                    </button>`;
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurChargementRencontre");
+        }
     }
 
     async Login()
@@ -153,17 +206,26 @@ class IndexController extends BaseController
         try
         {
             const token = Historique;
-
             const rencontre = await this.model.GetRencontre(idRencontre, token);
+
+            let selectDateJour      = document.getElementById("selectDateJour");
+            let selectDateMois      = document.getElementById("selectDateMois");
+            let selectDateAnnee     = document.getElementById("selectDateAnnee");
+            let selectNote          = document.getElementById("selectNote");
+            let textAreaCommentaire = document.getElementById("textAreaCommentaire");
+
+            const Result = await this.model.ModifierRencontre({
+                'idRencontre'        : rencontre.id,
+                'dateRencontreJour'  : selectDateJour.value,
+                'dateRencontreMois'  : selectDateMois.value,
+                'dateRencontreAnnee' : selectDateAnnee.value,
+                'note'               : selectNote.value,
+                'commentaire'        : textAreaCommentaire.value
+            }, token);
 
             if(Result === 200)
             {
-                /*const li = document.getElementById(`rencontre_${idRencontre}`);
-                if(li.parentNode)
-                {
-                    li.parentNode.removeChild(li);
-                }
-                this.toast("toastSuccesModifierRencontre");*/
+                this.toast("toastSuccesModifierRencontre");
             }
             else if(Result === 400)
             {
