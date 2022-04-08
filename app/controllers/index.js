@@ -230,6 +230,14 @@ class IndexController extends BaseController
             if(Result === 200)
             {
                 this.toast("toastSuccesModifierRencontre");
+                const nouvelleRencontre = await this.model.GetRencontre(idRencontre, token);
+                let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
+                if(liRencontre != null)
+                {
+                    const utilisateur = await this.model.GetUtilisateur(nouvelleRencontre.idUtilisateur, token);
+                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, token);
+                    liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, utilisateur, personne);
+                }
             }
             else if(Result === 400)
             {
@@ -241,6 +249,24 @@ class IndexController extends BaseController
             console.log(e);
             this.toast("toastErreurModifierRencontre");
         }
+    }
+
+    RemplirLiRencontrePendantModification(rencontre, utilisateur, personne)
+    {
+        return `<div class="row">
+                    <div class="col">
+                        ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                        La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChamps('${rencontre.id}')">
+                            <img src="../res/IconeModification.png" height="25px"/>
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
+                            <img src="../res/IconeSuppression.png" height="25px"/>
+                        </button>
+                    </div>
+                </div>`;
     }
 
     async Signup()
