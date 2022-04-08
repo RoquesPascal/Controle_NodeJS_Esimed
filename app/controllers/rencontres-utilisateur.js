@@ -94,7 +94,7 @@ class RencontreUtilisateurController extends BaseController
                             La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" onclick="indexController.ModifierRencontre('${rencontre.id}')">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChamps('${rencontre.id}')">
                                 <img src="../res/IconeModification.png" height="25px"/>
                             </button>
                             <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">

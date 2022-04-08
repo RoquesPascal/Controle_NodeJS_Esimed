@@ -19,6 +19,54 @@
     <ul id="ulListeRencontres"></ul>
 </div>
 
+<div class="modal fade" id="modalCreerPersonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitre">Modifiez cette rencontre</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Date</div>
+                <div class="col-2">
+                    <select id="selectDateJour">
+                        <option value="">Jour</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <select id="selectDateMois">
+                        <option value="">Mois</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <select id="selectDateAnnee">
+                        <option value="">Ann&eacute;e</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Notation de 0 &agrave; 10</div>
+                <div class="col-7">
+                    <select id="selectNote">
+                        <option value="">Note</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Commentaire</div>
+                <div class="col-7">
+                    <textarea id="textAreaCommentaire" rows="5" cols="25"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-7" id="boutonModifierRencontreModal">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="position-fixed top-0 end-0" style="z-index: 11">
     <div id="toastErreurGetListeRencontres" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
