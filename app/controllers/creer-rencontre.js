@@ -202,6 +202,7 @@ class CreerRencontreController extends BaseController
             if(Result === 201)
             {
                 this.toast("toastSuccesCreerRencontre");
+                navigate("index");
             }
             else if(Result === 400)
             {
