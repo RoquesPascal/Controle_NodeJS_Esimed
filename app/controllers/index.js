@@ -98,7 +98,7 @@ class IndexController extends BaseController
         {
             let liBoutons =
                             `<div class="col-1">
-                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChamps('${rencontre.id}')">
+                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${rencontre.id}')">
                                     <img src="../res/IconeModification.png" height="25px"/>
                                 </button>
                                 <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
