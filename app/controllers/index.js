@@ -135,7 +135,7 @@ class IndexController extends BaseController
             let boutonModifierRencontreModal = document.getElementById("boutonModifierRencontreModal");
             const valeurJour        = 31;
             const valeurMois        = 12;
-            const valeurAnnee       = new Date(Date.now()).getFullYear();
+            const valeurAnnee       = new Date(Date.now()).getFullYear() + 10;
             const valeurNote        = 10;
 
             for(let i = 1 ; i <= valeurJour ; i++)

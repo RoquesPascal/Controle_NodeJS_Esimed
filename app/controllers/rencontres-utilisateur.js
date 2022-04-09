@@ -125,10 +125,10 @@ class RencontreUtilisateurController extends BaseController
                             Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${rencontre.id}')">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
                                 <img src="../res/IconeModification.png" height="25px"/>
                             </button>
-                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
+                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
                                 <img src="../res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
@@ -145,10 +145,10 @@ class RencontreUtilisateurController extends BaseController
                             La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${rencontre.id}')">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
                                 <img src="../res/IconeModification.png" height="25px"/>
                             </button>
-                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
+                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
                                 <img src="../res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
@@ -177,6 +177,214 @@ class RencontreUtilisateurController extends BaseController
                     return true;
                 else //Jour actuel < jour rencontre
                     return false;
+            }
+        }
+    }
+
+    async InitialiserChamps(idRencontre)
+    {
+        try
+        {
+            const token = Historique;
+            const rencontre = await this.model.GetRencontre(idRencontre, token);
+
+            let selectDateJour               = document.getElementById("selectDateJour");
+            let selectDateMois               = document.getElementById("selectDateMois");
+            let selectDateAnnee              = document.getElementById("selectDateAnnee");
+            let boutonModifierRencontreModal = document.getElementById("boutonModifierRencontreModal");
+            const valeurJour                 = 31;
+            const valeurMois                 = 12;
+            const valeurAnnee                = new Date(Date.now()).getFullYear() + 10;
+            const valeurNote                 = 10;
+            let champsNoteEtCommentaire      = document.getElementById("champsNoteEtCommentaire");
+
+            for(let i = 1 ; i <= valeurJour ; i++)
+            {
+                selectDateJour.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = 1 ; i <= valeurMois ; i++)
+            {
+                selectDateMois.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = valeurAnnee ; i >= 1900 ; i--)
+            {
+                selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+
+            const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+            selectDateJour.value  = `${parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])}`;
+            selectDateMois.value  = `${parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])}`;
+            selectDateAnnee.value = `${parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])}`;
+
+            if(this.EstRencontreDejaFaite(rencontre))
+            {
+                champsNoteEtCommentaire.innerHTML = `
+                    <div class="row marginBottom10px">
+                        <div class="col-5">Notation de 0 &agrave; 10</div>
+                        <div class="col-7">
+                            <select id="selectNote">
+                                <option value="">Note</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row marginBottom10px">
+                        <div class="col-5">Commentaire</div>
+                        <div class="col-7">
+                            <textarea id="textAreaCommentaire" rows="5" cols="25"></textarea>
+                        </div>
+                    </div>`;
+
+                let selectNote          = document.getElementById("selectNote");
+                let textAreaCommentaire = document.getElementById("textAreaCommentaire");
+                for(let i = 0 ; i <= valeurNote ; i++)
+                {
+                    selectNote.innerHTML += `<option value="${i}">${i}</option>`;
+                }
+                selectNote.value          = `${rencontre.note}`;
+                textAreaCommentaire.value = `${rencontre.commentaire}`;
+            }
+            else
+                champsNoteEtCommentaire.innerHTML = "";
+
+            boutonModifierRencontreModal.innerHTML = `
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                    </button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="rencontreUtilisateurController.ModifierRencontre('${rencontre.id}')">
+                        <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
+                    </button>`;
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurChargementRencontre");
+        }
+    }
+
+    async ModifierRencontre(idRencontre)
+    {
+        try
+        {
+            const token = Historique;
+            const rencontre = await this.model.GetRencontre(idRencontre, token);
+
+            let selectDateJour      = document.getElementById("selectDateJour");
+            let selectDateMois      = document.getElementById("selectDateMois");
+            let selectDateAnnee     = document.getElementById("selectDateAnnee");
+            let selectNote          = document.getElementById("selectNote");
+            let textAreaCommentaire = document.getElementById("textAreaCommentaire");
+
+            let Result;
+            if((selectNote != null) || (textAreaCommentaire != null))
+            {
+                Result = await this.model.ModifierRencontre({
+                    'idRencontre'        : rencontre.id,
+                    'dateRencontreJour'  : selectDateJour.value,
+                    'dateRencontreMois'  : selectDateMois.value,
+                    'dateRencontreAnnee' : selectDateAnnee.value,
+                    'note'               : selectNote.value,
+                    'commentaire'        : textAreaCommentaire.value
+                }, token);
+            }
+            else
+            {
+                Result = await this.model.ModifierRencontre({
+                    'idRencontre'        : idRencontre,
+                    'dateRencontreJour'  : selectDateJour.value,
+                    'dateRencontreMois'  : selectDateMois.value,
+                    'dateRencontreAnnee' : selectDateAnnee.value,
+                    'note'               : 0,
+                    'commentaire'        : ""
+                }, token);
+            }
+
+            if(Result === 200)
+            {
+                this.toast("toastSuccesModifierRencontre");
+                const nouvelleRencontre = await this.model.GetRencontre(idRencontre, token);
+                let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
+                if(liRencontre != null)
+                {
+                    const utilisateur = await this.model.GetUtilisateur(nouvelleRencontre.idUtilisateur, token);
+                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, token);
+                    liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, personne);
+                }
+            }
+            else if(Result === 400)
+            {
+                this.toast("toastErreurModifierRencontre");
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurModifierRencontre");
+        }
+    }
+
+    RemplirLiRencontrePendantModification(rencontre, personne)
+    {
+        if(this.EstRencontreDejaFaite(rencontre))
+            return `<div class="row">
+                        <div class="col">
+                            Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
+                                <img src="../res/IconeModification.png" height="25px"/>
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
+                                <img src="../res/IconeSuppression.png" height="25px"/>
+                            </button>
+                        </div>
+                    </div>`;
+        else
+            return `<div class="row">
+                        <div class="col">
+                            Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
+                                <img src="../res/IconeModification.png" height="25px"/>
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
+                                <img src="../res/IconeSuppression.png" height="25px"/>
+                            </button>
+                        </div>
+                    </div>`;
+    }
+
+    async SupprimerRencontre(idRencontre)
+    {
+        if(confirm('Voulez-vous supprimer cette rencontre ?'))
+        {
+            try
+            {
+                const token = Historique;
+
+                const Result = await this.model.SupprimerRencontre({
+                    'idRencontre' : idRencontre
+                }, token);
+
+                if(Result === 200)
+                {
+                    const li = document.getElementById(`rencontre_${idRencontre}`);
+                    if(li.parentNode)
+                    {
+                        li.parentNode.removeChild(li);
+                    }
+                    this.toast("toastSuccesSupprimerRencontre");
+                }
+                else if(Result === 400)
+                {
+                    this.toast("toastErreurSupprimerRencontre");
+                }
+            }
+            catch(e)
+            {
+                console.log(e);
+                this.toast("toastErreurSupprimerRencontre");
             }
         }
     }
