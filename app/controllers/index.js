@@ -52,7 +52,7 @@ class IndexController extends BaseController
         super()
         this.model = new Sitemodel()
         AfficherPseudo()
-        this.AfficherListeRencontres().then(r => {})
+        this.InitialiserChamps()
     }
 
     async AfficherListeRencontres()
@@ -113,6 +113,44 @@ class IndexController extends BaseController
         return li;
     }
 
+    async CreerPersonne()
+    {
+        const inputNom                   = document.getElementById("inputNom");
+        const inputPrenom                = document.getElementById("inputPrenom");
+        const selectSexe                 = document.getElementById("selectSexe");
+        const selectDateNaissanceJour    = document.getElementById("selectDateNaissanceJour");
+        const selectDateNaissanceMois    = document.getElementById("selectDateNaissanceMois");
+        const selectDateNaissanceAnnee   = document.getElementById("selectDateNaissanceAnnee");
+
+        try
+        {
+            const token = Historique;
+
+            const Result = await this.model.CreerPersonne({
+                'nom'                : inputNom.value,
+                'prenom'             : inputPrenom.value,
+                'sexe'               : selectSexe.value,
+                'dateNaissanceJour'  : selectDateNaissanceJour.value,
+                'dateNaissanceMois'  : selectDateNaissanceMois.value,
+                'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
+            }, token);
+
+            if(Result === 201)
+            {
+                this.toast("toastSuccesCreerPersonne");
+            }
+            else if(Result === 400)
+            {
+                this.toast("toastErreurCreerPersonne");
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurCreerPersonne");
+        }
+    }
+
     Deconexion()
     {
         sessionStorage.clear();
@@ -120,55 +158,37 @@ class IndexController extends BaseController
         navigate("login");
     }
 
-    async InitialiserChamps(idRencontre)
+    async InitialiserChamps()
     {
         try
         {
-            const token = Historique;
-            const rencontre = await this.model.GetRencontre(idRencontre, token);
+            let selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+            let selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+            let selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
 
-            let selectDateJour               = document.getElementById("selectDateJour");
-            let selectDateMois               = document.getElementById("selectDateMois");
-            let selectDateAnnee              = document.getElementById("selectDateAnnee");
-            let selectNote                   = document.getElementById("selectNote");
-            let textAreaCommentaire          = document.getElementById("textAreaCommentaire");
-            let boutonModifierRencontreModal = document.getElementById("boutonModifierRencontreModal");
-            const valeurJour        = 31;
-            const valeurMois        = 12;
-            const valeurAnnee       = new Date(Date.now()).getFullYear() + 10;
-            const valeurNote        = 10;
+            if((selectDateNaissanceJour == null) || (selectDateNaissanceMois == null) || (selectDateNaissanceAnnee == null))
+                return;
+
+            let valeurJour               = 31;
+            let valeurMois               = 12;
+            let valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
+
+            selectDateNaissanceJour .innerHTML = `<option value="">Jour</option>`;
+            selectDateNaissanceMois .innerHTML = `<option value="">Mois</option>`;
+            selectDateNaissanceAnnee.innerHTML = `<option value="">Ann&eacute;e</option>`;
 
             for(let i = 1 ; i <= valeurJour ; i++)
             {
-                selectDateJour.innerHTML += `<option value="${i}">${i}</option>`;
+                selectDateNaissanceJour.innerHTML += `<option value="${i}">${i}</option>`;
             }
             for(let i = 1 ; i <= valeurMois ; i++)
             {
-                selectDateMois.innerHTML += `<option value="${i}">${i}</option>`;
+                selectDateNaissanceMois.innerHTML += `<option value="${i}">${i}</option>`;
             }
             for(let i = valeurAnnee ; i >= 1900 ; i--)
             {
-                selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+                selectDateNaissanceAnnee.innerHTML += `<option value="${i}">${i}</option>`;
             }
-            for(let i = 0 ; i <= valeurNote ; i++)
-            {
-                selectNote.innerHTML += `<option value="${i}">${i}</option>`;
-            }
-
-            const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
-            selectDateJour.value      = `${parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])}`;
-            selectDateMois.value      = `${parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])}`;
-            selectDateAnnee.value     = `${parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])}`;
-            selectNote.value          = `${rencontre.note}`;
-            textAreaCommentaire.value = `${rencontre.commentaire}`;
-
-            boutonModifierRencontreModal.innerHTML = `
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
-                    </button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.ModifierRencontre('${rencontre.id}')">
-                        <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
-                    </button>`;
         }
         catch(e)
         {
@@ -331,6 +351,15 @@ class IndexController extends BaseController
                 this.toast("toastErreurSupprimerRencontre");
             }
         }
+    }
+
+    ViderChampsNomEtPrenomPersonne()
+    {
+        let inputNom    = document.getElementById("inputNom");
+        let inputPrenom = document.getElementById("inputPrenom");
+
+        inputNom.value = "";
+        inputPrenom.value = "";
     }
 }
 

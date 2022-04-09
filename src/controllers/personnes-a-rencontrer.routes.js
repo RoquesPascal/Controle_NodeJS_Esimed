@@ -56,7 +56,11 @@ router.post('/',
 
     try
     {
-        let dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+        let dateDeNaissance;
+        if((req.body.dateNaissanceJour === "") || (req.body.dateNaissanceMois === "") || (req.body.dateNaissanceAnnee === ""))
+            dateDeNaissance = null;
+        else
+            dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
         await Table_PersonnesARencontrer.create({id            : uuid.v4(),
                                                        nom           : req.body.nom,
                                                        prenom        : req.body.prenom,

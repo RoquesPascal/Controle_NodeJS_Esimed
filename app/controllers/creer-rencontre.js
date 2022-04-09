@@ -89,18 +89,24 @@ class CreerRencontreController extends BaseController
 
     CreerLesSelectPourLesRencontres()
     {
-        const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
-        const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
-        const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
-        const selectDateJour  = document.getElementById("selectDateJour");
-        const selectDateMois  = document.getElementById("selectDateMois");
-        const selectDateAnnee = document.getElementById("selectDateAnnee");
-        const selectNote      = document.getElementById("selectNote");
-        const valeurJour      = 31;
-        const valeurMois      = 12;
-        const valeurAnnee     = new Date(Date.now()).getFullYear() + 10;
-        const valeurNote      = 10;
+        let   selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+        let   selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+        let   selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+        let   selectDateJour           = document.getElementById("selectDateJour");
+        let   selectDateMois           = document.getElementById("selectDateMois");
+        let   selectDateAnnee          = document.getElementById("selectDateAnnee");
+        let   selectNote               = document.getElementById("selectNote");
+        const valeurJour               = 31;
+        const valeurMois               = 12;
+        const valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
+        const valeurNote               = 10;
 
+        selectDateNaissanceJour.innerHTML = `<option value="">Jour</option>`;
+        selectDateNaissanceMois.innerHTML = `<option value="">Mois</option>`;
+        selectDateNaissanceAnnee.innerHTML = `<option value="">Ann&eacute;e</option>`;
+        selectDateJour.innerHTML = `<option value="">Jour</option>`;
+        selectDateMois.innerHTML = `<option value="">Mois</option>`;
+        selectDateAnnee.innerHTML = `<option value="">Ann&eacute;e</option>`;
 
         for(let i = 1 ; i <= valeurJour ; i++)
         {

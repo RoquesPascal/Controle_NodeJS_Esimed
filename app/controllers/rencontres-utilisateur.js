@@ -192,11 +192,15 @@ class RencontreUtilisateurController extends BaseController
             let selectDateMois               = document.getElementById("selectDateMois");
             let selectDateAnnee              = document.getElementById("selectDateAnnee");
             let boutonModifierRencontreModal = document.getElementById("boutonModifierRencontreModal");
+            let champsNoteEtCommentaire      = document.getElementById("champsNoteEtCommentaire");
             const valeurJour                 = 31;
             const valeurMois                 = 12;
             const valeurAnnee                = new Date(Date.now()).getFullYear() + 10;
             const valeurNote                 = 10;
-            let champsNoteEtCommentaire      = document.getElementById("champsNoteEtCommentaire");
+
+            selectDateJour.innerHTML = `<option value="">Jour</option>`;
+            selectDateMois.innerHTML = `<option value="">Mois</option>`;
+            selectDateAnnee.innerHTML = `<option value="">Ann&eacute;e</option>`;
 
             for(let i = 1 ; i <= valeurJour ; i++)
             {

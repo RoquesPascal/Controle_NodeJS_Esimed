@@ -3,8 +3,8 @@
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li><a class="dropdown-item" onclick="navigate('index');"><img src="../res/IconeMenuPrincipal.png" height="25px"/> Menu principal</a></li>
         <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item" onclick="navigate('creer-rencontre');">Cr&eacute;ez votre rencontre</a></li>
-        <li><a class="dropdown-item" onclick="navigate('rencontres-utilisateur');">Vos rencontres</a></li>
+        <li><a class="dropdown-item" onclick="navigate('creer-rencontre');"><img src="../res/IconeAjoutNoire.png" height="25px"/> Cr&eacute;ez votre rencontre</a></li>
+        <li><a class="dropdown-item" onclick="navigate('rencontres-utilisateur');"><img src="../res/IconeVosRencontres.png" height="25px"/> Vos rencontres</a></li>
         <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" onclick="indexController.Deconexion()"><img src="../res/IconeDeconnexion.png" height="25px"/> Se d&eacute;conecter</a></li>
     </ul>
@@ -21,26 +21,20 @@
         </div>
         <div class="col-1">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="">
-                <img src="../res/IconeAjout.png" height="25px"/>
+                <img src="../res/IconeAjoutBlanche.png" height="25px"/>
             </button>
         </div>
     </div>
     <div class="row marginBottom10px">
         <div class="col-5">Date</div>
         <div class="col-2">
-            <select id="selectDateJour">
-                <option value="">Jour</option>
-            </select>
+            <select id="selectDateJour"></select>
         </div>
         <div class="col-2">
-            <select id="selectDateMois">
-                <option value="">Mois</option>
-            </select>
+            <select id="selectDateMois"></select>
         </div>
         <div class="col-2">
-            <select id="selectDateAnnee">
-                <option value="">Ann&eacute;e</option>
-            </select>
+            <select id="selectDateAnnee"></select>
         </div>
     </div>
     <div class="row marginBottom10px">
@@ -61,7 +55,7 @@
         <div class="col-3"></div>
         <div class="col-6">
             <button type="button" class="btn btn-success" onclick="creerRencontreController.CreerRencontre()">
-                <img src="../res/IconeAjout.png" height="25px"/> Cr&eacute;ez votre rencontre
+                <img src="../res/IconeAjoutBlanche.png" height="25px"/> Cr&eacute;ez votre rencontre
             </button>
         </div>
     </div>
@@ -99,19 +93,13 @@
             <div class="row marginBottom10px">
                 <div class="col-5">Date de naissance</div>
                 <div class="col-2">
-                    <select id="selectDateNaissanceJour">
-                        <option value="">Jour</option>
-                    </select>
+                    <select id="selectDateNaissanceJour"></select>
                 </div>
                 <div class="col-2">
-                    <select id="selectDateNaissanceMois">
-                        <option value="">Mois</option>
-                    </select>
+                    <select id="selectDateNaissanceMois"></select>
                 </div>
                 <div class="col-2">
-                    <select id="selectDateNaissanceAnnee">
-                        <option value="">Ann&eacute;e</option>
-                    </select>
+                    <select id="selectDateNaissanceAnnee"></select>
                 </div>
             </div>
             <div class="row">
@@ -121,7 +109,7 @@
                         <img src="../res/IconeRetour.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="creerRencontreController.CreerPersonne()">
-                        <img src="../res/IconeAjout.png" height="25px"/> Ajouter
+                        <img src="../res/IconeAjoutBlanche.png" height="25px"/> Ajouter
                     </button>
                 </div>
             </div>
