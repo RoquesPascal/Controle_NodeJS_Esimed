@@ -38,12 +38,12 @@ body
     padding          : 10px;
 }
 
-ul
-{
-    list-style-type : none;
-}
-
 .toast
 {
     color : black;
+}
+
+ul
+{
+    list-style-type : none;
 }

@@ -53,6 +53,7 @@ class RencontreUtilisateurController extends BaseController
         this.model = new Sitemodel()
         AfficherPseudo()
         this.AfficherListeRencontres().then(r => {})
+        this.ChangerListeAAfficher(true)
     }
 
     async AfficherListeRencontres()
@@ -86,6 +87,32 @@ class RencontreUtilisateurController extends BaseController
             {
                 console.log(e);
                 this.toast("toastErreurGetListeRencontres");
+            }
+        }
+    }
+
+    ChangerListeAAfficher(afficherListeRencontres)
+    {
+        let ulListeRencontres                = document.getElementById("ulListeRencontres");
+        let ulListeRencontresAVenir          = document.getElementById("ulListeRencontresAVenir");
+        let bouttonsRencontresPassees = document.getElementById("bouttonsRencontresPassees");
+        let bouttonsRencontresFutures = document.getElementById("bouttonsRencontresFutures");
+
+        if((ulListeRencontres != null) && (ulListeRencontresAVenir != null))
+        {
+            if(afficherListeRencontres)
+            {
+                ulListeRencontres.style.display = 'block';
+                ulListeRencontresAVenir.style.display = 'none';
+                bouttonsRencontresPassees.style.display = 'block';
+                bouttonsRencontresFutures.style.display = 'none';
+            }
+            else
+            {
+                ulListeRencontres.style.display = 'none';
+                ulListeRencontresAVenir.style.display = 'block';
+                bouttonsRencontresPassees.style.display = 'none';
+                bouttonsRencontresFutures.style.display = 'block';
             }
         }
     }
@@ -132,10 +159,6 @@ class RencontreUtilisateurController extends BaseController
     EstRencontreDejaFaite(rencontre)
     {
         const dateActuelle = new Date(Date.now());
-        console.log(dateActuelle);
-        console.log(dateActuelle.getDate());
-        console.log(dateActuelle.getMonth());
-        console.log(dateActuelle.getFullYear());
         const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
 
         if(dateActuelle.getFullYear() > parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle > année rencontre
