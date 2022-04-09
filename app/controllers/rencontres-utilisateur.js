@@ -58,24 +58,29 @@ class RencontreUtilisateurController extends BaseController
     async AfficherListeRencontres()
     {
         let ulListeRencontres = document.getElementById("ulListeRencontres");
-        if(ulListeRencontres != null)
+        let ulListeRencontresAVenir = document.getElementById("ulListeRencontresAVenir");
+        if((ulListeRencontres != null) && (ulListeRencontresAVenir != null))
         {
             try
             {
                 const token = Historique;
                 const listeRencontres = await this.model.GetListeRencontresDeUtilisateurConnecte(token, ParseJwt(token).id);
-                let listeHtmlRencontres = "";
+                let listeHtmlRencontresPassees = "";
+                let listeHtmlRencontresFutures = "";
 
                 ulListeRencontres.innerHTML = '<img src="../../res/Loader.gif"/>';
+                ulListeRencontresAVenir.innerHTML = '<img src="../../res/Loader.gif"/>';
 
                 for(const rencontre of listeRencontres)
                 {
-                    const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, token);
                     const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, token);
-                    listeHtmlRencontres += this.CreerLigne(rencontre, utilisateur, personne)
+                    if(this.EstRencontreDejaFaite(rencontre))
+                        listeHtmlRencontresPassees += this.CreerLigneRencontrePassee(rencontre, personne);
+                    else
+                        listeHtmlRencontresFutures += this.CreerLigneRencontreFuture(rencontre, personne);
                 }
-
-                ulListeRencontres.innerHTML = listeHtmlRencontres;
+                ulListeRencontres.innerHTML = listeHtmlRencontresPassees;
+                ulListeRencontresAVenir.innerHTML = listeHtmlRencontresFutures;
             }
             catch(e)
             {
@@ -85,7 +90,26 @@ class RencontreUtilisateurController extends BaseController
         }
     }
 
-    CreerLigne(rencontre, utilisateur, personne)
+    CreerLigneRencontreFuture(rencontre, personne)
+    {
+        return `<li class="liRencontre" id="rencontre_${rencontre.id}">
+                    <div class="row">
+                        <div class="col">
+                            Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${rencontre.id}')">
+                                <img src="../res/IconeModification.png" height="25px"/>
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
+                                <img src="../res/IconeSuppression.png" height="25px"/>
+                            </button>
+                        </div>
+                    </div>
+                </li>`;
+    }
+
+    CreerLigneRencontrePassee(rencontre, personne)
     {
         return `<li class="liRencontre" id="rencontre_${rencontre.id}">
                     <div class="row">
@@ -102,7 +126,36 @@ class RencontreUtilisateurController extends BaseController
                             </button>
                         </div>
                     </div>
-                </li>`
+                </li>`;
+    }
+
+    EstRencontreDejaFaite(rencontre)
+    {
+        const dateActuelle = new Date(Date.now());
+        console.log(dateActuelle);
+        console.log(dateActuelle.getDate());
+        console.log(dateActuelle.getMonth());
+        console.log(dateActuelle.getFullYear());
+        const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+
+        if(dateActuelle.getFullYear() > parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle > année rencontre
+            return true;
+        else if(dateActuelle.getFullYear() < parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle < année rencontre
+             return false;
+        else
+        {
+            if(dateActuelle.getMonth() + 1 > parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel > mois rencontre
+                return true;
+            else if(dateActuelle.getMonth() + 1 < parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel < mois rencontre
+                return false;
+            else
+            {
+                if(dateActuelle.getDate() >= parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])) //Jour actuel >= jour rencontre
+                    return true;
+                else //Jour actuel < jour rencontre
+                    return false;
+            }
+        }
     }
 }
 
