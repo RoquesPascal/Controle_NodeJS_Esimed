@@ -20,7 +20,7 @@ body
     cursor : pointer;
 }
 
-.liRencontre
+.liPersonne, .liRencontre
 {
     border-top    : 1px solid #d2d2d2;
     padding       : 7px;

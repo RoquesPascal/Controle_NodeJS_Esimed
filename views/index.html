@@ -15,6 +15,25 @@
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.ViderChampsNomEtPrenomPersonne()">
         <img src="../res/IconeAjoutBlanche.png" height="25px"/> Ajouter une personne
     </button>
+    <div class="row" id="bouttonsPersonnesRecontrees">
+        <div class="col-6">
+            <button class="btn btn-success" type="button" id="buttonListeRencontres_Vert" onclick="indexController.ChangerListeAAfficher(true)">Personnes rencontr&eacute;es</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-secondary" type="button" id="buttonListeRencontresAVenir_Gris" onclick="indexController.ChangerListeAAfficher(false)">Personnes &agrave; rencontrer</button>
+        </div>
+    </div>
+    <div class="row" id="bouttonsPersonnesARencontrer">
+        <div class="col-6">
+            <button class="btn btn-secondary" type="button" id="buttonListeRencontres_Gris" onclick="indexController.ChangerListeAAfficher(true)">Personnes rencontr&eacute;es</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-success" type="button" id="buttonListeRencontresAVenir_Vert" onclick="indexController.ChangerListeAAfficher(false)">Personnes &agrave; rencontrer</button>
+        </div>
+    </div>
+
+    <ul id="ulListePersonnesRencontrees"></ul>
+    <ul id="ulListePersonnesARencontrer"></ul>
 </div>
 
 <div class="modal fade" id="modalCreerPersonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,6 +104,30 @@
     <div id="toastErreurCreerPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
             Erreur lors de la cr&eacute;ation de la personne.
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastSuccesSupprimerPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Personne supprim&eacute;e !
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastErreurSupprimerPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Erreur lors de la suppression de la personne.
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastErreurGetListePersonnes" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Erreur lors de la r&eacute;cuperation de la liste des personnes.
         </div>
     </div>
 </div>

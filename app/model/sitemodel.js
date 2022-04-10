@@ -89,6 +89,18 @@ class Sitemodel
         }
     }
 
+    async GetRencontresCommunesUtilisateurPersonne(body, id, jwt)
+    {
+        try
+        {
+            return await this.api.GetRencontresCommunesUtilisateurPersonne(JSON.stringify(body), id, jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async GetUtilisateur(id, jwt)
     {
         try
@@ -130,6 +142,18 @@ class Sitemodel
         try
         {
             return await this.api.Signup(JSON.stringify(body))
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
+    async SupprimerPersonne(body, jwt)
+    {
+        try
+        {
+            return await this.api.SupprimerPersonne(JSON.stringify(body), jwt)
         }
         catch (e)
         {

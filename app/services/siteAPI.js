@@ -7,6 +7,7 @@ class SiteAPI
         this.lienLogin = "login"
         this.lienPersonnes = "personnes"
         this.lienRencontres = "rencontres"
+        this.rencontresCommunesUtilisateurPersonne = "rencontresCommunesUtilisateurPersonne"
         this.lienSignup = "signup"
         this.lienUtilisateurs = "utilisateurs"
     }
@@ -132,7 +133,7 @@ class SiteAPI
     {
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}/${id}`, {method  : "GET",
-                                                                         headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
                     if(response.status !== 200)
                     {
@@ -141,6 +142,29 @@ class SiteAPI
                     else
                     {
                         resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    GetRencontresCommunesUtilisateurPersonne(body, id, jwt)
+    {
+        console.log(body);
+        console.log(id);
+        console.log(jwt);
+
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}/${this.rencontresCommunesUtilisateurPersonne}/${id}`, {method  : "GET",
+                                                                                                                       headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                                                                       body    : body})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
                     }
                 }).catch(error => reject(error))
         }))
@@ -221,12 +245,31 @@ class SiteAPI
         }))
     }
 
+    SupprimerPersonne(body, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienPersonnes}`, {method  : "DELETE",
+                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                  body    : body})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
     SupprimerRencontre(body, jwt)
     {
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}`, {method  : "DELETE",
-                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
-                                                                  body    : body})
+                headers : this.AjouterLeJwtDansLeHeader(jwt),
+                body    : body})
                 .then(async response => {
                     if(response.status !== 200)
                     {

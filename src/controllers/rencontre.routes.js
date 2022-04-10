@@ -46,23 +46,48 @@ router.get('/:idRencontre',
 
 router.get('/idUtilisateur/:idUtilisateur',
     async (req, res) =>
+{
+    try
     {
-        try
-        {
-            const rencontre = await Table_Rencontres.findAll({
-                where :
-                    {
-                        idUtilisateur : req.params.idUtilisateur
-                    },
-                order: [['createdAt', 'DESC']]
-            });
-            return res.status(200).send(rencontre);
-        }
-        catch(e)
-        {
-            return res.status(400).send("Erreur lors de la récupération de la personne");
-        }
-    });
+        const rencontre = await Table_Rencontres.findAll({
+            where :
+                {
+                    idUtilisateur : req.params.idUtilisateur
+                },
+            order: [['createdAt', 'DESC']]
+        });
+        return res.status(200).send(rencontre);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération de la personne");
+    }
+});
+
+router.get('/rencontresCommunesUtilisateurPersonne/:idUtilisateur',
+           body('idPersonneRencontree').isString().notEmpty(),
+           async (req, res) =>
+{
+    const errors = validationResult(req);
+    if(!errors.isEmpty())
+        return res.status(400).json({ errors: errors.array() });
+
+    try
+    {
+        const rencontres = await Table_Rencontres.findAll({
+            where :
+            {
+                idUtilisateur : req.params.idUtilisateur,
+                idPersonneRencontree : req.body.idPersonneRencontree
+            }
+        });
+        return res.status(200).send(rencontres);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Il n'y a pas de rencontres disponibles");
+    }
+});
 
 router.post('/',
             body('idPersonneRencontree').isString().notEmpty(),

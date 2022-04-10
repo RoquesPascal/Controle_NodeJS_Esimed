@@ -52,65 +52,103 @@ class IndexController extends BaseController
         super()
         this.model = new Sitemodel()
         AfficherPseudo()
-        this.InitialiserChamps()
+        this.AfficherListePersonnesARencontrer().then(r => {})
+        this.ChangerListeAAfficher(true)
+        this.InitialiserChamps().then(r => {})
     }
 
-    async AfficherListeRencontres()
+    async AfficherListePersonnesARencontrer()
     {
-        let ulListeRencontres = document.getElementById("ulListeRencontres");
-        if(ulListeRencontres != null)
+        let ulListePersonnesRencontrees  = document.getElementById("ulListePersonnesRencontrees");
+        let ulListePersonnesARencontrer  = document.getElementById("ulListePersonnesARencontrer");
+
+        if((ulListePersonnesRencontrees != null) && (ulListePersonnesARencontrer != null))
         {
             try
             {
                 const token = Historique;
-                const listeRencontres = await this.model.GetListeRencontres(token);
-                let listeHtmlRencontres = "";
+                let listePersonnes = await this.model.GetListePersonnesARencontrer(token);
+                console.log(listePersonnes);
+                let listeHtmlPersonnesRencontrees = "";
+                let listeHtmlPersonnesARencontrer = "";
 
-                ulListeRencontres.innerHTML = '<img src="../../res/Loader.gif"/>';
+                ulListePersonnesRencontrees.innerHTML = '<img src="../../res/Loader.gif"/>';
+                ulListePersonnesARencontrer.innerHTML = '<img src="../../res/Loader.gif"/>';
 
-                for(const rencontre of listeRencontres)
+                for(const personne of listePersonnes)
                 {
-                    const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, token);
-                    const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, token);
-                    const estProprietaireRencontre = (utilisateur.id === ParseJwt(token).id); //Permet de savoir si la personne connectée a créé cette rencontre pour ajouter les boutons modifier et supprmier
-                    listeHtmlRencontres += this.CreerLigne(rencontre, utilisateur, personne, estProprietaireRencontre)
-                }
+                    const rencontresCommunesUtilisateurPersonne = await this.model.GetRencontresCommunesUtilisateurPersonne(
+                        {'idPersonneRencontree' : personne.id},
+                        ParseJwt(token).id,
+                        token
+                    );
+                    console.log(rencontresCommunesUtilisateurPersonne);
 
-                ulListeRencontres.innerHTML = listeHtmlRencontres;
+                    if(rencontresCommunesUtilisateurPersonne == 200)
+                    {
+                        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                        listeHtmlPersonnesRencontrees += this.CreerLigne(personne);
+                    }
+                    else
+                    {
+                        console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                        listeHtmlPersonnesARencontrer += this.CreerLigne(personne);
+                    }
+                }
+                ulListePersonnesRencontrees.innerHTML = listeHtmlPersonnesRencontrees;
+                ulListePersonnesARencontrer.innerHTML = listeHtmlPersonnesARencontrer;
             }
             catch(e)
             {
                 console.log(e);
-                this.toast("toastErreurGetListeRencontres");
+                this.toast("toastErreurGetListePersonnes");
             }
         }
     }
 
-    CreerLigne(rencontre, utilisateur, personne, estProprietaireRencontre)
+    ChangerListeAAfficher(afficherListeRencontres)
     {
-        let li =   `<li class="liRencontre" id="rencontre_${rencontre.id}">
-                        <div class="row">
-                            <div class="col">
-                                ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
-                                La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
-                            </div>`
-        if(estProprietaireRencontre)
+        let ulListePersonnesRencontrees  = document.getElementById("ulListePersonnesRencontrees");
+        let ulListePersonnesARencontrer = document.getElementById("ulListePersonnesARencontrer");
+        let bouttonsPersonnesRecontrees   = document.getElementById("bouttonsPersonnesRecontrees");
+        let bouttonsPersonnesARencontrer   = document.getElementById("bouttonsPersonnesARencontrer");
+
+        if((ulListePersonnesRencontrees != null) && (ulListePersonnesARencontrer != null))
         {
-            let liBoutons =
-                            `<div class="col-1">
-                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${rencontre.id}')">
-                                    <img src="../res/IconeModification.png" height="25px"/>
-                                </button>
-                                <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
-                                    <img src="../res/IconeSuppression.png" height="25px"/>
-                                </button>
-                            </div>`
-            li += liBoutons;
+            if(afficherListeRencontres)
+            {
+                ulListePersonnesRencontrees.style.display = 'block';
+                ulListePersonnesARencontrer.style.display = 'none';
+                bouttonsPersonnesRecontrees.style.display = 'block';
+                bouttonsPersonnesARencontrer.style.display = 'none';
+            }
+            else
+            {
+                ulListePersonnesRencontrees.style.display = 'none';
+                ulListePersonnesARencontrer.style.display = 'block';
+                bouttonsPersonnesRecontrees.style.display = 'none';
+                bouttonsPersonnesARencontrer.style.display = 'block';
+            }
         }
-        li += `
+    }
+
+    CreerLigne(personne)
+    {
+        return `<li class="liPersonne" id="personne_${personne.id}">
+                    <div class="row">
+                        <div class="col">
+                            ${personne.prenom} ${personne.nom}.<br/>
                         </div>
-                    </li>`;
-        return li;
+                        <div class="col-1">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${personne.id}')">
+                                <img src="../res/IconeModification.png" height="25px"/>
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
+                                <img src="../res/IconeSuppression.png" height="25px"/>
+                            </button>
+                        </div>
+                    </div>
+                </li>`;
     }
 
     async CreerPersonne()
@@ -225,52 +263,6 @@ class IndexController extends BaseController
         }
     }
 
-    async ModifierRencontre(idRencontre)
-    {
-        try
-        {
-            const token = Historique;
-            const rencontre = await this.model.GetRencontre(idRencontre, token);
-
-            let selectDateJour      = document.getElementById("selectDateJour");
-            let selectDateMois      = document.getElementById("selectDateMois");
-            let selectDateAnnee     = document.getElementById("selectDateAnnee");
-            let selectNote          = document.getElementById("selectNote");
-            let textAreaCommentaire = document.getElementById("textAreaCommentaire");
-
-            const Result = await this.model.ModifierRencontre({
-                'idRencontre'        : rencontre.id,
-                'dateRencontreJour'  : selectDateJour.value,
-                'dateRencontreMois'  : selectDateMois.value,
-                'dateRencontreAnnee' : selectDateAnnee.value,
-                'note'               : selectNote.value,
-                'commentaire'        : textAreaCommentaire.value
-            }, token);
-
-            if(Result === 200)
-            {
-                this.toast("toastSuccesModifierRencontre");
-                const nouvelleRencontre = await this.model.GetRencontre(idRencontre, token);
-                let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
-                if(liRencontre != null)
-                {
-                    const utilisateur = await this.model.GetUtilisateur(nouvelleRencontre.idUtilisateur, token);
-                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, token);
-                    liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, utilisateur, personne);
-                }
-            }
-            else if(Result === 400)
-            {
-                this.toast("toastErreurModifierRencontre");
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-            this.toast("toastErreurModifierRencontre");
-        }
-    }
-
     RemplirLiRencontrePendantModification(rencontre, utilisateur, personne)
     {
         return `<div class="row">
@@ -316,6 +308,40 @@ class IndexController extends BaseController
         finally
         {
             this.toast("toastErreurSignup");
+        }
+    }
+
+    async SupprimerPersonne(idPersonne)
+    {
+        if(confirm('Voulez-vous supprimer cette personne ?'))
+        {
+            try
+            {
+                const token = Historique;
+
+                const Result = await this.model.SupprimerPersonne({
+                    'idPersonneARencontrer' : idPersonne
+                }, token);
+
+                if(Result === 200)
+                {
+                    const li = document.getElementById(`personne_${idPersonne}`);
+                    if(li.parentNode)
+                    {
+                        li.parentNode.removeChild(li);
+                    }
+                    this.toast("toastSuccesSupprimerPersonne");
+                }
+                else if(Result === 400)
+                {
+                    this.toast("toastErreurSupprimerPersonne");
+                }
+            }
+            catch(e)
+            {
+                console.log(e);
+                this.toast("toastErreurSupprimerPersonne");
+            }
         }
     }
 
