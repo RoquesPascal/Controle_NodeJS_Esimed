@@ -129,21 +129,30 @@ class IndexController extends BaseController
 
     CreerLigne(personne)
     {
-        return `<li class="liPersonne" id="personne_${personne.id}">
-                    <div class="row">
-                        <div class="col">
-                            ${personne.prenom} ${personne.nom}
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                                <img src="../res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                                <img src="../res/IconeSuppression.png" height="25px"/>
-                            </button>
-                        </div>
-                    </div>
-                </li>`;
+        let li =  `<li class="liPersonne" id="personne_${personne.id}">
+                       <div class="row">
+                           <div class="col">
+                               ${personne.prenom} ${personne.nom} `
+        if(personne.sexe ===1)
+        {
+            li += `<img src="../res/IconeSexeMasculin.png" height="25px"/>`;
+        }
+        else if(personne.sexe === 0)
+        {
+            li += `<img src="../res/IconeSexeFeminin.png" height="25px"/>`;
+        }
+        li +=         `</div>
+                           <div class="col-1">
+                               <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
+                                   <img src="../res/IconeModification.png" height="25px"/>
+                               </button>
+                               <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
+                                   <img src="../res/IconeSuppression.png" height="25px"/>
+                               </button>
+                           </div>
+                       </div>
+                   </li>`;
+        return li;
     }
 
     async CreerPersonne()
@@ -407,19 +416,28 @@ class IndexController extends BaseController
 
     RemplirLiPersonnePendantModification(personne)
     {
-        return `<div class="row">
-                    <div class="col">
-                        ${personne.prenom} ${personne.nom}
-                    </div>
-                    <div class="col-1">
-                        <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                            <img src="../res/IconeModification.png" height="25px"/>
-                        </button>
-                        <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                            <img src="../res/IconeSuppression.png" height="25px"/>
-                        </button>
-                    </div>
-                </div>`;
+        let li =  `<div class="row">
+                       <div class="col">
+                           ${personne.prenom} ${personne.nom} `
+        if(personne.sexe ===1)
+        {
+            li += `<img src="../res/IconeSexeMasculin.png" height="25px"/>`;
+        }
+        else if(personne.sexe === 0)
+        {
+            li += `<img src="../res/IconeSexeFeminin.png" height="25px"/>`;
+        }
+        li +=     `</div>
+                       <div class="col-1">
+                           <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
+                               <img src="../res/IconeModification.png" height="25px"/>
+                           </button>
+                           <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
+                               <img src="../res/IconeSuppression.png" height="25px"/>
+                           </button>
+                       </div>
+                   </div>`;
+        return li;
     }
 
     async Signup()
