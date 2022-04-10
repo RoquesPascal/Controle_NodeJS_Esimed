@@ -33,31 +33,31 @@ L'identification ainsi que l'enregistrement seront gérés côté serveur par un
 
 L'application permettra :
 
-- [ ]  La visualisation 
+- [x]  La visualisation 
 
-- [ ]  La saisie 
+- [x]  La saisie 
 
-- [ ]  La modification 
+- [x]  La modification 
 
-- [ ]  La suppression 
+- [x]  La suppression 
 
 d'un ensemble de personne :
 
-- [ ]  Nom
+- [x]  Nom
 
-- [ ]  Prénom
+- [x]  Prénom
 
-- [ ]  Sexe
+- [x]  Sexe
 
-- [ ]  Date de naissance
+- [x]  Date de naissance
 
 que l'on va rencontrer en speedating :
 
-- [ ]  Date de rencontre
+- [x]  Date de rencontre
 
-- [ ]  Note de 0 à 10
+- [x]  Note de 0 à 10
 
-- [ ]  Remarques
+- [x]  Remarques
 
 On peut avoir plusieurs sessions de speed dating avec la même personne.
 
@@ -65,31 +65,31 @@ On peut avoir plusieurs sessions de speed dating avec la même personne.
 
 Après les étapes d'enregistrement et de connexion, sera affichée :
 
-- [ ]  La liste des personnes rencontrées
+- [x]  La liste des personnes rencontrées
 
-- [ ]  La liste des personnes à rencontrer 
+- [x]  La liste des personnes à rencontrer 
 
-- [ ]  Possibilités :
+- [x]  Possibilités :
   
-  - [ ]  Ajouter
+  - [x]  Ajouter
   
-  - [ ]  Modifier
+  - [x]  Modifier
   
-  - [ ]  Supprimer
+  - [x]  Supprimer
     
-    - [ ]  Nom
+    - [x]  Nom
     
-    - [ ]  Prénom
+    - [x]  Prénom
     
-    - [ ]  Sexe
+    - [x]  Sexe
     
-    - [ ]  Date de naissance
+    - [x]  Date de naissance
     
-    - [ ]  Note /10
+    - [x]  Note /10
     
-    - [ ]  Si on veut : on peut ajouter une remarque
+    - [x]  Si on veut : on peut ajouter une remarque
 
-- [ ]  Les rencontres peuvent être modifiées ou supprimées de même que les personnes rencontrées (les suppressions devront être confirmées par l'utilisateur).
+- [x]  Les rencontres peuvent être modifiées ou supprimées de même que les personnes rencontrées (les suppressions devront être confirmées par l'utilisateur).
 
 #### Lot 2
 
