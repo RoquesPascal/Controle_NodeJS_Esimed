@@ -1,11 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { passwordsAreEqual, generateHashedPassword} = require('../security/crypto');
-const { generateAuthToken } = require('../security/auth');
-const {body, validationResult} = require("express-validator");
-const uuid = require('uuid');
 const Table_Utilisateurs = require("../models/utilisateur.model");
-const Table_Rencontres = require("../models/rencontre.model");
 
 
 

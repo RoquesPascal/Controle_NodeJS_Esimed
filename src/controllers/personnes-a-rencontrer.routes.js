@@ -1,13 +1,9 @@
 const express = require('express');
 const { body, validationResult} = require('express-validator');
 const router = express.Router();
-const userRepository = require('../models/user-repository');
-const { validateBody } = require('./validation/route.validator');
 const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
-const jwtDecode = require("jwt-decode");
-const {generateHashedPassword} = require("../security/crypto");
 
 
 
