@@ -270,7 +270,6 @@ class RencontreUtilisateurController extends BaseController
         try
         {
             const token = Historique;
-            const rencontre = await this.model.GetRencontre(idRencontre, token);
 
             let selectDateJour      = document.getElementById("selectDateJour");
             let selectDateMois      = document.getElementById("selectDateMois");
@@ -282,7 +281,7 @@ class RencontreUtilisateurController extends BaseController
             if((selectNote != null) || (textAreaCommentaire != null))
             {
                 Result = await this.model.ModifierRencontre({
-                    'idRencontre'        : rencontre.id,
+                    'idRencontre'        : idRencontre,
                     'dateRencontreJour'  : selectDateJour.value,
                     'dateRencontreMois'  : selectDateMois.value,
                     'dateRencontreAnnee' : selectDateAnnee.value,

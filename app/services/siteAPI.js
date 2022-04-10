@@ -149,10 +149,6 @@ class SiteAPI
 
     GetRencontresCommunesUtilisateurPersonne(body, id, jwt)
     {
-        console.log(body);
-        console.log(id);
-        console.log(jwt);
-
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}/${this.rencontresCommunesUtilisateurPersonne}/${id}`, {method  : "GET",
                                                                                                                        headers : this.AjouterLeJwtDansLeHeader(jwt),
@@ -207,12 +203,31 @@ class SiteAPI
         }))
     }
 
+    ModifierPersonne(body, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienPersonnes}`, {method  : "PUT",
+                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                  body    : body})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
     ModifierRencontre(body, jwt)
     {
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}`, {method  : "PUT",
-                                                                   headers : this.AjouterLeJwtDansLeHeader(jwt),
-                                                                   body    : body})
+                headers : this.AjouterLeJwtDansLeHeader(jwt),
+                body    : body})
                 .then(async response => {
                     if(response.status !== 200)
                     {

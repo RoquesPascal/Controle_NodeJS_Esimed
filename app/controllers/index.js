@@ -68,7 +68,6 @@ class IndexController extends BaseController
             {
                 const token = Historique;
                 let listePersonnes = await this.model.GetListePersonnesARencontrer(token);
-                console.log(listePersonnes);
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
 
@@ -82,16 +81,13 @@ class IndexController extends BaseController
                         ParseJwt(token).id,
                         token
                     );
-                    console.log(rencontresCommunesUtilisateurPersonne);
 
                     if(rencontresCommunesUtilisateurPersonne == 200)
                     {
-                        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                         listeHtmlPersonnesRencontrees += this.CreerLigne(personne);
                     }
                     else
                     {
-                        console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
                         listeHtmlPersonnesARencontrer += this.CreerLigne(personne);
                     }
                 }
@@ -137,10 +133,10 @@ class IndexController extends BaseController
         return `<li class="liPersonne" id="personne_${personne.id}">
                     <div class="row">
                         <div class="col">
-                            ${personne.prenom} ${personne.nom}.<br/>
+                            ${personne.prenom} ${personne.nom}
                         </div>
                         <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="indexController.InitialiserChamps('${personne.id}')">
+                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
                                 <img src="../res/IconeModification.png" height="25px"/>
                             </button>
                             <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
@@ -235,6 +231,108 @@ class IndexController extends BaseController
         }
     }
 
+    async InitialiserChampsModificationPersonne(idPersonne)
+    {
+        try
+        {
+            const token = Historique;
+            const personne = await this.model.GetPersonne(idPersonne, token);
+
+            this.IntialiserModalModifierPersonne(personne.id);
+
+            let inputNom                 = document.getElementById("inputNom");
+            let inputPrenom              = document.getElementById("inputPrenom");
+            let selectSexe               = document.getElementById("selectSexe");
+            let selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+            let selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+            let selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+
+            if((selectDateNaissanceJour == null) || (selectDateNaissanceMois == null) || (selectDateNaissanceAnnee == null))
+                return;
+
+            let valeurJour               = 31;
+            let valeurMois               = 12;
+            let valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
+
+            selectDateNaissanceJour .innerHTML = `<option value="">Jour</option>`;
+            selectDateNaissanceMois .innerHTML = `<option value="">Mois</option>`;
+            selectDateNaissanceAnnee.innerHTML = `<option value="">Ann&eacute;e</option>`;
+
+            for(let i = 1 ; i <= valeurJour ; i++)
+            {
+                selectDateNaissanceJour.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = 1 ; i <= valeurMois ; i++)
+            {
+                selectDateNaissanceMois.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            for(let i = valeurAnnee ; i >= 1900 ; i--)
+            {
+                selectDateNaissanceAnnee.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+
+            inputNom.value = `${personne.nom}`;
+            inputPrenom.value = `${personne.prenom}`;
+            selectSexe.value = `${personne.sexe}`;
+            if(personne.dateNaissance != null)
+            {
+                const dateDeNaissance = personne.dateNaissance.toString();
+                selectDateNaissanceJour.value = `${parseInt(dateDeNaissance[8] + dateDeNaissance[9])}`;
+                selectDateNaissanceMois.value = `${parseInt(dateDeNaissance[5] + dateDeNaissance[6])}`;
+                selectDateNaissanceAnnee.value = `${parseInt(dateDeNaissance[0] + dateDeNaissance[1] + dateDeNaissance[2] + dateDeNaissance[3])}`;
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurChargementRencontre");
+        }
+    }
+
+    IntialiserModalCreerPersonne()
+    {
+        let modalTitre                         = document.getElementById("modalTitre");
+        let bouttonsModalCreerModifierPersonne = document.getElementById("bouttonsModalCreerModifierPersonne");
+
+        if(modalTitre != null)
+        {
+            modalTitre.innerHTML = `Cr&eacute;ez une personne`;
+        }
+
+        if(bouttonsModalCreerModifierPersonne != null)
+        {
+            bouttonsModalCreerModifierPersonne.innerHTML = `
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                    </button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.CreerPersonne()">
+                        <img src="../res/IconeAjoutBlanche.png" height="25px"/> Ajouter
+                    </button>`;
+        }
+    }
+
+    IntialiserModalModifierPersonne(idPersonne)
+    {
+        let modalTitre                         = document.getElementById("modalTitre");
+        let bouttonsModalCreerModifierPersonne = document.getElementById("bouttonsModalCreerModifierPersonne");
+
+        if(modalTitre != null)
+        {
+            modalTitre.innerHTML = `Modifiez cette personne`;
+        }
+
+        if(bouttonsModalCreerModifierPersonne != null)
+        {
+            bouttonsModalCreerModifierPersonne.innerHTML = `
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                    </button>
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.ModifierPersonne('${idPersonne}')">
+                        <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
+                    </button>`;
+        }
+    }
+
     async Login()
     {
         const inputEmail      = document.getElementById("inputEmail")
@@ -263,18 +361,62 @@ class IndexController extends BaseController
         }
     }
 
-    RemplirLiRencontrePendantModification(rencontre, utilisateur, personne)
+    async ModifierPersonne(idPersonne)
+    {
+        try
+        {
+            const token = Historique;
+
+            const inputNom                 = document.getElementById("inputNom");
+            const inputPrenom              = document.getElementById("inputPrenom");
+            const selectSexe               = document.getElementById("selectSexe");
+            const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+            const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+            const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+
+            let Result = await this.model.ModifierPersonne({
+                "idPersonneARencontrer" : idPersonne,
+                "nom"                   : inputNom.value,
+                "prenom"                : inputPrenom.value,
+                "sexe"                  : selectSexe.value,
+                "dateNaissanceJour"     : selectDateNaissanceJour.value,
+                "dateNaissanceMois"     : selectDateNaissanceMois.value,
+                "dateNaissanceAnnee"    : selectDateNaissanceAnnee.value
+            }, token);
+
+            if(Result === 200)
+            {
+                this.toast("toastSuccesModifierPersonne");
+                const nouvellePersonne = await this.model.GetPersonne(idPersonne, token);
+                let liRencontre = document.getElementById(`personne_${idPersonne}`);
+                if(liRencontre != null)
+                {
+                    liRencontre.innerHTML = this.RemplirLiPersonnePendantModification(nouvellePersonne);
+                }
+            }
+            else if(Result === 400)
+            {
+                this.toast("toastErreurModifierPersonne");
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+            this.toast("toastErreurModifierPersonne");
+        }
+    }
+
+    RemplirLiPersonnePendantModification(personne)
     {
         return `<div class="row">
                     <div class="col">
-                        ${utilisateur.pseudo} a rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
-                        La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
+                        ${personne.prenom} ${personne.nom}
                     </div>
                     <div class="col-1">
-                        <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChamps('${rencontre.id}')">
+                        <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
                             <img src="../res/IconeModification.png" height="25px"/>
                         </button>
-                        <button type="button" class="btn btn-danger" onclick="indexController.SupprimerRencontre('${rencontre.id}')">
+                        <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
                             <img src="../res/IconeSuppression.png" height="25px"/>
                         </button>
                     </div>
@@ -345,47 +487,23 @@ class IndexController extends BaseController
         }
     }
 
-    async SupprimerRencontre(idRencontre)
-    {
-        if(confirm('Voulez-vous supprimer cette rencontre ?'))
-        {
-            try
-            {
-                const token = Historique;
-
-                const Result = await this.model.SupprimerRencontre({
-                    'idRencontre' : idRencontre
-                }, token);
-
-                if(Result === 200)
-                {
-                    const li = document.getElementById(`rencontre_${idRencontre}`);
-                    if(li.parentNode)
-                    {
-                        li.parentNode.removeChild(li);
-                    }
-                    this.toast("toastSuccesSupprimerRencontre");
-                }
-                else if(Result === 400)
-                {
-                    this.toast("toastErreurSupprimerRencontre");
-                }
-            }
-            catch(e)
-            {
-                console.log(e);
-                this.toast("toastErreurSupprimerRencontre");
-            }
-        }
-    }
-
     ViderChampsNomEtPrenomPersonne()
     {
-        let inputNom    = document.getElementById("inputNom");
-        let inputPrenom = document.getElementById("inputPrenom");
+        this.IntialiserModalCreerPersonne();
+
+        let inputNom                 = document.getElementById("inputNom");
+        let inputPrenom              = document.getElementById("inputPrenom");
+        let selectSexe               = document.getElementById("selectSexe");
+        let selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+        let selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+        let selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
 
         inputNom.value = "";
         inputPrenom.value = "";
+        selectSexe.value = "";
+        selectDateNaissanceJour.value = "";
+        selectDateNaissanceMois.value = "";
+        selectDateNaissanceAnnee.value = "";
     }
 }
 

@@ -125,6 +125,18 @@ class Sitemodel
         }
     }
 
+    async ModifierPersonne(body, jwt)
+    {
+        try
+        {
+            return await this.api.ModifierPersonne(JSON.stringify(body), jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async ModifierRencontre(body, jwt)
     {
         try

@@ -79,13 +79,7 @@
             </div>
             <div class="row">
                 <div class="col-3"></div>
-                <div class="col-6">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
-                    </button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.CreerPersonne()">
-                        <img src="../res/IconeAjoutBlanche.png" height="25px"/> Ajouter
-                    </button>
+                <div class="col-7" id="bouttonsModalCreerModifierPersonne">
                 </div>
             </div>
         </div>
@@ -104,6 +98,22 @@
     <div id="toastErreurCreerPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
             Erreur lors de la cr&eacute;ation de la personne.
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastSuccesModifierPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Personne modifi&eacute;e !
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastErreurModifierPersonne" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Erreur lors de la modification de la personne.
         </div>
     </div>
 </div>
