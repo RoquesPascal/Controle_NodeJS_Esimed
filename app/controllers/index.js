@@ -77,12 +77,11 @@ class IndexController extends BaseController
                 for(const personne of listePersonnes)
                 {
                     const rencontresCommunesUtilisateurPersonne = await this.model.GetRencontresCommunesUtilisateurPersonne(
-                        {'idPersonneRencontree' : personne.id},
-                        ParseJwt(token).id,
+                        {"idUtilisateur"        : ParseJwt(token).id,
+                              "idPersonneRencontree" : personne.id},
                         token
                     );
-
-                    if(rencontresCommunesUtilisateurPersonne == 200)
+                    if(rencontresCommunesUtilisateurPersonne === 200)
                     {
                         listeHtmlPersonnesRencontrees += this.CreerLigne(personne);
                     }

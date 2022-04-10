@@ -64,8 +64,9 @@ router.get('/idUtilisateur/:idUtilisateur',
     }
 });
 
-router.get('/rencontresCommunesUtilisateurPersonne/:idUtilisateur',
-           body('idPersonneRencontree').isString().notEmpty(),
+router.post('/rencontresCommunes/utilisateurPersonne',
+            body('idUtilisateur').isString().notEmpty(),
+            body('idPersonneRencontree').isString().notEmpty(),
            async (req, res) =>
 {
     const errors = validationResult(req);
@@ -74,14 +75,17 @@ router.get('/rencontresCommunesUtilisateurPersonne/:idUtilisateur',
 
     try
     {
-        const rencontres = await Table_Rencontres.findAll({
+        const rencontres = await Table_Rencontres.findOne({
             where :
             {
-                idUtilisateur : req.params.idUtilisateur,
+                idUtilisateur : req.body.idUtilisateur,
                 idPersonneRencontree : req.body.idPersonneRencontree
             }
         });
-        return res.status(200).send(rencontres);
+        if(rencontres != null)
+            return res.status(200).send(rencontres);
+        else
+            return res.status(404).end();
     }
     catch(e)
     {

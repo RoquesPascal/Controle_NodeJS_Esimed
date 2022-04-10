@@ -89,11 +89,11 @@ class Sitemodel
         }
     }
 
-    async GetRencontresCommunesUtilisateurPersonne(body, id, jwt)
+    async GetRencontresCommunesUtilisateurPersonne(body, jwt)
     {
         try
         {
-            return await this.api.GetRencontresCommunesUtilisateurPersonne(JSON.stringify(body), id, jwt)
+            return await this.api.GetRencontresCommunesUtilisateurPersonne(JSON.stringify(body), jwt)
         }
         catch (e)
         {

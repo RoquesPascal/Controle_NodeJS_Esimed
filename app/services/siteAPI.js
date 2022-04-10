@@ -7,7 +7,7 @@ class SiteAPI
         this.lienLogin = "login"
         this.lienPersonnes = "personnes"
         this.lienRencontres = "rencontres"
-        this.rencontresCommunesUtilisateurPersonne = "rencontresCommunesUtilisateurPersonne"
+        this.rencontresCommunesUtilisateurPersonne = "rencontresCommunes/utilisateurPersonne"
         this.lienSignup = "signup"
         this.lienUtilisateurs = "utilisateurs"
     }
@@ -147,12 +147,12 @@ class SiteAPI
         }))
     }
 
-    GetRencontresCommunesUtilisateurPersonne(body, id, jwt)
+    GetRencontresCommunesUtilisateurPersonne(body, jwt)
     {
         return new Promise(((resolve, reject) => {
-            fetch(`${this.api}/${this.lienRencontres}/${this.rencontresCommunesUtilisateurPersonne}/${id}`, {method  : "GET",
-                                                                                                                       headers : this.AjouterLeJwtDansLeHeader(jwt),
-                                                                                                                       body    : body})
+            fetch(`${this.api}/${this.lienRencontres}/${this.rencontresCommunesUtilisateurPersonne}`, {method  : "POST",
+                                                                                                                 headers : this.AjouterLeJwtDansLeHeader(jwt),
+                                                                                                                 body    : body})
                 .then(async response => {
                     if(response.status !== 200)
                     {
