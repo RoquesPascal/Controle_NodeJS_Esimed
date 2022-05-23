@@ -111,12 +111,12 @@ class IndexController extends BaseController
 
     async CreerPersonne()
     {
-        const inputNom                   = document.getElementById("inputNom");
-        const inputPrenom                = document.getElementById("inputPrenom");
-        const selectSexe                 = document.getElementById("selectSexe");
-        const selectDateNaissanceJour    = document.getElementById("selectDateNaissanceJour");
-        const selectDateNaissanceMois    = document.getElementById("selectDateNaissanceMois");
-        const selectDateNaissanceAnnee   = document.getElementById("selectDateNaissanceAnnee");
+        const inputNom                 = document.getElementById("inputNom");
+        const inputPrenom              = document.getElementById("inputPrenom");
+        const selectSexe               = document.getElementById("selectSexe");
+        const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
+        const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
+        const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
 
         if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
         {
@@ -153,7 +153,7 @@ class IndexController extends BaseController
         }
     }
 
-    Deconexion()
+    Deconnexion()
     {
         sessionStorage.clear();
         localStorage.clear();
@@ -171,9 +171,9 @@ class IndexController extends BaseController
             if((selectDateNaissanceJour == null) || (selectDateNaissanceMois == null) || (selectDateNaissanceAnnee == null))
                 return;
 
-            let valeurJour               = 31;
-            let valeurMois               = 12;
-            let valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
+            let valeurJour  = 31;
+            let valeurMois  = 12;
+            let valeurAnnee = new Date(Date.now()).getFullYear() + 10;
 
             selectDateNaissanceJour .innerHTML = `<option value="">Jour</option>`;
             selectDateNaissanceMois .innerHTML = `<option value="">Mois</option>`;
@@ -301,34 +301,6 @@ class IndexController extends BaseController
         }
     }
 
-    async Login()
-    {
-        const inputEmail      = document.getElementById("inputEmail")
-        const inputMotDePasse = document.getElementById("inputMotDePasse")
-
-        try
-        {
-            const token = await this.model.Login({
-                'email'      : inputEmail.value,
-                'motDePasse' : inputMotDePasse.value
-            })
-
-            if(this.JwtEstValide(token))
-            {
-                sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
-                navigate("index");
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-        }
-        finally
-        {
-            this.toast("toastErreurLogin");
-        }
-    }
-
     async ModifierPersonne(idPersonne)
     {
         try
@@ -404,36 +376,6 @@ class IndexController extends BaseController
                        </div>
                    </div>`;
         return li;
-    }
-
-    async Signup()
-    {
-        const inputPseudo     = document.getElementById("inputPseudo")
-        const inputEmail      = document.getElementById("inputEmail")
-        const inputMotDePasse = document.getElementById("inputMotDePasse")
-
-        try
-        {
-            const token = await this.model.Signup({
-                "pseudo"     : inputPseudo.value,
-                'email'      : inputEmail.value,
-                'motDePasse' : inputMotDePasse.value
-            })
-
-            if(this.JwtEstValide(token))
-            {
-                sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
-                navigate("index");
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-        }
-        finally
-        {
-            this.toast("toastErreurSignup");
-        }
     }
 
     async SupprimerPersonne(idPersonne)
