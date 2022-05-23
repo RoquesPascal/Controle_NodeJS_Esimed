@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const {sequelize} = require('./db')
-const Table_Rencontres = require("../models/rencontre.model");
+const Table_Rencontres = require("./rencontre.model");
 
 
 

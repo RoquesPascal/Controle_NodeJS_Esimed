@@ -69,8 +69,8 @@ class RencontreUtilisateurController extends BaseController
                 let listeHtmlRencontresPassees = "";
                 let listeHtmlRencontresFutures = "";
 
-                ulListeRencontres.innerHTML = '<img src="../../res/Loader.gif"/>';
-                ulListeRencontresAVenir.innerHTML = '<img src="../../res/Loader.gif"/>';
+                ulListeRencontres.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
+                ulListeRencontresAVenir.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
 
                 for(const rencontre of listeRencontres)
                 {
@@ -126,10 +126,10 @@ class RencontreUtilisateurController extends BaseController
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../res/IconeModification.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                             </button>
                             <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../res/IconeSuppression.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
                     </div>
@@ -146,10 +146,10 @@ class RencontreUtilisateurController extends BaseController
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../res/IconeModification.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                             </button>
                             <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../res/IconeSuppression.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
                     </div>
@@ -252,10 +252,10 @@ class RencontreUtilisateurController extends BaseController
 
             boutonModifierRencontreModal.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                        <img src="../FrontEnd/res/IconeRetour.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="rencontreUtilisateurController.ModifierRencontre('${rencontre.id}')">
-                        <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
+                        <img src="../FrontEnd/res/IconeSauvegarder.png" height="25px"/> Enregistrer
                     </button>`;
         }
         catch(e)
@@ -335,10 +335,10 @@ class RencontreUtilisateurController extends BaseController
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../res/IconeModification.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                             </button>
                             <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../res/IconeSuppression.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
                     </div>`;
@@ -349,10 +349,10 @@ class RencontreUtilisateurController extends BaseController
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../res/IconeModification.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                             </button>
                             <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../res/IconeSuppression.png" height="25px"/>
+                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
                             </button>
                         </div>
                     </div>`;

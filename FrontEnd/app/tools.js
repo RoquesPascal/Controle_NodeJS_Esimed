@@ -38,7 +38,7 @@ function include(selector, url, urlcontroller) {
 }
 
 function navigate(view) {
-    include('content',  `views/${view}.html`, `app/controllers/${view}.js`)
+    include('content',  `FrontEnd/views/${view}.html`, `FrontEnd/app/controllers/${view}.js`)
 }
 
 const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;

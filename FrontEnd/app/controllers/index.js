@@ -71,8 +71,8 @@ class IndexController extends BaseController
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
 
-                ulListePersonnesRencontrees.innerHTML = '<img src="../../res/Loader.gif"/>';
-                ulListePersonnesARencontrer.innerHTML = '<img src="../../res/Loader.gif"/>';
+                ulListePersonnesRencontrees.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
+                ulListePersonnesARencontrer.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
 
                 for(const personne of listePersonnes)
                 {
@@ -135,19 +135,19 @@ class IndexController extends BaseController
                                ${personne.prenom} ${personne.nom} `
         if(personne.sexe ===1)
         {
-            li += `<img src="../res/IconeSexeMasculin.png" height="25px"/>`;
+            li += `<img src="../FrontEnd/res/IconeSexeMasculin.png" height="25px"/>`;
         }
         else if(personne.sexe === 0)
         {
-            li += `<img src="../res/IconeSexeFeminin.png" height="25px"/>`;
+            li += `<img src="../FrontEnd/res/IconeSexeFeminin.png" height="25px"/>`;
         }
         li +=         `</div>
                            <div class="col-1">
                                <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                                   <img src="../res/IconeModification.png" height="25px"/>
+                                   <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                                </button>
                                <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                                   <img src="../res/IconeSuppression.png" height="25px"/>
+                                   <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
                                </button>
                            </div>
                        </div>
@@ -311,10 +311,10 @@ class IndexController extends BaseController
         {
             bouttonsModalCreerModifierPersonne.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                        <img src="../FrontEnd/res/IconeRetour.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.CreerPersonne()">
-                        <img src="../res/IconeAjoutBlanche.png" height="25px"/> Ajouter
+                        <img src="../FrontEnd/res/IconeAjoutBlanche.png" height="25px"/> Ajouter
                     </button>`;
         }
     }
@@ -333,10 +333,10 @@ class IndexController extends BaseController
         {
             bouttonsModalCreerModifierPersonne.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../res/IconeRetour.png" height="25px"/> Annuler
+                        <img src="../FrontEnd/res/IconeRetour.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.ModifierPersonne('${idPersonne}')">
-                        <img src="../res/IconeSauvegarder.png" height="25px"/> Enregistrer
+                        <img src="../FrontEnd/res/IconeSauvegarder.png" height="25px"/> Enregistrer
                     </button>`;
         }
     }
@@ -421,19 +421,19 @@ class IndexController extends BaseController
                            ${personne.prenom} ${personne.nom} `
         if(personne.sexe ===1)
         {
-            li += `<img src="../res/IconeSexeMasculin.png" height="25px"/>`;
+            li += `<img src="../FrontEnd/res/IconeSexeMasculin.png" height="25px"/>`;
         }
         else if(personne.sexe === 0)
         {
-            li += `<img src="../res/IconeSexeFeminin.png" height="25px"/>`;
+            li += `<img src="../FrontEnd/res/IconeSexeFeminin.png" height="25px"/>`;
         }
         li +=     `</div>
                        <div class="col-1">
                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                               <img src="../res/IconeModification.png" height="25px"/>
+                               <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                            </button>
                            <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                               <img src="../res/IconeSuppression.png" height="25px"/>
+                               <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
                            </button>
                        </div>
                    </div>`;
