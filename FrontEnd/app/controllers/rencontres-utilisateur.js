@@ -261,7 +261,6 @@ class RencontreUtilisateurController extends BaseController
                 let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
                 if(liRencontre != null)
                 {
-                    const utilisateur = await this.model.GetUtilisateur(nouvelleRencontre.idUtilisateur, token);
                     const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, token);
                     liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, personne);
                 }
