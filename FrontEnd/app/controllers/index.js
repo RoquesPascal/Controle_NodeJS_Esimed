@@ -1,57 +1,10 @@
-let   Historique       = []
-const HistoriqueCle    = "HistoriqueAppliRencontre"
-const AncienHistorique = sessionStorage.getItem(HistoriqueCle)
-
-
-function ParseJwt(token)
-{
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
-}
-
-function JwtEstValide(token)
-{
-    const jwtEstValide = ParseJwt(token);
-    const currentTimestamp = new Date().getTime() / 1000;
-    return (jwtEstValide.id && (jwtEstValide.exp > currentTimestamp));
-}
-
-if((AncienHistorique != null) && JwtEstValide(AncienHistorique))
-{
-    Historique = JSON.parse(AncienHistorique)
-}
-
-function AfficherPseudo()
-{
-    let affichagePseudo = document.getElementById("dropDownMenu");
-    if(affichagePseudo != null)
-    {
-        try
-        {
-            const token = ParseJwt(Historique);
-            affichagePseudo.innerText = token.pseudo;
-        }
-        catch(e)
-        {
-            console.log(e);
-        }
-    }
-}
-
-
-
 class IndexController extends BaseController
 {
     constructor()
     {
         super()
         this.model = new Sitemodel()
-        AfficherPseudo()
+        this.AfficherPseudo()
         this.AfficherListePersonnesARencontrer().then(r => {})
         this.ChangerListeAAfficher(true)
         this.InitialiserChamps().then(r => {})
@@ -77,7 +30,7 @@ class IndexController extends BaseController
                 for(const personne of listePersonnes)
                 {
                     const rencontresCommunesUtilisateurPersonne = await this.model.GetRencontresCommunesUtilisateurPersonne(
-                        {"idUtilisateur"        : ParseJwt(token).id,
+                        {"idUtilisateur"        : this.ParseJwt(token).id,
                               "idPersonneRencontree" : personne.id},
                         token
                     );
@@ -353,7 +306,7 @@ class IndexController extends BaseController
                 'motDePasse' : inputMotDePasse.value
             })
 
-            if(JwtEstValide(token))
+            if(this.JwtEstValide(token))
             {
                 sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
@@ -454,7 +407,7 @@ class IndexController extends BaseController
                 'motDePasse' : inputMotDePasse.value
             })
 
-            if(JwtEstValide(token))
+            if(this.JwtEstValide(token))
             {
                 sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
                 navigate("index");
