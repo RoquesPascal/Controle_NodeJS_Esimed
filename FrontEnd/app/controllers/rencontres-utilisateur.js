@@ -46,8 +46,8 @@ class RencontreUtilisateurController extends BaseController
 
     ChangerListeAAfficher(afficherListeRencontres)
     {
-        let ulListeRencontres                = document.getElementById("ulListeRencontres");
-        let ulListeRencontresAVenir          = document.getElementById("ulListeRencontresAVenir");
+        let ulListeRencontres         = document.getElementById("ulListeRencontres");
+        let ulListeRencontresAVenir   = document.getElementById("ulListeRencontresAVenir");
         let bouttonsRencontresPassees = document.getElementById("bouttonsRencontresPassees");
         let bouttonsRencontresFutures = document.getElementById("bouttonsRencontresFutures");
 
