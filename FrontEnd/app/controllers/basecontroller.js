@@ -2,11 +2,6 @@ let   Historique       = []
 const HistoriqueCle    = "HistoriqueAppliRencontre"
 const AncienHistorique = sessionStorage.getItem(HistoriqueCle)
 
-/*if((AncienHistorique != null) && JwtEstValide(AncienHistorique))
-{
-    Historique = JSON.parse(AncienHistorique)
-}*/
-
 class BaseController
 {
     constructor()
