@@ -58,9 +58,9 @@ class IndexController extends BaseController
     ChangerListeAAfficher(afficherListeRencontres)
     {
         let ulListePersonnesRencontrees  = document.getElementById("ulListePersonnesRencontrees");
-        let ulListePersonnesARencontrer = document.getElementById("ulListePersonnesARencontrer");
-        let bouttonsPersonnesRecontrees   = document.getElementById("bouttonsPersonnesRecontrees");
-        let bouttonsPersonnesARencontrer   = document.getElementById("bouttonsPersonnesARencontrer");
+        let ulListePersonnesARencontrer  = document.getElementById("ulListePersonnesARencontrer");
+        let bouttonsPersonnesRecontrees  = document.getElementById("bouttonsPersonnesRecontrees");
+        let bouttonsPersonnesARencontrer = document.getElementById("bouttonsPersonnesARencontrer");
 
         if((ulListePersonnesRencontrees != null) && (ulListePersonnesARencontrer != null))
         {
