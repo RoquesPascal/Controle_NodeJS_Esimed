@@ -29,7 +29,6 @@ class IndexController extends BaseController
 
                 for(const personne of listePersonnes)
                 {
-                    // Il met une erreur ici (avec les console.log() sur le navigateur, mais c'est une erreur maîtrisée)
                     const rencontresCommunesUtilisateurPersonne = await this.model.GetRencontresCommunesUtilisateurPersonne(
                         {"idUtilisateur"        : this.ParseJwt(token).id,
                               "idPersonneRencontree" : personne.id},
