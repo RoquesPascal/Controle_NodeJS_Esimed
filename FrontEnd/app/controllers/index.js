@@ -173,7 +173,7 @@ class IndexController extends BaseController
 
             let valeurJour  = 31;
             let valeurMois  = 12;
-            let valeurAnnee = new Date(Date.now()).getFullYear() + 10;
+            let valeurAnnee = new Date(Date.now()).getFullYear();
 
             selectDateNaissanceJour .innerHTML = `<option value="">Jour</option>`;
             selectDateNaissanceMois .innerHTML = `<option value="">Mois</option>`;
@@ -220,7 +220,7 @@ class IndexController extends BaseController
 
             let valeurJour               = 31;
             let valeurMois               = 12;
-            let valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
+            let valeurAnnee              = new Date(Date.now()).getFullYear();
 
             selectDateNaissanceJour .innerHTML = `<option value="">Jour</option>`;
             selectDateNaissanceMois .innerHTML = `<option value="">Mois</option>`;

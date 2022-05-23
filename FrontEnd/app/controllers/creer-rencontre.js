@@ -52,6 +52,7 @@ class CreerRencontreController extends BaseController
         const valeurJour               = 31;
         const valeurMois               = 12;
         const valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
+        const valeurAnneeNaissance     = new Date(Date.now()).getFullYear();
         const valeurNote               = 10;
 
         selectDateNaissanceJour.innerHTML = `<option value="">Jour</option>`;
@@ -69,7 +70,7 @@ class CreerRencontreController extends BaseController
         {
             selectDateNaissanceMois.innerHTML += `<option value="${i}">${i}</option>`;
         }
-        for(let i = valeurAnnee ; i >= 1900 ; i--)
+        for(let i = valeurAnneeNaissance ; i >= 1900 ; i--)
         {
             selectDateNaissanceAnnee.innerHTML += `<option value="${i}">${i}</option>`;
         }
