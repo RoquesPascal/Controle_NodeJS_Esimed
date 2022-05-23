@@ -176,4 +176,4 @@ class CreerRencontreController extends BaseController
     }
 }
 
-window.creerRencontreController= new CreerRencontreController()
+window.creerRencontreController = new CreerRencontreController()

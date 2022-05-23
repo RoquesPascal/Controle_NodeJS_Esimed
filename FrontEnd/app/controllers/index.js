@@ -86,7 +86,7 @@ class IndexController extends BaseController
                        <div class="row">
                            <div class="col">
                                ${personne.prenom} ${personne.nom} `
-        if(personne.sexe ===1)
+        if(personne.sexe === 1)
         {
             li += `<img src="../FrontEnd/res/IconeSexeMasculin.png" height="25px"/>`;
         }
