@@ -91,9 +91,9 @@ router.post('/rencontresCommunes/utilisateurPersonne',
 
 router.post('/',
             body('idPersonneRencontree').isString().notEmpty(),
-            body('dateRencontreJour').isInt().notEmpty(),
-            body('dateRencontreMois').isInt().notEmpty(),
-            body('dateRencontreAnnee').isInt().notEmpty(),
+            body('dateRencontreJour').isInt(),
+            body('dateRencontreMois').isInt(),
+            body('dateRencontreAnnee').isInt(),
             body('note').isInt(),
             async (req, res) =>
 {

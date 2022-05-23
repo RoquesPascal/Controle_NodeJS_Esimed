@@ -117,6 +117,12 @@ class IndexController extends BaseController
         const selectDateNaissanceMois    = document.getElementById("selectDateNaissanceMois");
         const selectDateNaissanceAnnee   = document.getElementById("selectDateNaissanceAnnee");
 
+        if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
+        {
+            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+            return;
+        }
+
         try
         {
             const token = Historique;
@@ -334,6 +340,12 @@ class IndexController extends BaseController
             const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
             const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
             const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+
+            if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
+            {
+                this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                return;
+            }
 
             let Result = await this.model.ModifierPersonne({
                 "idPersonneARencontrer" : idPersonne,

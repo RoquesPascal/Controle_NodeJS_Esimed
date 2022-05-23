@@ -106,6 +106,12 @@ class CreerRencontreController extends BaseController
         const selectDateNaissanceMois    = document.getElementById("selectDateNaissanceMois");
         const selectDateNaissanceAnnee   = document.getElementById("selectDateNaissanceAnnee");
 
+        if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
+        {
+            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+            return;
+        }
+
         try
         {
             const token = Historique;
@@ -144,6 +150,12 @@ class CreerRencontreController extends BaseController
         const selectDateAnnee            = document.getElementById("selectDateAnnee");
         const selectNote                 = document.getElementById("selectNote");
         const textAreaCommentaire        = document.getElementById("textAreaCommentaire");
+
+        if(selectPersonnesARencontrer.value === '')
+        {
+            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+            return;
+        }
 
         try
         {

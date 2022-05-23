@@ -18,7 +18,7 @@ class RencontreUtilisateurController extends BaseController
             try
             {
                 const token = Historique;
-                const listeRencontres = await this.model.GetListeRencontresDeUtilisateurConnecte(token, ParseJwt(token).id);
+                const listeRencontres = await this.model.GetListeRencontresDeUtilisateurConnecte(token, this.ParseJwt(token).id);
                 let listeHtmlRencontresPassees = "";
                 let listeHtmlRencontresFutures = "";
 
