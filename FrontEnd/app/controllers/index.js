@@ -35,7 +35,7 @@ class IndexController extends BaseController
                               "idPersonneRencontree" : personne.id},
                         token
                     );
-                    if(rencontresCommunesUtilisateurPersonne === 200)
+                    if(rencontresCommunesUtilisateurPersonne.idUtilisateur != null) //Je fais comme ça pour éviter de remonter un 404 depuis le back
                     {
                         listeHtmlPersonnesRencontrees += this.CreerLigne(personne);
                     }

@@ -154,13 +154,13 @@ class SiteAPI
                                                                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
                                                                                                                  body    : body})
                 .then(async response => {
-                    if(response.status !== 200)
+                    if(response.status === 200)
                     {
-                        reject(response.status)
+                        resolve(response.json())
                     }
                     else
                     {
-                        resolve(response.status)
+                        reject(await response.text())
                     }
                 }).catch(error => reject(error))
         }))

@@ -78,10 +78,7 @@ router.post('/rencontresCommunes/utilisateurPersonne',
                 idPersonneRencontree : req.body.idPersonneRencontree
             }
         });
-        if(rencontres != null)
-            return res.status(200).send(rencontres);
-        else
-            return res.status(404).end();
+        return res.status(200).send(rencontres);
     }
     catch(e)
     {
