@@ -88,10 +88,11 @@ router.post('/rencontresCommunes/utilisateurPersonne',
 
 router.post('/',
             body('idPersonneRencontree').isString().notEmpty(),
-            body('dateRencontreJour').isInt(),
-            body('dateRencontreMois').isInt(),
-            body('dateRencontreAnnee').isInt(),
+            body('dateRencontreJour').isInt().notEmpty(),
+            body('dateRencontreMois').isInt().notEmpty(),
+            body('dateRencontreAnnee').isInt().notEmpty(),
             body('note').isInt(),
+            body('partage').isBoolean().notEmpty(),
             async (req, res) =>
 {
     const errors = validationResult(req);
@@ -107,7 +108,8 @@ router.post('/',
                                              idPersonneRencontree : req.body.idPersonneRencontree,
                                              dateRencontre        : dateDeLaRencontre,
                                              note                 : req.body.note,
-                                             commentaire          : req.body.commentaire});
+                                             commentaire          : req.body.commentaire,
+                                             partage              : req.body.partage});
         res.status(201).send("Rencontre Ajoutée !");
     }
     catch(e)
@@ -122,6 +124,7 @@ router.put('/',
            body('dateRencontreMois').isInt().notEmpty(),
            body('dateRencontreAnnee').isInt().notEmpty(),
            body('note').isInt(),
+           body('partage').isBoolean().notEmpty(),
            async (req, res) =>
 {
     const errors = validationResult(req);
@@ -130,12 +133,14 @@ router.put('/',
 
     try
     {
-        let dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
+        const dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
+        const partagerLeCommentaire = (req.body.partage === 1);
         await Table_Rencontres.update(
             {
-                dateRencontre        : dateDeLaRencontre,
-                note                 : req.body.note,
-                commentaire          : req.body.commentaire
+                dateRencontre : dateDeLaRencontre,
+                note          : req.body.note,
+                commentaire   : req.body.commentaire,
+                partage       : partagerLeCommentaire
             }, {
             where :
             {

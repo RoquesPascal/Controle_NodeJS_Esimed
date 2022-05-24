@@ -151,8 +151,9 @@ class CreerRencontreController extends BaseController
         const selectDateAnnee            = document.getElementById("selectDateAnnee");
         const selectNote                 = document.getElementById("selectNote");
         const textAreaCommentaire        = document.getElementById("textAreaCommentaire");
+        const selectPartage              = document.getElementById("selectPartage");
 
-        if(selectPersonnesARencontrer.value === '')
+        if((selectPersonnesARencontrer.value === '') || (selectPartage.value === ''))
         {
             this.toast("toastErreurCertainsChampsObligatoiresSontVides");
             return;
@@ -168,7 +169,8 @@ class CreerRencontreController extends BaseController
                 'dateRencontreMois'    : selectDateMois.value,
                 'dateRencontreAnnee'   : selectDateAnnee.value,
                 'note'                 : selectNote.value,
-                'commentaire'          : textAreaCommentaire.value
+                'commentaire'          : textAreaCommentaire.value,
+                'partage'              : selectPartage.value
             }, token);
 
             if(Result === 201)

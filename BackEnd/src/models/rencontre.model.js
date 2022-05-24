@@ -55,6 +55,12 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
         type      : DataTypes.STRING,
         allowNull : true,
         required  : false
+    },
+    partage :
+    {
+        type      : DataTypes.BOOLEAN,
+        allowNull : false,
+        required  : true
     }
 }, {
     // Other model options go here

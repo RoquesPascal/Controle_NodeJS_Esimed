@@ -141,15 +141,15 @@ class RencontreUtilisateurController extends BaseController
             const token = Historique;
             const rencontre = await this.model.GetRencontre(idRencontre, token);
 
-            let selectDateJour               = document.getElementById("selectDateJour");
-            let selectDateMois               = document.getElementById("selectDateMois");
-            let selectDateAnnee              = document.getElementById("selectDateAnnee");
-            let boutonModifierRencontreModal = document.getElementById("boutonModifierRencontreModal");
-            let champsNoteEtCommentaire      = document.getElementById("champsNoteEtCommentaire");
-            const valeurJour                 = 31;
-            const valeurMois                 = 12;
-            const valeurAnnee                = new Date(Date.now()).getFullYear() + 10;
-            const valeurNote                 = 10;
+            let selectDateJour                   = document.getElementById("selectDateJour");
+            let selectDateMois                   = document.getElementById("selectDateMois");
+            let selectDateAnnee                  = document.getElementById("selectDateAnnee");
+            let boutonModifierRencontreModal     = document.getElementById("boutonModifierRencontreModal");
+            let champsNoteEtCommentaireEtPartage = document.getElementById("champsNoteEtCommentaireEtPartage");
+            const valeurJour                     = 31;
+            const valeurMois                     = 12;
+            const valeurAnnee                    = new Date(Date.now()).getFullYear() + 10;
+            const valeurNote                     = 10;
 
             selectDateJour.innerHTML = `<option value="">Jour</option>`;
             selectDateMois.innerHTML = `<option value="">Mois</option>`;
@@ -175,7 +175,7 @@ class RencontreUtilisateurController extends BaseController
 
             if(this.EstRencontreDejaFaite(rencontre))
             {
-                champsNoteEtCommentaire.innerHTML = `
+                champsNoteEtCommentaireEtPartage.innerHTML = `
                     <div class="row marginBottom10px">
                         <div class="col-5">Notation de 0 &agrave; 10</div>
                         <div class="col-7">
@@ -189,19 +189,34 @@ class RencontreUtilisateurController extends BaseController
                         <div class="col-7">
                             <textarea id="textAreaCommentaire" rows="5" cols="25"></textarea>
                         </div>
+                    </div>
+                    <div class="row marginBottom10px">
+                        <div class="col-5">Partager le commentaire ? *</div>
+                        <div class="col-7">
+                            <select id="selectPartage">
+                                <option value="">Partage</option>
+                                <option value="1">Oui</option>
+                                <option value="0">Non</option>
+                            </select>
+                        </div>
                     </div>`;
 
                 let selectNote          = document.getElementById("selectNote");
                 let textAreaCommentaire = document.getElementById("textAreaCommentaire");
+                let selectPartage       = document.getElementById("selectPartage");
                 for(let i = 0 ; i <= valeurNote ; i++)
                 {
                     selectNote.innerHTML += `<option value="${i}">${i}</option>`;
                 }
                 selectNote.value          = `${rencontre.note}`;
                 textAreaCommentaire.value = `${rencontre.commentaire}`;
+                if(rencontre.partage)
+                    selectPartage.value = '1';
+                else
+                    selectPartage.value = '0';
             }
             else
-                champsNoteEtCommentaire.innerHTML = "";
+                champsNoteEtCommentaireEtPartage.innerHTML = "";
 
             boutonModifierRencontreModal.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -229,17 +244,26 @@ class RencontreUtilisateurController extends BaseController
             let selectDateAnnee     = document.getElementById("selectDateAnnee");
             let selectNote          = document.getElementById("selectNote");
             let textAreaCommentaire = document.getElementById("textAreaCommentaire");
+            let selectPartage       = document.getElementById("selectPartage");
+
+            if(selectPartage.value === '')
+            {
+                this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                return;
+            }
 
             let Result;
             if((selectNote != null) || (textAreaCommentaire != null))
             {
+                const partagerLeCommentaire = (selectPartage.value == 1);
                 Result = await this.model.ModifierRencontre({
                     'idRencontre'        : idRencontre,
                     'dateRencontreJour'  : selectDateJour.value,
                     'dateRencontreMois'  : selectDateMois.value,
                     'dateRencontreAnnee' : selectDateAnnee.value,
                     'note'               : selectNote.value,
-                    'commentaire'        : textAreaCommentaire.value
+                    'commentaire'        : textAreaCommentaire.value,
+                    'partage'            : partagerLeCommentaire
                 }, token);
             }
             else
@@ -250,7 +274,8 @@ class RencontreUtilisateurController extends BaseController
                     'dateRencontreMois'  : selectDateMois.value,
                     'dateRencontreAnnee' : selectDateAnnee.value,
                     'note'               : 0,
-                    'commentaire'        : ""
+                    'commentaire'        : "",
+                    'partage'            : false
                 }, token);
             }
 
