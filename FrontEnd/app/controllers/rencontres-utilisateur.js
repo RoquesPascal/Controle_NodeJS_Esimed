@@ -246,16 +246,16 @@ class RencontreUtilisateurController extends BaseController
             let textAreaCommentaire = document.getElementById("textAreaCommentaire");
             let selectPartage       = document.getElementById("selectPartage");
 
-            if(selectPartage.value === '')
+            if((selectPartage != null) &&(selectPartage.value === ''))
             {
                 this.toast("toastErreurCertainsChampsObligatoiresSontVides");
                 return;
             }
 
             let Result;
-            if((selectNote != null) || (textAreaCommentaire != null))
+            if((selectNote != null) || (textAreaCommentaire != null) || (selectPartage != null))
             {
-                const partagerLeCommentaire = (selectPartage.value == 1);
+                //const partagerLeCommentaire = (selectPartage.value == 1);
                 Result = await this.model.ModifierRencontre({
                     'idRencontre'        : idRencontre,
                     'dateRencontreJour'  : selectDateJour.value,
@@ -263,7 +263,7 @@ class RencontreUtilisateurController extends BaseController
                     'dateRencontreAnnee' : selectDateAnnee.value,
                     'note'               : selectNote.value,
                     'commentaire'        : textAreaCommentaire.value,
-                    'partage'            : partagerLeCommentaire
+                    'partage'            : selectPartage.value
                 }, token);
             }
             else
@@ -275,7 +275,7 @@ class RencontreUtilisateurController extends BaseController
                     'dateRencontreAnnee' : selectDateAnnee.value,
                     'note'               : 0,
                     'commentaire'        : "",
-                    'partage'            : false
+                    'partage'            : 0
                 }, token);
             }
 

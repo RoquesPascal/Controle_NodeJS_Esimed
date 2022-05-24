@@ -124,7 +124,7 @@ router.put('/',
            body('dateRencontreMois').isInt().notEmpty(),
            body('dateRencontreAnnee').isInt().notEmpty(),
            body('note').isInt(),
-           body('partage').isBoolean().notEmpty(),
+           body('partage').isInt().notEmpty(),
            async (req, res) =>
 {
     const errors = validationResult(req);
@@ -134,7 +134,7 @@ router.put('/',
     try
     {
         const dateDeLaRencontre = new Date(req.body.dateRencontreAnnee, req.body.dateRencontreMois - 1, req.body.dateRencontreJour);
-        const partagerLeCommentaire = (req.body.partage === 1);
+        const partagerLeCommentaire = (req.body.partage == 1);
         await Table_Rencontres.update(
             {
                 dateRencontre : dateDeLaRencontre,
