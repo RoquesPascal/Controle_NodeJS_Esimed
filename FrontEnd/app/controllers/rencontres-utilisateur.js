@@ -11,8 +11,16 @@ class RencontreUtilisateurController extends BaseController
 
     async AfficherListeRencontres()
     {
-        let ulListeRencontres = document.getElementById("ulListeRencontres");
-        let ulListeRencontresAVenir = document.getElementById("ulListeRencontresAVenir");
+        let ulListeRencontres                = document.getElementById("ulListeRencontres");
+        let ulListeRencontresAVenir          = document.getElementById("ulListeRencontresAVenir");
+        let buttonListeRencontres_Bleu       = document.getElementById("buttonListeRencontres_Bleu");
+        let buttonListeRencontresAVenir_Gris = document.getElementById("buttonListeRencontresAVenir_Gris");
+        let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
+        let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
+        let compteurRencontresPassees        = 0;
+        let compteurRencontresAVenir         = 0;
+
+
         if((ulListeRencontres != null) && (ulListeRencontresAVenir != null))
         {
             try
@@ -29,12 +37,22 @@ class RencontreUtilisateurController extends BaseController
                 {
                     const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, token);
                     if(this.EstRencontreDejaFaite(rencontre))
+                    {
                         listeHtmlRencontresPassees += this.CreerLigneRencontrePassee(rencontre, personne);
+                        compteurRencontresPassees++;
+                    }
                     else
+                    {
                         listeHtmlRencontresFutures += this.CreerLigneRencontreFuture(rencontre, personne);
+                        compteurRencontresAVenir++;
+                    }
                 }
                 ulListeRencontres.innerHTML = listeHtmlRencontresPassees;
                 ulListeRencontresAVenir.innerHTML = listeHtmlRencontresFutures;
+                buttonListeRencontres_Bleu      .innerText += ` (${compteurRencontresPassees})`;
+                buttonListeRencontresAVenir_Gris.innerText += ` (${compteurRencontresAVenir})`;
+                buttonListeRencontres_Gris      .innerText += ` (${compteurRencontresPassees})`;
+                buttonListeRencontresAVenir_Bleu.innerText += ` (${compteurRencontresAVenir})`;
             }
             catch(e)
             {

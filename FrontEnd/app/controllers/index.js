@@ -12,8 +12,12 @@ class IndexController extends BaseController
 
     async AfficherListePersonnesARencontrer()
     {
-        let ulListePersonnesRencontrees  = document.getElementById("ulListePersonnesRencontrees");
-        let ulListePersonnesARencontrer  = document.getElementById("ulListePersonnesARencontrer");
+        let ulListePersonnesRencontrees      = document.getElementById("ulListePersonnesRencontrees");
+        let ulListePersonnesARencontrer      = document.getElementById("ulListePersonnesARencontrer");
+        let buttonListeRencontres_Bleu       = document.getElementById("buttonListeRencontres_Bleu");
+        let buttonListeRencontresAVenir_Gris = document.getElementById("buttonListeRencontresAVenir_Gris");
+        let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
+        let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
 
         if((ulListePersonnesRencontrees != null) && (ulListePersonnesARencontrer != null))
         {
@@ -23,6 +27,8 @@ class IndexController extends BaseController
                 let listePersonnes = await this.model.GetListePersonnesARencontrer(token);
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
+                let compteurPersonnesRencontrees  = 0;
+                let compteurPersonnesARencontrer  = 0;
 
                 ulListePersonnesRencontrees.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
                 ulListePersonnesARencontrer.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
@@ -37,14 +43,20 @@ class IndexController extends BaseController
                     if(rencontresCommunesUtilisateurPersonne.idUtilisateur != null) //Je fais comme ça pour éviter de remonter un 404 depuis le back
                     {
                         listeHtmlPersonnesRencontrees += this.CreerLigne(personne);
+                        compteurPersonnesRencontrees++;
                     }
                     else
                     {
                         listeHtmlPersonnesARencontrer += this.CreerLigne(personne);
+                        compteurPersonnesARencontrer++;
                     }
                 }
                 ulListePersonnesRencontrees.innerHTML = listeHtmlPersonnesRencontrees;
                 ulListePersonnesARencontrer.innerHTML = listeHtmlPersonnesARencontrer;
+                buttonListeRencontres_Bleu      .innerText += ` (${compteurPersonnesRencontrees})`;
+                buttonListeRencontresAVenir_Gris.innerText += ` (${compteurPersonnesARencontrer})`;
+                buttonListeRencontres_Gris      .innerText += ` (${compteurPersonnesRencontrees})`;
+                buttonListeRencontresAVenir_Bleu.innerText += ` (${compteurPersonnesARencontrer})`;
             }
             catch(e)
             {
