@@ -23,7 +23,7 @@ class IndexController extends BaseController
         {
             try
             {
-                let listePersonnes = await this.model.GetListePersonnesARencontrer(token);
+                let listePersonnes = await this.model.GetListePersonnesARencontrer(this.JWT);
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
                 let compteurPersonnesRencontrees  = 0;
