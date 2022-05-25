@@ -37,12 +37,12 @@ class RencontreUtilisateurController extends BaseController
                     const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, this.JWT);
                     if(this.EstRencontreDejaFaite(rencontre))
                     {
-                        listeHtmlRencontresPassees += this.CreerLigneRencontrePassee(rencontre, personne);
+                        listeHtmlRencontresPassees += this.CreerLigneAvecBalise_Li(true, rencontre, personne);
                         compteurRencontresPassees++;
                     }
                     else
                     {
-                        listeHtmlRencontresFutures += this.CreerLigneRencontreFuture(rencontre, personne);
+                        listeHtmlRencontresFutures += this.CreerLigneAvecBalise_Li(false, rencontre, personne);
                         compteurRencontresAVenir++;
                     }
                 }
@@ -87,47 +87,57 @@ class RencontreUtilisateurController extends BaseController
         }
     }
 
+    CreerLigneAvecBalise_Li(EstRencontreDejaFaite, rencontre, personne)
+    {
+        let ligne = `<li class="liRencontre" id="rencontre_${rencontre.id}">`;
+
+        if(EstRencontreDejaFaite)
+            ligne += this.CreerLigneRencontrePassee(rencontre, personne);
+        else
+            ligne += this.CreerLigneRencontreFuture(rencontre, personne);
+
+        ligne += `</li>`;
+
+        return ligne;
+    }
+
     CreerLigneRencontreFuture(rencontre, personne)
     {
-        return `<li class="liRencontre" id="rencontre_${rencontre.id}">
-                    <div class="row">
-                        <div class="col">
-                            Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                            </button>
-                        </div>
+        return `<div class="row">
+                    <div class="col">
+                        Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
                     </div>
-                </li>`;
+                    <div class="col-1">
+                        <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
+                            <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
+                            <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                        </button>
+                    </div>
+                </div>`;
     }
 
     CreerLigneRencontrePassee(rencontre, personne)
     {
         let ligne =
-               `<li class="liRencontre" id="rencontre_${rencontre.id}">
-                    <div class="row">
-                        <div class="col">
-                            Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
-                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}`;
+               `<div class="row">
+                    <div class="col">
+                        Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                        La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}`;
         if(rencontre.partage)
            ligne += `<br/><img src="../FrontEnd/res/IconPartage.png" height="25px"/>`;
         ligne +=
-                        `</div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                            </button>
-                        </div>
+                   `</div>
+                    <div class="col-1">
+                        <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
+                            <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
+                            <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                        </button>
                     </div>
-                </li>`;
+                </div>`;
         return ligne;
     }
 
@@ -323,34 +333,9 @@ class RencontreUtilisateurController extends BaseController
     RemplirLiRencontrePendantModification(rencontre, personne)
     {
         if(this.EstRencontreDejaFaite(rencontre))
-            return `<div class="row">
-                        <div class="col">
-                            Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
-                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                            </button>
-                        </div>
-                    </div>`;
+            return this.CreerLigneRencontrePassee(rencontre, personne);
         else
-            return `<div class="row">
-                        <div class="col">
-                            Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
-                        </div>
-                        <div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                            </button>
-                        </div>
-                    </div>`;
+            return this.CreerLigneRencontreFuture(rencontre, personne);
     }
 
     async SupprimerRencontre(idRencontre)
