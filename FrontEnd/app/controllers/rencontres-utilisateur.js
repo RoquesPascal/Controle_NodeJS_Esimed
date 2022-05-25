@@ -108,12 +108,16 @@ class RencontreUtilisateurController extends BaseController
 
     CreerLigneRencontrePassee(rencontre, personne)
     {
-        return `<li class="liRencontre" id="rencontre_${rencontre.id}">
+        let ligne =
+               `<li class="liRencontre" id="rencontre_${rencontre.id}">
                     <div class="row">
                         <div class="col">
                             Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
-                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}
-                        </div>
+                            La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}`;
+        if(rencontre.partage)
+           ligne += `<br/><img src="../FrontEnd/res/IconPartage.png" height="25px"/>`;
+        ligne +=
+                        `</div>
                         <div class="col-1">
                             <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
                                 <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
@@ -124,6 +128,7 @@ class RencontreUtilisateurController extends BaseController
                         </div>
                     </div>
                 </li>`;
+        return ligne;
     }
 
     EstRencontreDejaFaite(rencontre)
