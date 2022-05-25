@@ -1,17 +1,15 @@
-let   Historique       = []
-const HistoriqueCle    = "HistoriqueAppliRencontre"
-const AncienHistorique = sessionStorage.getItem(HistoriqueCle)
-
 class BaseController
 {
     constructor()
     {
         this.setBackButtonView('login')
 
+        this.HistoriqueCle    = "HistoriqueAppliRencontre"
+        const AncienHistorique = sessionStorage.getItem(this.HistoriqueCle)
         if((AncienHistorique != null) && this.JwtEstValide(AncienHistorique))
-        {
-            Historique = JSON.parse(AncienHistorique)
-        }
+            this.JWT = JSON.parse(AncienHistorique);
+        else
+            this.JWT = [];
     }
 
     AfficherPseudo()
@@ -19,10 +17,13 @@ class BaseController
         let affichagePseudo = document.getElementById("dropDownMenu");
         if (affichagePseudo != null)
         {
-            try {
-                const token = this.ParseJwt(Historique);
+            try
+            {
+                const token = this.ParseJwt(this.JWT);
                 affichagePseudo.innerText = token.pseudo;
-            } catch (e) {
+            }
+            catch (e)
+            {
                 console.log(e);
             }
         }
@@ -33,6 +34,16 @@ class BaseController
         const jwtEstValide = this.ParseJwt(token);
         const currentTimestamp = new Date().getTime() / 1000;
         return (jwtEstValide.id && (jwtEstValide.exp > currentTimestamp));
+    }
+
+    MettreLeJWTDansLeSessionStorage(token)
+    {
+        if(this.JwtEstValide(token))
+        {
+            sessionStorage.setItem(this.HistoriqueCle, JSON.stringify(token));
+            this.JWT = token;
+            navigate("index");
+        }
     }
 
     ParseJwt(token)

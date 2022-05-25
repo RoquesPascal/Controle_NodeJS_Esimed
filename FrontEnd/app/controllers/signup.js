@@ -19,12 +19,7 @@ class SignupController extends BaseController
                 'email'      : inputEmail.value,
                 'motDePasse' : inputMotDePasse.value
             })
-
-            if(this.JwtEstValide(token))
-            {
-                sessionStorage.setItem(HistoriqueCle, JSON.stringify(token));
-                navigate("index");
-            }
+            this.MettreLeJWTDansLeSessionStorage(token);
         }
         catch(e)
         {

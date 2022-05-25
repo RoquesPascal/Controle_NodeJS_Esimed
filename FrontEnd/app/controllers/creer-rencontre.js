@@ -16,8 +16,7 @@ class CreerRencontreController extends BaseController
         {
             try
             {
-                const token = Historique;
-                const listePersonnesARencontrer = await this.model.GetListePersonnesARencontrer(token);
+                const listePersonnesARencontrer = await this.model.GetListePersonnesARencontrer(this.JWT);
                 let listeHtmlPersonnesARencontrer = `<option value=""></option>`;
 
                 for(const personne of listePersonnesARencontrer)
@@ -115,8 +114,6 @@ class CreerRencontreController extends BaseController
 
         try
         {
-            const token = Historique;
-
             const Result = await this.model.CreerPersonne({
                 'nom'                : inputNom.value,
                 'prenom'             : inputPrenom.value,
@@ -124,7 +121,7 @@ class CreerRencontreController extends BaseController
                 'dateNaissanceJour'  : selectDateNaissanceJour.value,
                 'dateNaissanceMois'  : selectDateNaissanceMois.value,
                 'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
-            }, token);
+            }, this.JWT);
 
             if(Result === 201)
             {
@@ -161,8 +158,6 @@ class CreerRencontreController extends BaseController
 
         try
         {
-            const token = Historique;
-
             const Result = await this.model.CreerRencontre({
                 'idPersonneRencontree' : selectPersonnesARencontrer.value,
                 'dateRencontreJour'    : selectDateJour.value,
@@ -171,7 +166,7 @@ class CreerRencontreController extends BaseController
                 'note'                 : selectNote.value,
                 'commentaire'          : textAreaCommentaire.value,
                 'partage'              : selectPartage.value
-            }, token);
+            }, this.JWT);
 
             if(Result === 201)
             {

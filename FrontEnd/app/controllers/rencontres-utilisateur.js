@@ -25,8 +25,7 @@ class RencontreUtilisateurController extends BaseController
         {
             try
             {
-                const token = Historique;
-                const listeRencontres = await this.model.GetListeRencontresDeUtilisateurConnecte(token, this.ParseJwt(token).id);
+                const listeRencontres = await this.model.GetListeRencontresDeUtilisateurConnecte(this.JWT, this.ParseJwt(this.JWT).id);
                 let listeHtmlRencontresPassees = "";
                 let listeHtmlRencontresFutures = "";
 
@@ -35,7 +34,7 @@ class RencontreUtilisateurController extends BaseController
 
                 for(const rencontre of listeRencontres)
                 {
-                    const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, token);
+                    const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, this.JWT);
                     if(this.EstRencontreDejaFaite(rencontre))
                     {
                         listeHtmlRencontresPassees += this.CreerLigneRencontrePassee(rencontre, personne);
@@ -156,8 +155,7 @@ class RencontreUtilisateurController extends BaseController
     {
         try
         {
-            const token = Historique;
-            const rencontre = await this.model.GetRencontre(idRencontre, token);
+            const rencontre = await this.model.GetRencontre(idRencontre, this.JWT);
 
             let selectDateJour                   = document.getElementById("selectDateJour");
             let selectDateMois                   = document.getElementById("selectDateMois");
@@ -255,8 +253,6 @@ class RencontreUtilisateurController extends BaseController
     {
         try
         {
-            const token = Historique;
-
             let selectDateJour      = document.getElementById("selectDateJour");
             let selectDateMois      = document.getElementById("selectDateMois");
             let selectDateAnnee     = document.getElementById("selectDateAnnee");
@@ -273,7 +269,6 @@ class RencontreUtilisateurController extends BaseController
             let Result;
             if((selectNote != null) || (textAreaCommentaire != null) || (selectPartage != null))
             {
-                //const partagerLeCommentaire = (selectPartage.value == 1);
                 Result = await this.model.ModifierRencontre({
                     'idRencontre'        : idRencontre,
                     'dateRencontreJour'  : selectDateJour.value,
@@ -282,7 +277,7 @@ class RencontreUtilisateurController extends BaseController
                     'note'               : selectNote.value,
                     'commentaire'        : textAreaCommentaire.value,
                     'partage'            : selectPartage.value
-                }, token);
+                }, this.JWT);
             }
             else
             {
@@ -294,17 +289,17 @@ class RencontreUtilisateurController extends BaseController
                     'note'               : 0,
                     'commentaire'        : "",
                     'partage'            : 0
-                }, token);
+                }, this.JWT);
             }
 
             if(Result === 200)
             {
                 this.toast("toastSuccesModifierRencontre");
-                const nouvelleRencontre = await this.model.GetRencontre(idRencontre, token);
+                const nouvelleRencontre = await this.model.GetRencontre(idRencontre, this.JWT);
                 let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
                 if(liRencontre != null)
                 {
-                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, token);
+                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, this.JWT);
                     liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, personne);
                 }
             }
@@ -359,11 +354,9 @@ class RencontreUtilisateurController extends BaseController
         {
             try
             {
-                const token = Historique;
-
                 const Result = await this.model.SupprimerRencontre({
                     'idRencontre' : idRencontre
-                }, token);
+                }, this.JWT);
 
                 if(Result === 200)
                 {

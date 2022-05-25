@@ -23,7 +23,6 @@ class IndexController extends BaseController
         {
             try
             {
-                const token = Historique;
                 let listePersonnes = await this.model.GetListePersonnesARencontrer(token);
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
@@ -36,9 +35,9 @@ class IndexController extends BaseController
                 for(const personne of listePersonnes)
                 {
                     const rencontresCommunesUtilisateurPersonne = await this.model.GetRencontresCommunesUtilisateurPersonne(
-                        {"idUtilisateur"        : this.ParseJwt(token).id,
+                             {"idUtilisateur"        : this.ParseJwt(this.JWT).id,
                               "idPersonneRencontree" : personne.id},
-                        token
+                        this.JWT
                     );
                     if(rencontresCommunesUtilisateurPersonne.idUtilisateur != null) //Je fais comme ça pour éviter de remonter un 404 depuis le back
                     {
@@ -137,8 +136,6 @@ class IndexController extends BaseController
 
         try
         {
-            const token = Historique;
-
             const Result = await this.model.CreerPersonne({
                 'nom'                : inputNom.value,
                 'prenom'             : inputPrenom.value,
@@ -146,7 +143,7 @@ class IndexController extends BaseController
                 'dateNaissanceJour'  : selectDateNaissanceJour.value,
                 'dateNaissanceMois'  : selectDateNaissanceMois.value,
                 'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
-            }, token);
+            }, this.JWT);
 
             if(Result === 201)
             {
@@ -214,8 +211,7 @@ class IndexController extends BaseController
     {
         try
         {
-            const token = Historique;
-            const personne = await this.model.GetPersonne(idPersonne, token);
+            const personne = await this.model.GetPersonne(idPersonne, this.JWT);
 
             this.IntialiserModalModifierPersonne(personne.id);
 
@@ -316,8 +312,6 @@ class IndexController extends BaseController
     {
         try
         {
-            const token = Historique;
-
             const inputNom                 = document.getElementById("inputNom");
             const inputPrenom              = document.getElementById("inputPrenom");
             const selectSexe               = document.getElementById("selectSexe");
@@ -339,12 +333,12 @@ class IndexController extends BaseController
                 "dateNaissanceJour"     : selectDateNaissanceJour.value,
                 "dateNaissanceMois"     : selectDateNaissanceMois.value,
                 "dateNaissanceAnnee"    : selectDateNaissanceAnnee.value
-            }, token);
+            }, this.JWT);
 
             if(Result === 200)
             {
                 this.toast("toastSuccesModifierPersonne");
-                const nouvellePersonne = await this.model.GetPersonne(idPersonne, token);
+                const nouvellePersonne = await this.model.GetPersonne(idPersonne, this.JWT);
                 let liRencontre = document.getElementById(`personne_${idPersonne}`);
                 if(liRencontre != null)
                 {
@@ -395,11 +389,9 @@ class IndexController extends BaseController
         {
             try
             {
-                const token = Historique;
-
                 const Result = await this.model.SupprimerPersonne({
                     'idPersonneARencontrer' : idPersonne
-                }, token);
+                }, this.JWT);
 
                 if(Result === 200)
                 {
