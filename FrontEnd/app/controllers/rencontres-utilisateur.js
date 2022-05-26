@@ -3,6 +3,8 @@ class RencontreUtilisateurController extends BaseController
     constructor()
     {
         super()
+        this.compteurRencontresPassees = 0;
+        this.compteurRencontresAVenir  = 0;
         this.model = new Sitemodel()
         this.AfficherPseudo()
         this.AfficherListeRencontres().then(r => {})
@@ -13,12 +15,6 @@ class RencontreUtilisateurController extends BaseController
     {
         let ulListeRencontres                = document.getElementById("ulListeRencontres");
         let ulListeRencontresAVenir          = document.getElementById("ulListeRencontresAVenir");
-        let buttonListeRencontres_Bleu       = document.getElementById("buttonListeRencontres_Bleu");
-        let buttonListeRencontresAVenir_Gris = document.getElementById("buttonListeRencontresAVenir_Gris");
-        let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
-        let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
-        let compteurRencontresPassees        = 0;
-        let compteurRencontresAVenir         = 0;
 
 
         if((ulListeRencontres != null) && (ulListeRencontresAVenir != null))
@@ -38,20 +34,17 @@ class RencontreUtilisateurController extends BaseController
                     if(this.EstRencontreDejaFaite(rencontre))
                     {
                         listeHtmlRencontresPassees += this.CreerLigneAvecBalise_Li(true, rencontre, personne);
-                        compteurRencontresPassees++;
+                        this.compteurRencontresPassees++;
                     }
                     else
                     {
                         listeHtmlRencontresFutures += this.CreerLigneAvecBalise_Li(false, rencontre, personne);
-                        compteurRencontresAVenir++;
+                        this.compteurRencontresAVenir++;
                     }
                 }
                 ulListeRencontres.innerHTML       = listeHtmlRencontresPassees;
                 ulListeRencontresAVenir.innerHTML = listeHtmlRencontresFutures;
-                buttonListeRencontres_Bleu      .innerText += ` (${compteurRencontresPassees})`;
-                buttonListeRencontresAVenir_Gris.innerText += ` (${compteurRencontresAVenir})`;
-                buttonListeRencontres_Gris      .innerText += ` (${compteurRencontresPassees})`;
-                buttonListeRencontresAVenir_Bleu.innerText += ` (${compteurRencontresAVenir})`;
+                this.AfficherTitreBouttonsRencontresPasseesEtFutures();
             }
             catch(e)
             {
@@ -59,6 +52,19 @@ class RencontreUtilisateurController extends BaseController
                 this.toast("toastErreurGetListeRencontres");
             }
         }
+    }
+
+    AfficherTitreBouttonsRencontresPasseesEtFutures()
+    {
+        let buttonListeRencontres_Bleu       = document.getElementById("buttonListeRencontres_Bleu");
+        let buttonListeRencontresAVenir_Gris = document.getElementById("buttonListeRencontresAVenir_Gris");
+        let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
+        let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
+
+        buttonListeRencontres_Bleu.innerHTML       = `Rencontres effectu&eacute;es (${this.compteurRencontresPassees})`;
+        buttonListeRencontres_Gris.innerHTML       = `Rencontres effectu&eacute;es (${this.compteurRencontresPassees})`;
+        buttonListeRencontresAVenir_Gris.innerHTML = `Rencontres &agrave; venir (${this.compteurRencontresAVenir})`;
+        buttonListeRencontresAVenir_Bleu.innerHTML = `Rencontres &agrave; venir (${this.compteurRencontresAVenir})`;
     }
 
     ChangerListeAAfficher(afficherListeRencontres)
@@ -311,12 +317,14 @@ class RencontreUtilisateurController extends BaseController
             if(Result === 200)
             {
                 this.toast("toastSuccesModifierRencontre");
+
                 const nouvelleRencontre = await this.model.GetRencontre(idRencontre, this.JWT);
                 const EstNouvelleRencontreDejaFaite = this.EstRencontreDejaFaite(await this.model.GetRencontre(nouvelleRencontre.id, this.JWT));
                 let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
-                const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, this.JWT);
                 if(liRencontre != null)
                 {
+                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, this.JWT);
+
                     if(EstAncienneRencontreDejaFaite === EstNouvelleRencontreDejaFaite)
                     {
                         liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, personne);
@@ -331,9 +339,18 @@ class RencontreUtilisateurController extends BaseController
                             liRencontre.parentNode.removeChild(liRencontre);
 
                             if(EstNouvelleRencontreDejaFaite)
+                            {
                                 ulListeRencontres.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, personne);
+                                this.compteurRencontresPassees += 1;
+                                this.compteurRencontresAVenir  -= 1;
+                            }
                             else
+                            {
                                 ulListeRencontresAVenir.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, personne);
+                                this.compteurRencontresPassees -= 1;
+                                this.compteurRencontresAVenir  += 1;
+                            }
+                            this.AfficherTitreBouttonsRencontresPasseesEtFutures();
                         }
                     }
                 }
