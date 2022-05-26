@@ -46,7 +46,7 @@ class RencontreUtilisateurController extends BaseController
                         compteurRencontresAVenir++;
                     }
                 }
-                ulListeRencontres.innerHTML = listeHtmlRencontresPassees;
+                ulListeRencontres.innerHTML       = listeHtmlRencontresPassees;
                 ulListeRencontresAVenir.innerHTML = listeHtmlRencontresFutures;
                 buttonListeRencontres_Bleu      .innerText += ` (${compteurRencontresPassees})`;
                 buttonListeRencontresAVenir_Gris.innerText += ` (${compteurRencontresAVenir})`;
@@ -282,6 +282,7 @@ class RencontreUtilisateurController extends BaseController
             }
 
             let Result;
+            const EstAncienneRencontreDejaFaite = this.EstRencontreDejaFaite(await this.model.GetRencontre(idRencontre, this.JWT));
             if((selectNote != null) || (textAreaCommentaire != null) || (selectPartage != null))
             {
                 Result = await this.model.ModifierRencontre({
@@ -311,11 +312,30 @@ class RencontreUtilisateurController extends BaseController
             {
                 this.toast("toastSuccesModifierRencontre");
                 const nouvelleRencontre = await this.model.GetRencontre(idRencontre, this.JWT);
+                const EstNouvelleRencontreDejaFaite = this.EstRencontreDejaFaite(await this.model.GetRencontre(nouvelleRencontre.id, this.JWT));
                 let liRencontre = document.getElementById(`rencontre_${nouvelleRencontre.id}`);
+                const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, this.JWT);
                 if(liRencontre != null)
                 {
-                    const personne = await this.model.GetPersonne(nouvelleRencontre.idPersonneRencontree, this.JWT);
-                    liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, personne);
+                    if(EstAncienneRencontreDejaFaite === EstNouvelleRencontreDejaFaite)
+                    {
+                        liRencontre.innerHTML = this.RemplirLiRencontrePendantModification(nouvelleRencontre, personne);
+                    }
+                    else
+                    {
+                        if(liRencontre.parentNode)
+                        {
+                            const ulListeRencontres       = document.getElementById("ulListeRencontres");
+                            const ulListeRencontresAVenir = document.getElementById("ulListeRencontresAVenir");
+
+                            liRencontre.parentNode.removeChild(liRencontre);
+
+                            if(EstNouvelleRencontreDejaFaite)
+                                ulListeRencontres.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, personne);
+                            else
+                                ulListeRencontresAVenir.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, personne);
+                        }
+                    }
                 }
             }
             else if(Result === 400)
