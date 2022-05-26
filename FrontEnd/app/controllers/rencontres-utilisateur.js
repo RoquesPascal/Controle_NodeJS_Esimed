@@ -111,7 +111,7 @@ class RencontreUtilisateurController extends BaseController
     {
         return `<div class="row">
                     <div class="col">
-                        Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.
+                        Vous avez rendez-vous avec ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.
                     </div>
                     <div class="col-1">
                         <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
@@ -129,7 +129,7 @@ class RencontreUtilisateurController extends BaseController
         let ligne =
                `<div class="row">
                     <div class="col">
-                        Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${rencontre.dateRencontre}.<br/>
+                        Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.<br/>
                         La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}`;
         if(rencontre.partage)
            ligne += `<br/><img src="../FrontEnd/res/IconPartage.png" height="25px"/>`;
