@@ -84,11 +84,13 @@ class IndexController extends BaseController
         else
             divInfosPersonne.innerHTML = `Date de naissance non renseignée...`;
 
+        let listeCommentaires = '';
         for(const rencontre of listeRencontresDePersonne)
         {
             const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, this.JWT);
-            ulListeCommentairesRencontres.innerHTML += this.CreerLigneListeCommentaireAvecBalise_Li(utilisateur, rencontre);
+            listeCommentaires += this.CreerLigneListeCommentaireAvecBalise_Li(utilisateur, rencontre);
         }
+        ulListeCommentairesRencontres.innerHTML = listeCommentaires;
     }
 
     ChangerListeAAfficher(afficherListeRencontres)
