@@ -41,6 +41,11 @@ body
     margin-bottom : 10px;
 }
 
+.marginTop10px
+{
+    margin-top : 10px;
+}
+
 .modal-content
 {
     background-color : #3c3c3c;

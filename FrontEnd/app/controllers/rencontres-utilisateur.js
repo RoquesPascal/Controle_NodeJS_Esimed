@@ -130,9 +130,24 @@ class RencontreUtilisateurController extends BaseController
                `<div class="row">
                     <div class="col">
                         Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.<br/>
-                        La note est de ${rencontre.note}/10. Le commentaire est : ${rencontre.commentaire}`;
+                        <div class="row">
+                            <div class="col-1">
+                                <img src="../FrontEnd/res/IconeNotation.png" height="25px"/>
+                            </div>
+                            <div class="col-11 marginTop10px">
+                                ${rencontre.note}/10
+                            </div>
+                        </div>
+                        <div class="row marginBottom10px">
+                            <div class="col-1">
+                                <img src="../FrontEnd/res/IconeCommentaire.png" height="25px"/>
+                            </div>
+                            <div class="col-11">
+                                ${rencontre.commentaire}
+                            </div>
+                        </div>`;
         if(rencontre.partage)
-           ligne += `<br/><img src="../FrontEnd/res/IconPartage.png" height="25px"/>`;
+           ligne += `<img src="../FrontEnd/res/IconPartage.png" height="25px"/> Commentaire partag&eacute;`;
         ligne +=
                    `</div>
                     <div class="col-1">
