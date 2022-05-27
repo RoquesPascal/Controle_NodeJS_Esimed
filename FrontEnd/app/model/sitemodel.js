@@ -53,6 +53,18 @@ class Sitemodel
         }
     }
 
+    async GetListeRencontresDePersonneARencontrer(jwt, idPersonne)
+    {
+        try
+        {
+            return await this.api.GetListeRencontresDePersonneARencontrer(jwt, idPersonne)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async GetListeRencontresDeUtilisateurConnecte(jwt, idUtilisateur)
     {
         try

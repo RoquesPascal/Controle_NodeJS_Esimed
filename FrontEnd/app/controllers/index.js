@@ -41,12 +41,12 @@ class IndexController extends BaseController
                     );
                     if(rencontresCommunesUtilisateurPersonne.idUtilisateur != null) //Je fais comme ça pour éviter de remonter un 404 depuis le back
                     {
-                        listeHtmlPersonnesRencontrees += this.CreerLigne(personne);
+                        listeHtmlPersonnesRencontrees += this.CreerLigneAvecBalise_Li(personne);
                         compteurPersonnesRencontrees++;
                     }
                     else
                     {
-                        listeHtmlPersonnesARencontrer += this.CreerLigne(personne);
+                        listeHtmlPersonnesARencontrer += this.CreerLigneAvecBalise_Li(personne);
                         compteurPersonnesARencontrer++;
                     }
                 }
@@ -65,6 +65,32 @@ class IndexController extends BaseController
         }
     }
 
+    async AfficherModalInfoPersonne(idPersonne)
+    {
+        let modalTitreNomPrenomPersonne   = document.getElementById("modalTitreNomPrenomPersonne");
+        let divInfosPersonne               = document.getElementById("divInfosPersonne");
+        let ulListeCommentairesRencontres = document.getElementById("ulListeCommentairesRencontres");
+        const personne                    = await this.model.GetPersonne(idPersonne, this.JWT);
+        const listeRencontresDePersonne   = await this.model.GetListeRencontresDePersonneARencontrer(this.JWT, idPersonne);
+
+        modalTitreNomPrenomPersonne.innerHTML = `${personne.prenom} ${personne.nom}`;
+        if(personne.dateNaissance != null)
+        {
+            if(personne.sexe === 1)
+                divInfosPersonne.innerHTML = `N&eacute; le ${this.AfficherDate(personne.dateNaissance)}`;
+            else if(personne.sexe === 0)
+                divInfosPersonne.innerHTML = `N&eacute;e le ${this.AfficherDate(personne.dateNaissance)}`;
+        }
+        else
+            divInfosPersonne.innerHTML = `Date de naissance non renseignée...`;
+
+        for(const rencontre of listeRencontresDePersonne)
+        {
+            const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, this.JWT);
+            ulListeCommentairesRencontres.innerHTML += this.CreerLigneListeCommentaireAvecBalise_Li(utilisateur, rencontre);
+        }
+    }
+
     ChangerListeAAfficher(afficherListeRencontres)
     {
         let ulListePersonnesRencontrees  = document.getElementById("ulListePersonnesRencontrees");
@@ -76,16 +102,16 @@ class IndexController extends BaseController
         {
             if(afficherListeRencontres)
             {
-                ulListePersonnesRencontrees.style.display = 'block';
-                ulListePersonnesARencontrer.style.display = 'none';
-                bouttonsPersonnesRecontrees.style.display = 'block';
+                ulListePersonnesRencontrees.style.display  = 'block';
+                ulListePersonnesARencontrer.style.display  = 'none';
+                bouttonsPersonnesRecontrees.style.display  = 'block';
                 bouttonsPersonnesARencontrer.style.display = 'none';
             }
             else
             {
-                ulListePersonnesRencontrees.style.display = 'none';
-                ulListePersonnesARencontrer.style.display = 'block';
-                bouttonsPersonnesRecontrees.style.display = 'none';
+                ulListePersonnesRencontrees.style.display  = 'none';
+                ulListePersonnesARencontrer.style.display  = 'block';
+                bouttonsPersonnesRecontrees.style.display  = 'none';
                 bouttonsPersonnesARencontrer.style.display = 'block';
             }
         }
@@ -93,30 +119,56 @@ class IndexController extends BaseController
 
     CreerLigne(personne)
     {
-        let li =  `<li class="liPersonne" id="personne_${personne.id}">
-                       <div class="row">
-                           <div class="col">
+        let ligne =  `<div class="row">
+                           <div class="col-sm">
                                ${personne.prenom} ${personne.nom} `
         if(personne.sexe === 1)
         {
-            li += `<img src="../FrontEnd/res/IconeSexeMasculin.png" height="25px"/>`;
+            ligne += `<img src="../FrontEnd/res/IconeSexeMasculin.png" height="25px"/>`;
         }
         else if(personne.sexe === 0)
         {
-            li += `<img src="../FrontEnd/res/IconeSexeFeminin.png" height="25px"/>`;
+            ligne += `<img src="../FrontEnd/res/IconeSexeFeminin.png" height="25px"/>`;
         }
-        li +=         `</div>
-                           <div class="col-1">
-                               <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                                   <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                               </button>
-                               <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                                   <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                               </button>
-                           </div>
-                       </div>
-                   </li>`;
-        return li;
+        ligne +=         `</div>
+                          <div class="col-1">
+                              <button type="button" class="btn btn btn-success boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalInfoPersonne" onclick="indexController.AfficherModalInfoPersonne('${personne.id}')">
+                                  <img src="../FrontEnd/res/IconeDescription.png" height="25px"/>
+                              </button>
+                              <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
+                                  <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
+                              </button>
+                              <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
+                                  <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                              </button>
+                          </div>
+                      </div>`;
+        return ligne;
+    }
+
+    CreerLigneAvecBalise_Li(personne)
+    {
+        return `<li class="liPersonne" id="personne_${personne.id}">${this.CreerLigne(personne)}</li>`;
+    }
+
+    CreerLigneListeCommentaire(utilisateur, rencontre)
+    {
+        return `<div class="row ligneUtilisateur">
+                    ${utilisateur.pseudo} (${utilisateur.email}) le ${this.AfficherDate(rencontre.dateRencontre)} :
+                </div>
+                <div class="row ligneCommentaire">
+                    <div class="col-1">
+                        <img src="../FrontEnd/res/IconeCommentaire.png" height="25px"/>
+                    </div>
+                    <div class="col-11">
+                        ${rencontre.commentaire}
+                    </div>
+                </div>`;
+    }
+
+    CreerLigneListeCommentaireAvecBalise_Li(utilisateur, rencontre)
+    {
+        return `<li class="liCommentaireRencontre" id="commentaireRencontre_${rencontre.id}">${this.CreerLigneListeCommentaire(utilisateur, rencontre)}</li>`;
     }
 
     async CreerPersonne()
@@ -342,7 +394,7 @@ class IndexController extends BaseController
                 let liRencontre = document.getElementById(`personne_${idPersonne}`);
                 if(liRencontre != null)
                 {
-                    liRencontre.innerHTML = this.RemplirLiPersonnePendantModification(nouvellePersonne);
+                    liRencontre.innerHTML = this.CreerLigne(nouvellePersonne);
                 }
             }
             else if(Result === 400)
@@ -355,32 +407,6 @@ class IndexController extends BaseController
             console.log(e);
             this.toast("toastErreurModifierPersonne");
         }
-    }
-
-    RemplirLiPersonnePendantModification(personne)
-    {
-        let li =  `<div class="row">
-                       <div class="col">
-                           ${personne.prenom} ${personne.nom} `
-        if(personne.sexe ===1)
-        {
-            li += `<img src="../FrontEnd/res/IconeSexeMasculin.png" height="25px"/>`;
-        }
-        else if(personne.sexe === 0)
-        {
-            li += `<img src="../FrontEnd/res/IconeSexeFeminin.png" height="25px"/>`;
-        }
-        li +=     `</div>
-                       <div class="col-1">
-                           <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                               <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                           </button>
-                           <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                               <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                           </button>
-                       </div>
-                   </div>`;
-        return li;
     }
 
     async SupprimerPersonne(idPersonne)

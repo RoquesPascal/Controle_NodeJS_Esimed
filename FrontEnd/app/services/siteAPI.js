@@ -4,6 +4,7 @@ class SiteAPI
     {
         this.api = "http://localhost:3000"
         this.lienListeRencontreUtilisateur = "idUtilisateur"
+        this.lienListeRencontreDePersonneARencontrer = "listeRencontreDePersonneARencontrer"
         this.lienLogin = "login"
         this.lienPersonnes = "personnes"
         this.lienRencontres = "rencontres"
@@ -80,6 +81,24 @@ class SiteAPI
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}`, {method  : "GET",
                                                                    headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(await response.text())
+                    }
+                    else
+                    {
+                        resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    GetListeRencontresDePersonneARencontrer(jwt, idPersonne)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}/${this.lienListeRencontreDePersonneARencontrer}/${idPersonne}`, {method  : "GET",
+                                                                                                                                 headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
                     if(response.status !== 200)
                     {

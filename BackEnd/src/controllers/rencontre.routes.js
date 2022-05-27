@@ -60,6 +60,27 @@ router.get('/idUtilisateur/:idUtilisateur',
     }
 });
 
+router.get('/listeRencontreDePersonneARencontrer/:idPersonne',
+    async (req, res) =>
+    {
+        try
+        {
+            const rencontres = await Table_Rencontres.findAll({
+                where :
+                    {
+                        idPersonneRencontree : req.params.idPersonne,
+                        partage              : true
+                    },
+                order: [['createdAt', 'DESC']]
+            });
+            return res.status(200).send(rencontres);
+        }
+        catch(e)
+        {
+            return res.status(400).send("Erreur lors de la récupération de la personne");
+        }
+    });
+
 router.post('/rencontresCommunes/utilisateurPersonne',
             body('idUtilisateur').isString().notEmpty(),
             body('idPersonneRencontree').isString().notEmpty(),
