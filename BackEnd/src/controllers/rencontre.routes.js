@@ -65,7 +65,7 @@ router.get('/listeRencontreDePersonneARencontrer/:idPersonne',
     {
         try
         {
-            const rencontres = await Table_Rencontres.findAll({
+            let listeRencontres = await Table_Rencontres.findAll({
                 where :
                     {
                         idPersonneRencontree : req.params.idPersonne,
@@ -73,7 +73,39 @@ router.get('/listeRencontreDePersonneARencontrer/:idPersonne',
                     },
                 order: [['createdAt', 'DESC']]
             });
-            return res.status(200).send(rencontres);
+
+            function EstRencontreDejaFaite(rencontre)
+            {
+                const dateActuelle = new Date(Date.now());
+                const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+
+                if(dateActuelle.getFullYear() > parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle > année rencontre
+                    return true;
+                else if(dateActuelle.getFullYear() < parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle < année rencontre
+                    return false;
+                else
+                {
+                    if(dateActuelle.getMonth() + 1 > parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel > mois rencontre
+                        return true;
+                    else if(dateActuelle.getMonth() + 1 < parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel < mois rencontre
+                        return false;
+                    else
+                    {
+                        if(dateActuelle.getDate() >= parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])) //Jour actuel >= jour rencontre
+                            return true;
+                        else //Jour actuel < jour rencontre
+                            return false;
+                    }
+                }
+            }
+
+            for(let i = 0 ; i < listeRencontres.length ; i++)
+            {
+                if(!EstRencontreDejaFaite(listeRencontres[i]))
+                    listeRencontres.splice(i, 1);
+            }
+
+            return res.status(200).send(listeRencontres);
         }
         catch(e)
         {
