@@ -3,6 +3,8 @@ class IndexController extends BaseController
     constructor()
     {
         super()
+        this.compteurPersonnesRencontrees = 0;
+        this.compteurPersonnesARencontrer = 0;
         this.model = new Sitemodel()
         this.AfficherPseudo()
         this.AfficherListePersonnesARencontrer().then(r => {})
@@ -14,10 +16,6 @@ class IndexController extends BaseController
     {
         let ulListePersonnesRencontrees      = document.getElementById("ulListePersonnesRencontrees");
         let ulListePersonnesARencontrer      = document.getElementById("ulListePersonnesARencontrer");
-        let buttonListeRencontres_Bleu       = document.getElementById("buttonListeRencontres_Bleu");
-        let buttonListeRencontresAVenir_Gris = document.getElementById("buttonListeRencontresAVenir_Gris");
-        let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
-        let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
 
         if((ulListePersonnesRencontrees != null) && (ulListePersonnesARencontrer != null))
         {
@@ -26,8 +24,6 @@ class IndexController extends BaseController
                 let listePersonnes = await this.model.GetListePersonnesARencontrer(this.JWT);
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
-                let compteurPersonnesRencontrees  = 0;
-                let compteurPersonnesARencontrer  = 0;
 
                 ulListePersonnesRencontrees.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
                 ulListePersonnesARencontrer.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
@@ -42,20 +38,17 @@ class IndexController extends BaseController
                     if(rencontresCommunesUtilisateurPersonne.idUtilisateur != null) //Je fais comme ça pour éviter de remonter un 404 depuis le back
                     {
                         listeHtmlPersonnesRencontrees += this.CreerLigneAvecBalise_Li(personne);
-                        compteurPersonnesRencontrees++;
+                        this.compteurPersonnesRencontrees++;
                     }
                     else
                     {
                         listeHtmlPersonnesARencontrer += this.CreerLigneAvecBalise_Li(personne);
-                        compteurPersonnesARencontrer++;
+                        this.compteurPersonnesARencontrer++;
                     }
                 }
                 ulListePersonnesRencontrees.innerHTML = listeHtmlPersonnesRencontrees;
                 ulListePersonnesARencontrer.innerHTML = listeHtmlPersonnesARencontrer;
-                buttonListeRencontres_Bleu      .innerText += ` (${compteurPersonnesRencontrees})`;
-                buttonListeRencontresAVenir_Gris.innerText += ` (${compteurPersonnesARencontrer})`;
-                buttonListeRencontres_Gris      .innerText += ` (${compteurPersonnesRencontrees})`;
-                buttonListeRencontresAVenir_Bleu.innerText += ` (${compteurPersonnesARencontrer})`;
+                this.AfficherTitreBouttonsPersonnesRencontreesEtARencontrer();
             }
             catch(e)
             {
@@ -91,6 +84,19 @@ class IndexController extends BaseController
             listeCommentaires += this.CreerLigneListeCommentaireAvecBalise_Li(utilisateur, rencontre);
         }
         ulListeCommentairesRencontres.innerHTML = listeCommentaires;
+    }
+
+    AfficherTitreBouttonsPersonnesRencontreesEtARencontrer()
+    {
+        let buttonListeRencontres_Bleu       = document.getElementById("buttonListeRencontres_Bleu");
+        let buttonListeRencontresAVenir_Gris = document.getElementById("buttonListeRencontresAVenir_Gris");
+        let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
+        let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
+
+        buttonListeRencontres_Bleu.innerHTML       = `Rencontres effectu&eacute;es (${this.compteurPersonnesRencontrees})`;
+        buttonListeRencontres_Gris.innerHTML       = `Rencontres effectu&eacute;es (${this.compteurPersonnesRencontrees})`;
+        buttonListeRencontresAVenir_Gris.innerHTML = `Rencontres &agrave; venir (${this.compteurPersonnesARencontrer})`;
+        buttonListeRencontresAVenir_Bleu.innerHTML = `Rencontres &agrave; venir (${this.compteurPersonnesARencontrer})`;
     }
 
     ChangerListeAAfficher(afficherListeRencontres)
@@ -162,7 +168,7 @@ class IndexController extends BaseController
                     <div class="col-1">
                         <img src="../FrontEnd/res/IconeCommentaire.png" height="25px"/>
                     </div>
-                    <div class="col-11">
+                    <div class="col-11 texteJustifie">
                         ${rencontre.commentaire}
                     </div>
                 </div>`;
@@ -426,6 +432,12 @@ class IndexController extends BaseController
                     const li = document.getElementById(`personne_${idPersonne}`);
                     if(li.parentNode)
                     {
+                        if(li.parentNode.id === "ulListePersonnesRencontrees")
+                            this.compteurPersonnesRencontrees--;
+                        else if(li.parentNode.id === "ulListePersonnesARencontrer")
+                            this.compteurPersonnesARencontrer--;
+                        this.AfficherTitreBouttonsPersonnesRencontreesEtARencontrer();
+
                         li.parentNode.removeChild(li);
                     }
                     this.toast("toastSuccesSupprimerPersonne");

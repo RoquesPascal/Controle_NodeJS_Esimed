@@ -142,7 +142,7 @@ class RencontreUtilisateurController extends BaseController
                             <div class="col-1">
                                 <img src="../FrontEnd/res/IconeCommentaire.png" height="25px"/>
                             </div>
-                            <div class="col-11">
+                            <div class="col-11 texteJustifie">
                                 ${rencontre.commentaire}
                             </div>
                         </div>`;
@@ -405,6 +405,12 @@ class RencontreUtilisateurController extends BaseController
                     const li = document.getElementById(`rencontre_${idRencontre}`);
                     if(li.parentNode)
                     {
+                        if(li.parentNode.id === "ulListeRencontres")
+                            this.compteurRencontresPassees--;
+                        else if(li.parentNode.id === "ulListeRencontresAVenir")
+                            this.compteurRencontresAVenir--;
+                        this.AfficherTitreBouttonsRencontresPasseesEtFutures();
+
                         li.parentNode.removeChild(li);
                     }
                     this.toast("toastSuccesSupprimerRencontre");

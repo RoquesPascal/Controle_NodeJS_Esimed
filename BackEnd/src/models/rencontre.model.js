@@ -52,7 +52,7 @@ const Table_Rencontres = sequelize.define('Table_Rencontres', {
     },
     commentaire :
     {
-        type      : DataTypes.STRING,
+        type      : DataTypes.STRING(4096),
         allowNull : true,
         required  : false
     },
