@@ -93,10 +93,10 @@ class IndexController extends BaseController
         let buttonListeRencontres_Gris       = document.getElementById("buttonListeRencontres_Gris");
         let buttonListeRencontresAVenir_Bleu = document.getElementById("buttonListeRencontresAVenir_Bleu");
 
-        buttonListeRencontres_Bleu.innerHTML       = `Rencontres effectu&eacute;es (${this.compteurPersonnesRencontrees})`;
-        buttonListeRencontres_Gris.innerHTML       = `Rencontres effectu&eacute;es (${this.compteurPersonnesRencontrees})`;
-        buttonListeRencontresAVenir_Gris.innerHTML = `Rencontres &agrave; venir (${this.compteurPersonnesARencontrer})`;
-        buttonListeRencontresAVenir_Bleu.innerHTML = `Rencontres &agrave; venir (${this.compteurPersonnesARencontrer})`;
+        buttonListeRencontres_Bleu.innerHTML       = `Personnes rencontr&eacute;es (${this.compteurPersonnesRencontrees})`;
+        buttonListeRencontres_Gris.innerHTML       = `Personnes rencontr&eacute;es (${this.compteurPersonnesRencontrees})`;
+        buttonListeRencontresAVenir_Gris.innerHTML = `Personnes &agrave; rencontrer (${this.compteurPersonnesARencontrer})`;
+        buttonListeRencontresAVenir_Bleu.innerHTML = `Personnes &agrave; rencontrer (${this.compteurPersonnesARencontrer})`;
     }
 
     ChangerListeAAfficher(afficherListeRencontres)
