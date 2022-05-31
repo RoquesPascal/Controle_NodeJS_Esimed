@@ -14,8 +14,25 @@ router.get('/',
 {
     try
     {
-        const toutesLesPersonnesARencontrer = await Table_PersonnesARencontrer.findAll({order: [['nom', 'ASC']]});
-        return res.status(200).send(toutesLesPersonnesARencontrer);
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        const toutesLesPersonnesARencontrer = await Table_RelationCreationUtilisateurPersonnesARencontrer.findAll({
+            where :
+            {
+                idUtilisateur : tokenDecode.id
+            }
+        });
+        let listePersonnes = [];
+        for(const personne of toutesLesPersonnesARencontrer)
+        {
+            const laPersonne = await Table_PersonnesARencontrer.findOne({
+                where :
+                {
+                    id : personne.idPersonneRencontree
+                }
+            });
+            listePersonnes.push(laPersonne);
+        }
+        return res.status(200).send(listePersonnes);
     }
     catch(e)
     {
@@ -91,6 +108,18 @@ router.put('/',
 
     try
     {
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        const laPersonne = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+            where :
+            {
+                idUtilisateur        : tokenDecode.id,
+                idPersonneRencontree : req.body.idPersonneARencontrer
+            }
+        });
+        if(laPersonne.id == null)
+            res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+
+
         let dateDeNaissance;
         if((req.body.dateNaissanceJour === "") || (req.body.dateNaissanceMois === "") || (req.body.dateNaissanceAnnee === ""))
             dateDeNaissance = null;
@@ -112,6 +141,7 @@ router.put('/',
     }
     catch(e)
     {
+        console.log(`erreur = ${e}`)
         res.status(400).send("Erreur lors de la modification de la personne");
     }
 });
@@ -124,16 +154,25 @@ router.delete('/',
     {
         await Table_Rencontres.destroy({
             where :
-                {
-                    idPersonneRencontree : req.body.idPersonneARencontrer
-                }
+            {
+                idPersonneRencontree : req.body.idPersonneARencontrer
+            }
+        })
+
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        await Table_RelationCreationUtilisateurPersonnesARencontrer.destroy({
+            where :
+            {
+                idUtilisateur        : tokenDecode.id,
+                idPersonneRencontree : req.body.idPersonneARencontrer
+            }
         })
 
         await Table_PersonnesARencontrer.destroy({
             where :
-                {
-                    id : req.body.idPersonneARencontrer
-                }
+            {
+                id : req.body.idPersonneARencontrer
+            }
         })
         res.status(200).send("Personne Supprimée !");
     }
