@@ -4,6 +4,8 @@ const router = express.Router();
 const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
+const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
+const jwtDecode = require("jwt-decode");
 
 
 
@@ -57,11 +59,17 @@ router.post('/',
             dateDeNaissance = null;
         else
             dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
-        await Table_PersonnesARencontrer.create({id            : uuid.v4(),
+        const idPersonne = uuid.v4();
+        await Table_PersonnesARencontrer.create({id            : idPersonne,
                                                        nom           : req.body.nom,
                                                        prenom        : req.body.prenom,
                                                        sexe          : req.body.sexe,
                                                        dateNaissance : dateDeNaissance});
+
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        await Table_RelationCreationUtilisateurPersonnesARencontrer.create({id                   : uuid.v4(),
+                                                                                  idUtilisateur        : tokenDecode.id,
+                                                                                  idPersonneRencontree : idPersonne});
         res.status(201).send("Personne ajoutée !");
     }
     catch(e)
