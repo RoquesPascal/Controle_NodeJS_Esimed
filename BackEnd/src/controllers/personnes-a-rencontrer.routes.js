@@ -89,22 +89,41 @@ router.post('/',
 
     try
     {
-        let dateDeNaissance;
-        if((req.body.dateNaissanceJour === "") || (req.body.dateNaissanceMois === "") || (req.body.dateNaissanceAnnee === ""))
-            dateDeNaissance = null;
-        else
-            dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
-        const idPersonne = uuid.v4();
-        await Table_PersonnesARencontrer.create({id            : idPersonne,
-                                                       nom           : req.body.nom,
-                                                       prenom        : req.body.prenom,
-                                                       sexe          : req.body.sexe,
-                                                       dateNaissance : dateDeNaissance});
-
         const tokenDecode = jwtDecode(req.headers.authorization);
-        await Table_RelationCreationUtilisateurPersonnesARencontrer.create({id                   : uuid.v4(),
-                                                                                  idUtilisateur        : tokenDecode.id,
-                                                                                  idPersonneRencontree : idPersonne});
+
+        const personne = await Table_PersonnesARencontrer.findOne({
+            where :
+            {
+                nom    : req.body.nom,
+                prenom : req.body.prenom,
+                sexe   : req.body.sexe
+            }
+        });
+
+        if(personne == null) //Si la personne n'existe pas
+        {
+            let dateDeNaissance;
+            if((req.body.dateNaissanceJour === "") || (req.body.dateNaissanceMois === "") || (req.body.dateNaissanceAnnee === ""))
+                dateDeNaissance = null;
+            else
+                dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+            const idPersonne = uuid.v4();
+            await Table_PersonnesARencontrer.create({id            : idPersonne,
+                                                           nom           : req.body.nom,
+                                                           prenom        : req.body.prenom,
+                                                           sexe          : req.body.sexe,
+                                                           dateNaissance : dateDeNaissance});
+
+            await Table_RelationCreationUtilisateurPersonnesARencontrer.create({id                   : uuid.v4(),
+                                                                                      idUtilisateur        : tokenDecode.id,
+                                                                                      idPersonneRencontree : idPersonne});
+        }
+        else //Si la personne existe déjà
+        {
+            await Table_RelationCreationUtilisateurPersonnesARencontrer.create({id                   : uuid.v4(),
+                                                                                      idUtilisateur        : tokenDecode.id,
+                                                                                      idPersonneRencontree : personne.id});
+        }
         res.status(201).send("Personne ajoutée !");
     }
     catch(e)
@@ -173,10 +192,10 @@ router.delete('/',
         const tokenDecode = jwtDecode(req.headers.authorization);
         const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
             where :
-                {
-                    idUtilisateur        : tokenDecode.id,
-                    idPersonneRencontree : req.body.idPersonneARencontrer
-                }
+            {
+                idUtilisateur        : tokenDecode.id,
+                idPersonneRencontree : req.body.idPersonneARencontrer
+            }
         });
         if(relationUtilisateurPersonnes.id == null)
             res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
@@ -184,6 +203,7 @@ router.delete('/',
         await Table_Rencontres.destroy({
             where :
             {
+                idUtilisateur        : tokenDecode.id,
                 idPersonneRencontree : req.body.idPersonneARencontrer
             }
         })
@@ -196,12 +216,22 @@ router.delete('/',
             }
         })
 
-        await Table_PersonnesARencontrer.destroy({
+        const relationsAvecCettePersonne = await Table_RelationCreationUtilisateurPersonnesARencontrer.findAll({
             where :
             {
-                id : req.body.idPersonneARencontrer
+                idPersonneRencontree : req.body.idPersonneARencontrer
             }
-        })
+        });
+        if(relationsAvecCettePersonne.length == 0)
+        {
+            await Table_PersonnesARencontrer.destroy({
+                where :
+                    {
+                        id : req.body.idPersonneARencontrer
+                    }
+            })
+        }
+
         res.status(200).send("Personne Supprimée !");
     }
     catch(e)
