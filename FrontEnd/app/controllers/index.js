@@ -179,7 +179,7 @@ class IndexController extends BaseController
         return `<li class="liCommentaireRencontre" id="commentaireRencontre_${rencontre.id}">${this.CreerLigneListeCommentaire(utilisateur, rencontre)}</li>`;
     }
 
-    async CreerPersonne()
+    async CreerPersonne(afficherLaNouvellePersonneDansLaListe)
     {
         const inputNom                 = document.getElementById("inputNom");
         const inputPrenom              = document.getElementById("inputPrenom");
@@ -207,6 +207,8 @@ class IndexController extends BaseController
 
             if(Result === 201)
             {
+                if(afficherLaNouvellePersonneDansLaListe)
+                    await creerRencontreController.AfficherListePersonnesARencontrer();
                 this.toast("toastSuccesCreerPersonne");
             }
             else if(Result === 400)
@@ -340,7 +342,7 @@ class IndexController extends BaseController
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         <img src="../FrontEnd/res/IconeRetour.png" height="25px"/> Annuler
                     </button>
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.CreerPersonne()">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.CreerPersonne(false)">
                         <img src="../FrontEnd/res/IconeAjoutBlanche.png" height="25px"/> Ajouter
                     </button>`;
         }

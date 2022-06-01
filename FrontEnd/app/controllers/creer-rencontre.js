@@ -97,49 +97,6 @@ class CreerRencontreController extends BaseController
         }
     }
 
-    async CreerPersonne()
-    {
-        const inputNom                   = document.getElementById("inputNom");
-        const inputPrenom                = document.getElementById("inputPrenom");
-        const selectSexe                 = document.getElementById("selectSexe");
-        const selectDateNaissanceJour    = document.getElementById("selectDateNaissanceJour");
-        const selectDateNaissanceMois    = document.getElementById("selectDateNaissanceMois");
-        const selectDateNaissanceAnnee   = document.getElementById("selectDateNaissanceAnnee");
-
-        if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
-        {
-            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
-            return;
-        }
-
-        try
-        {
-            const Result = await this.model.CreerPersonne({
-                'nom'                : inputNom.value,
-                'prenom'             : inputPrenom.value,
-                'sexe'               : selectSexe.value,
-                'dateNaissanceJour'  : selectDateNaissanceJour.value,
-                'dateNaissanceMois'  : selectDateNaissanceMois.value,
-                'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
-            }, this.JWT);
-
-            if(Result === 201)
-            {
-                this.toast("toastSuccesCreerPersonne");
-                await this.AfficherListePersonnesARencontrer();
-            }
-            else if(Result === 400)
-            {
-                this.toast("toastErreurCreerPersonne");
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-            this.toast("toastErreurCreerPersonne");
-        }
-    }
-
     async CreerRencontre()
     {
         const selectPersonnesARencontrer = document.getElementById("selectPersonnesARencontrer");

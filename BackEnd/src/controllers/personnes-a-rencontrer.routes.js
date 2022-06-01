@@ -32,6 +32,15 @@ router.get('/',
             });
             listePersonnes.push(laPersonne);
         }
+
+        function trierPersonnesParNom(pers1, pers2)
+        {
+            if(pers1.nom < pers2.nom)      return -1;
+            else if(pers1.nom > pers2.nom) return 1;
+            else                           return 0;
+        }
+        listePersonnes.sort(trierPersonnesParNom);
+
         return res.status(200).send(listePersonnes);
     }
     catch(e)
