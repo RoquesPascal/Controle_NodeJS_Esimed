@@ -15,14 +15,14 @@ router.get('/',
     try
     {
         const tokenDecode = jwtDecode(req.headers.authorization);
-        const toutesLesPersonnesARencontrer = await Table_RelationCreationUtilisateurPersonnesARencontrer.findAll({
+        const relationsUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findAll({
             where :
             {
                 idUtilisateur : tokenDecode.id
             }
         });
         let listePersonnes = [];
-        for(const personne of toutesLesPersonnesARencontrer)
+        for(const personne of relationsUtilisateurPersonnes)
         {
             const laPersonne = await Table_PersonnesARencontrer.findOne({
                 where :
@@ -45,10 +45,19 @@ router.get('/:id',
 {
     try
     {
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+            where :
+            {
+                idUtilisateur        : tokenDecode.id,
+                idPersonneRencontree : req.params.id
+            }
+        });
+
         const personne = await Table_PersonnesARencontrer.findOne({
             where :
             {
-                id : req.params.id
+                id : relationUtilisateurPersonnes.idPersonneRencontree
             }
         });
         return res.status(200).send(personne);
@@ -109,14 +118,14 @@ router.put('/',
     try
     {
         const tokenDecode = jwtDecode(req.headers.authorization);
-        const laPersonne = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+        const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
             where :
             {
                 idUtilisateur        : tokenDecode.id,
                 idPersonneRencontree : req.body.idPersonneARencontrer
             }
         });
-        if(laPersonne.id == null)
+        if(relationUtilisateurPersonnes.id == null)
             res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
 
@@ -152,6 +161,17 @@ router.delete('/',
 {
     try
     {
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+            where :
+                {
+                    idUtilisateur        : tokenDecode.id,
+                    idPersonneRencontree : req.body.idPersonneARencontrer
+                }
+        });
+        if(relationUtilisateurPersonnes.id == null)
+            res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+
         await Table_Rencontres.destroy({
             where :
             {
@@ -159,7 +179,6 @@ router.delete('/',
             }
         })
 
-        const tokenDecode = jwtDecode(req.headers.authorization);
         await Table_RelationCreationUtilisateurPersonnesARencontrer.destroy({
             where :
             {
