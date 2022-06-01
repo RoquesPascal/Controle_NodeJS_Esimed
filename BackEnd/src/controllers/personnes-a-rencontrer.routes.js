@@ -226,9 +226,9 @@ router.delete('/',
         {
             await Table_PersonnesARencontrer.destroy({
                 where :
-                    {
-                        id : req.body.idPersonneARencontrer
-                    }
+                {
+                    id : req.body.idPersonneARencontrer
+                }
             })
         }
 
