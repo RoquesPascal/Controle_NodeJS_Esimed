@@ -4,6 +4,7 @@ const router = express.Router();
 const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const jwtDecode = require("jwt-decode");
+const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 
 
 
@@ -65,12 +66,24 @@ router.get('/listeRencontreDePersonneARencontrer/:idPersonne',
     {
         try
         {
+            const tokenDecode = jwtDecode(req.headers.authorization);
+            const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+                where :
+                {
+                    idUtilisateur        : tokenDecode.id,
+                    idPersonneRencontree : req.params.idPersonne
+                }
+            });
+            if(relationUtilisateurPersonnes.id == null)
+                res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+
+
             let listeRencontres = await Table_Rencontres.findAll({
                 where :
-                    {
-                        idPersonneRencontree : req.params.idPersonne,
-                        partage              : true
-                    },
+                {
+                    idPersonneRencontree : req.params.idPersonne,
+                    partage              : true
+                },
                 order: [['createdAt', 'DESC']]
             });
 

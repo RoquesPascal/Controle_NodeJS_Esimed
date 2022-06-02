@@ -296,7 +296,7 @@ class RencontreUtilisateurController extends BaseController
             let textAreaCommentaire = document.getElementById("textAreaCommentaire");
             let selectPartage       = document.getElementById("selectPartage");
 
-            if((selectPartage != null) &&(selectPartage.value === ''))
+            if((selectPartage != null) && (selectPartage.value === ''))
             {
                 this.toast("toastErreurCertainsChampsObligatoiresSontVides");
                 return;
