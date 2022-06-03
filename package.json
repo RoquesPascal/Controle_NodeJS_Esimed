@@ -16,6 +16,7 @@
     "dateonly": "^1.2.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-fileupload": "^1.4.0",
     "express-jwt": "^6.1.1",
     "express-validator": "^6.14.0",
     "image-js": "^0.34.1",

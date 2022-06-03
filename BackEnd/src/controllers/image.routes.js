@@ -1,15 +1,16 @@
 const express      = require('express');
 const router       = express.Router();
-const image        = require('../models/image.model');
 const multer       = require('multer');
 const uuid         = require("uuid");
 const upload       = multer({ dest: 'uploads/' });
 const Table_Images = require("../models/image.model");
+const jwtDecode    = require("jwt-decode");
+const fileUpload   = require('express-fileupload');
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
-const jwtDecode = require("jwt-decode");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 
 
+router.use(fileUpload());
 
 router.get('/:id', async (req, res) =>
 {
@@ -17,9 +18,9 @@ router.get('/:id', async (req, res) =>
     {
         const image = await Table_Images.findOne({
             where :
-                {
-                    id : req.params.id
-                }
+            {
+                id : req.params.id
+            }
         });
 
         res.download(`${image.chemin + image.nomUnique}`, image.nomOriginal);
@@ -60,7 +61,7 @@ router.post('/personne-rencontree/:idPersonneRencontree',
         const image = req.file;
 
         if(!image)
-            return res.status(400).send('No file sent');
+            return res.status(400).send('Pas de fichier');
 
         await Table_Images.create({id                   : uuid.v4(),
                                          idPersonneRencontree : req.params.idPersonneRencontree,
