@@ -41,7 +41,7 @@ router.post('/personne-rencontree/:idPersonneRencontree',
             where :
             {
                 idUtilisateur        : tokenDecode.id,
-                idPersonneRencontree : req.params.id
+                idPersonneRencontree : req.params.idPersonneRencontree
             }
         });
 
