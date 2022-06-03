@@ -20,7 +20,7 @@ const Table_RelationCreationUtilisateurPersonnesARencontrer = sequelize.define('
         allowNull : false,
         required  : true,
 
-        references:
+        references :
         {
             model : Table_Utilisateurs,
             key   : 'id'
@@ -32,7 +32,7 @@ const Table_RelationCreationUtilisateurPersonnesARencontrer = sequelize.define('
         allowNull : false,
         required  : true,
 
-        references:
+        references :
         {
             model : Table_PersonnesARencontrer,
             key   : 'id'
