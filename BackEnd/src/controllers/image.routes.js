@@ -1,8 +1,8 @@
 const express = require('express');
-const router = express.Router();
-const image = require('../models/image.model');
+const router  = express.Router();
+const image   = require('../models/image.model');
 const multer  = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload  = multer({ dest: 'uploads/' });
 
 
 
