@@ -25,9 +25,9 @@ router.get('/:id',
     {
         const utilisateur = await Table_Utilisateurs.findOne({
             where :
-                {
-                    id : req.params.id
-                }
+            {
+                id : req.params.id
+            }
         });
         return res.status(200).send(utilisateur);
     }

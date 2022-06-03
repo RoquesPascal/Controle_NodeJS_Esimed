@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('./db');
+const Table_PersonnesARencontrer = require("./personnes-a-rencontrer.model");
 
 
 
@@ -10,26 +11,38 @@ const Table_Images = sequelize.define('Table_Images', {
         type         : DataTypes.UUID,
         defaultValue : DataTypes.UUIDV4
     },
-    uniqueName :
+    idPersonneRencontree :
+    {
+        type      : DataTypes.UUID,
+        allowNull : false,
+        required  : true,
+
+        references :
+        {
+            model : Table_PersonnesARencontrer,
+            key   : 'id'
+        }
+    },
+    nomUnique :
     {
         type      : DataTypes.STRING,
         allowNull : false
     },
-    originalName :
+    nomOriginal :
     {
         type      : DataTypes.STRING,
         allowNull : false
     },
-    path :
+    chemin :
     {
         type      : DataTypes.STRING,
         allowNull : false
     },
-    mimeType :
+    type :
     {
         type : DataTypes.STRING
     },
-    size :
+    taille :
     {
         type : DataTypes.INTEGER
     },
