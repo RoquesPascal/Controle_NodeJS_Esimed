@@ -97,67 +97,67 @@ Après les étapes d'enregistrement et de connexion, sera affichée :
 
 A partir de l'application, on pourra : 
 
-- [ ]  Partager les remarques concernant ses rencontres
+- [x]  Partager les remarques concernant ses rencontres
 
-- [ ]  Visualiser les remarques partagées par d'autres sur les rencontres qu'ils ont faites avec les personnes qui sont connues par l'utilisateur
+- [x]  Visualiser les remarques partagées par d'autres sur les rencontres qu'ils ont faites avec les personnes qui sont connues par l'utilisateur
 
 Le partage des remarques concernant les rencontres sera stocké côté serveur. On y trouvera :
 
-- [ ]  Les personnes rencontrées :
+- [x]  Les personnes rencontrées :
   
-  - [ ]  Nom
+  - [x]  Nom
   
-  - [ ]  Prénom
+  - [x]  Prénom
   
-  - [ ]  Sexe
+  - [x]  Sexe
   
-  - [ ]  Date de naissance
+  - [x]  Date de naissance
 
-- [ ]  Les remarques (texte libre) sur les rencontres avec ces personnes  faites par d'autres utilisateurs. Une remarque sera partagée avec les informations suivantes :
+- [x]  Les remarques (texte libre) sur les rencontres avec ces personnes  faites par d'autres utilisateurs. Une remarque sera partagée avec les informations suivantes :
   
-  - [ ]  Adresse e-mail de l'utilisateur qui partage
+  - [x]  Adresse e-mail de l'utilisateur qui partage
   
-  - [ ]  Identification de la personne rencontrée :
+  - [x]  Identification de la personne rencontrée :
     
-    - [ ]  Nom
+    - [x]  Nom
     
-    - [ ]  Prénom
+    - [x]  Prénom
     
-    - [ ]  Sexe
+    - [x]  Sexe
     
-    - [ ]  Date de naissance
+    - [x]  Date de naissance
   
-  - [ ]  Remarque
+  - [x]  Remarque
 
-- [ ]  Les remarques partagées seront récupérées par l'application client en fonction des paramètres suivants :
+- [x]  Les remarques partagées seront récupérées par l'application client en fonction des paramètres suivants :
   
-  - [ ]  Identification de la personne rencontrée :
+  - [x]  Identification de la personne rencontrée :
     
-    - [ ]  Nom
+    - [x]  Nom
     
-    - [ ]  Prénom
+    - [x]  Prénom
     
-    - [ ]  Sexe
+    - [x]  Sexe
     
-    - [ ]  Date de naissance
+    - [x]  Date de naissance
   
-  - [ ]  L'application renverra les informations suivantes :
+  - [x]  L'application renverra les informations suivantes :
     
-    - [ ]  Date du partage
+    - [x]  Date du partage
     
-    - [ ]  Pseudo de l'utilisateur qui a partagé la remarque
+    - [x]  Pseudo de l'utilisateur qui a partagé la remarque
     
-    - [ ]  La remarque
+    - [x]  La remarque
 
-- [ ]  Les remarques sont associées aux rencontres. On peut donc partager plusieurs remarques pour une personnes puisque l'on peut avoir plusieurs sessions de *speed dating* avec la même personne
+- [x]  Les remarques sont associées aux rencontres. On peut donc partager plusieurs remarques pour une personnes puisque l'on peut avoir plusieurs sessions de *speed dating* avec la même personne
 
 ##### Application cliente
 
-- [ ]  L'utilisateur pourra partager chaque remarque concernant une rencontre.
+- [x]  L'utilisateur pourra partager chaque remarque concernant une rencontre.
 
-- [ ]  La suppression d'une rencontre supprime son partage.
+- [x]  La suppression d'une rencontre supprime son partage.
 
-- [ ]  On pourra consulter la liste de remarques partagées pour une personne donnée.
+- [x]  On pourra consulter la liste de remarques partagées pour une personne donnée.
 
 #### Lot 3
 
@@ -165,11 +165,11 @@ Le partage des remarques concernant les rencontres sera stocké côté serveur. 
 
 - [ ]  L'utilisateur pourra prendre une photo de la personne rencontrée et l'associer à la fiche correspondante.
 
-- [ ]  Certains utilisateurs auront un statut "modérateur" et pourront : 
+- [x]  Certains utilisateurs auront un statut "modérateur" et pourront : 
   
-  - [ ]  visualiser les derniers partages faits par les utilisateurs 
+  - [x]  visualiser les derniers partages faits par les utilisateurs 
   
-  - [ ]  les supprimer ci-besoin en cas de remarque ne respectant pas la charte d'utilisation de l'application
+  - [x]  les supprimer ci-besoin en cas de remarque ne respectant pas la charte d'utilisation de l'application
 
 
 
@@ -177,7 +177,7 @@ Le partage des remarques concernant les rencontres sera stocké côté serveur. 
 
 - [ ]  L'application devra au maximum simplifier la vie de l'utilisateur :
   
-  - [ ]  Initialisation correcte des formulaires
+  - [x]  Initialisation correcte des formulaires
   
   - [ ]  Choix pertinents des types de saisies pour les champs textes
   
