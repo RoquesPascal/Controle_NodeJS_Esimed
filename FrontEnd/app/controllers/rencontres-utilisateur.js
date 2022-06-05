@@ -6,7 +6,6 @@ class RencontreUtilisateurController extends BaseController
         this.compteurRencontresPassees = 0;
         this.compteurRencontresAVenir  = 0;
         this.model = new Sitemodel()
-        this.AfficherPseudo()
         this.AfficherListeRencontres().then(r => {})
         this.ChangerListeAAfficher(true)
     }

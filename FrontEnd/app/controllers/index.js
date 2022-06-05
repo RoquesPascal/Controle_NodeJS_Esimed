@@ -6,7 +6,6 @@ class IndexController extends BaseController
         this.compteurPersonnesRencontrees = 0;
         this.compteurPersonnesARencontrer = 0;
         this.model = new Sitemodel()
-        this.AfficherPseudo()
         this.AfficherListePersonnesARencontrer().then(r => {})
         this.ChangerListeAAfficher(true)
         this.InitialiserChamps().then(r => {})

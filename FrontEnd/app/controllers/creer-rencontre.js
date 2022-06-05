@@ -4,7 +4,6 @@ class CreerRencontreController extends BaseController
     {
         super()
         this.model = new Sitemodel()
-        this.AfficherPseudo()
         this.AfficherListePersonnesARencontrer().then(r => {})
         this.CreerLesSelectPourLesRencontres()
     }
