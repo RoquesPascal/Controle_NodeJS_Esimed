@@ -31,7 +31,7 @@ class RencontreModerationController extends RencontreUtilisateurController
                     this.compteurRencontres ++;
                     const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, this.JWT);
                     const personne    = await this.model.GetPersonne(rencontre.idPersonneRencontree, this.JWT);
-                    listeHtmlRencontres += this.CreerLigneAvecBalise_Li(true, rencontre, utilisateur, personne);
+                    listeHtmlRencontres += this.CreerLigneAvecBalise_Li(true, rencontre, utilisateur, personne, true);
                     this.compteurRencontresPassees++;
                 }
                 ulListeRencontres.innerHTML = listeHtmlRencontres;
