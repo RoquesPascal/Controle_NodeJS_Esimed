@@ -30,7 +30,12 @@ class BaseController
                                           <li><a class="dropdown-item" onclick="navigate('rencontres-utilisateur');"><img src="../FrontEnd/res/IconeVosRencontres.png" height="25px"/> Vos rencontres</a></li>`;
             if(this.EstRole_moderateur())
                 dropDownInnerHTMTL +=    `<li><hr class="dropdown-divider"></li>
-                                          <li><a class="dropdown-item" onclick="navigate('rencontres-moderation')"><img src="../FrontEnd/res/IconeRencontresNoire.png" height="25px"/> Rencontres des utilisateurs <img src="../FrontEnd/res/IconeModerateurNoire.png" height="25px"/></a></li>`;
+                                          <li>
+                                              <span class="dropdown-item-text color_RougeFonce_7A0008 fontSizePlus20Pourcents">
+                                                    <img src="../FrontEnd/res/IconeModerateurRouge.png" height="35px"/> Espace mod&eacute;ration <img src="../FrontEnd/res/IconeModerateurRouge.png" height="35px"/>
+                                              </span>
+                                          </li>
+                                          <li><a class="dropdown-item color_RougeFonce_7A0008" onclick="navigate('rencontres-moderation')"><img src="../FrontEnd/res/IconeRencontresRouge.png" height="25px"/> Rencontres des utilisateurs</a></li>`;
 
             dropDownInnerHTMTL +=        `<li><hr class="dropdown-divider"></li>
                                           <li><a class="dropdown-item" onclick="indexController.Deconnexion()"><img src="../FrontEnd/res/IconeDeconnexion.png" height="25px"/> Se d&eacute;connecter</a></li>

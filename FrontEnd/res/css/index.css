@@ -15,9 +15,19 @@ body
     position : center;
 }
 
+.color_RougeFonce_7A0008
+{
+    color : #7A0008;
+}
+
 .dropdown-item
 {
     cursor : pointer;
+}
+
+.fontSizePlus20Pourcents
+{
+    font-size : 1.2em;
 }
 
 .infosPersonne
