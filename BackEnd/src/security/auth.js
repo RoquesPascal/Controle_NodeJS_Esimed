@@ -1,9 +1,14 @@
 const { sign } = require('jsonwebtoken');
 
-exports.generateAuthToken = (id, pseudo, email) => {
-  return sign(
-    { id, pseudo, email },
-    process.env.JWT_SECRET,
-    { expiresIn: process.env.JWT_EXPIRES_IN },
-  );
+exports.generateAuthToken = (utilisateur) => {
+    const id     = utilisateur.id;
+    const pseudo = utilisateur.pseudo;
+    const email  = utilisateur.email;
+    const roles  = utilisateur.roles;
+
+    return sign(
+        { id, pseudo, email, roles },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN },
+    );
 };

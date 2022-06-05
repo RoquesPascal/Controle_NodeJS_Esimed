@@ -18,15 +18,16 @@ router.post('/login',
         return res.status(400).json({ errors: errors.array() });
 
     const utilisateur = await Table_Utilisateurs.findOne({
-        where:{
-            email: req.body.email
+        where :
+        {
+            email : req.body.email
         }
     })
 
     if(!utilisateur || !passwordsAreEqual(req.body.motDePasse, utilisateur.motDePasse))
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
-    const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
+    const token = generateAuthToken(utilisateur);
     return res.status(200).send(token);
 });
 
@@ -45,9 +46,10 @@ router.post('/signup',
         const utilisateur = await Table_Utilisateurs.create({id         : uuid.v4(),
                                                                    pseudo     : req.body.pseudo,
                                                                    email      : req.body.email,
-                                                                   motDePasse : generateHashedPassword(req.body.motDePasse)});
+                                                                   motDePasse : generateHashedPassword(req.body.motDePasse),
+                                                                   roles      : ["membre"]});
 
-        const token = generateAuthToken(utilisateur.id, utilisateur.pseudo, utilisateur.email);
+        const token = generateAuthToken(utilisateur);
         return res.status(201).send(token);
     }
     catch(e)

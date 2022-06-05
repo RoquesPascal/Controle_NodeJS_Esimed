@@ -30,6 +30,12 @@ const Table_Utilisateurs = sequelize.define('Table_Utilisateurs', {
         type      : DataTypes.STRING,
         allowNull : false,
         required  : true
+    },
+    roles :
+    {
+        type      : DataTypes.JSON,
+        allowNull : false,
+        required  : true
     }
 }, {
   // Other model options go here
