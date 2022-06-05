@@ -32,12 +32,12 @@ class RencontreUtilisateurController extends BaseController
                     const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, this.JWT);
                     if(this.EstRencontreDejaFaite(rencontre))
                     {
-                        listeHtmlRencontresPassees += this.CreerLigneAvecBalise_Li(true, rencontre, personne);
+                        listeHtmlRencontresPassees += this.CreerLigneAvecBalise_Li(true, rencontre, null, personne);
                         this.compteurRencontresPassees++;
                     }
                     else
                     {
-                        listeHtmlRencontresFutures += this.CreerLigneAvecBalise_Li(false, rencontre, personne);
+                        listeHtmlRencontresFutures += this.CreerLigneAvecBalise_Li(false, rencontre, null, personne);
                         this.compteurRencontresAVenir++;
                     }
                 }
@@ -92,12 +92,12 @@ class RencontreUtilisateurController extends BaseController
         }
     }
 
-    CreerLigneAvecBalise_Li(EstRencontreDejaFaite, rencontre, personne)
+    CreerLigneAvecBalise_Li(EstRencontreDejaFaite, rencontre, utilisateur, personne)
     {
         let ligne = `<li class="liRencontre" id="rencontre_${rencontre.id}">`;
 
         if(EstRencontreDejaFaite)
-            ligne += this.CreerLigneRencontrePassee(rencontre, personne);
+            ligne += this.CreerLigneRencontrePassee(rencontre, utilisateur, personne);
         else
             ligne += this.CreerLigneRencontreFuture(rencontre, personne);
 
@@ -108,32 +108,32 @@ class RencontreUtilisateurController extends BaseController
 
     CreerLigneAvecBouttons_ModifierSupprimer(EstRencontreDejaFaite, rencontre)
     {
-        let bouttons = `<div class="col-1">
-                            <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
-                            </button>
-                            <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                            </button>`;
-        if(this.EstRole_moderateur() && EstRencontreDejaFaite && (rencontre.idUtilisateur == this.ParseJwt(this.JWT).id))
-            bouttons +=    `<button type="button" class="btn btn-warning" onclick="rencontreModerationController.SupprimerCommentaireDeRencontre('${rencontre.id}')">
-                                <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
-                            </button>`;
+        let bouttons =     `<div class="col-1">`;
 
-        bouttons +=    `</div>`;
+        if(rencontre.idUtilisateur == this.ParseJwt(this.JWT).id)
+            bouttons +=        `<button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
+                                    <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
+                                </button>
+                                <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
+                                    <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                                </button>`;
+
+        if(this.EstRole_moderateur() && EstRencontreDejaFaite)
+            bouttons +=        `<button type="button" class="btn btn-warning" onclick="rencontreModerationController.SupprimerCommentaireDeRencontre('${rencontre.id}')">
+                                    <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                                </button>`;
+
+        bouttons +=        `</div>`;
 
         return bouttons;
     }
 
-    async CreerLigneAvecNomPrenomUtilisateurOuVous(rencontre, personne)
+    CreerLigneAvecNomPrenomUtilisateurOuVous(rencontre, utilisateur, personne)
     {
         if(rencontre.idUtilisateur == this.ParseJwt(this.JWT).id)
             return `Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.<br/>`;
         else
-        {
-            const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, this.JWT);
-            return `${utilisateur.pseudo} &agrave; rencontr&eacute; ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.<br/>`
-        }
+            return `${utilisateur.pseudo} &agrave; rencontr&eacute; ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.<br/>`;
     }
 
     CreerLigneRencontreFuture(rencontre, personne)
@@ -153,11 +153,11 @@ class RencontreUtilisateurController extends BaseController
                 </div>`;
     }
 
-    CreerLigneRencontrePassee(rencontre, personne)
+    CreerLigneRencontrePassee(rencontre, utilisateur, personne)
     {
         let ligne =`<div class="row">
                         <div class="col">
-                            Vous avez rencontr&eacute; ${personne.prenom} ${personne.nom} le ${this.AfficherDate(rencontre.dateRencontre)}.<br/>
+                            ${this.CreerLigneAvecNomPrenomUtilisateurOuVous(rencontre, utilisateur, personne)}
                             <div class="row">
                                 <div class="col-1">
                                     <img src="../FrontEnd/res/IconeNotation.png" height="25px"/>
@@ -375,13 +375,13 @@ class RencontreUtilisateurController extends BaseController
 
                             if(EstNouvelleRencontreDejaFaite)
                             {
-                                ulListeRencontres.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, personne);
+                                ulListeRencontres.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, null, personne);
                                 this.compteurRencontresPassees += 1;
                                 this.compteurRencontresAVenir  -= 1;
                             }
                             else
                             {
-                                ulListeRencontresAVenir.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, personne);
+                                ulListeRencontresAVenir.innerHTML += this.CreerLigneAvecBalise_Li(EstNouvelleRencontreDejaFaite, nouvelleRencontre, null, personne);
                                 this.compteurRencontresPassees -= 1;
                                 this.compteurRencontresAVenir  += 1;
                             }
@@ -405,7 +405,7 @@ class RencontreUtilisateurController extends BaseController
     RemplirLiRencontrePendantModification(rencontre, personne)
     {
         if(this.EstRencontreDejaFaite(rencontre))
-            return this.CreerLigneRencontrePassee(rencontre, personne);
+            return this.CreerLigneRencontrePassee(rencontre, null, personne);
         else
             return this.CreerLigneRencontreFuture(rencontre, personne);
     }

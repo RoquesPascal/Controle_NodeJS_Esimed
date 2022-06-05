@@ -21,8 +21,9 @@ class RencontreModerationController extends RencontreUtilisateurController
 
                 for(const rencontre of listeRencontres)
                 {
-                    const personne = await this.model.GetPersonne(rencontre.idPersonneRencontree, this.JWT);
-                    listeHtmlRencontres += this.CreerLigneAvecBalise_Li(true, rencontre, personne);
+                    const utilisateur = await this.model.GetUtilisateur(rencontre.idUtilisateur, this.JWT);
+                    const personne    = await this.model.GetPersonne(rencontre.idPersonneRencontree, this.JWT);
+                    listeHtmlRencontres += this.CreerLigneAvecBalise_Li(true, rencontre, utilisateur, personne);
                     this.compteurRencontresPassees++;
                 }
                 ulListeRencontres.innerHTML = listeHtmlRencontres;
