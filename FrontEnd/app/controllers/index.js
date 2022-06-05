@@ -139,10 +139,10 @@ class IndexController extends BaseController
         }
         ligne +=         `</div>
                           <div class="col-1">
-                              <button type="button" class="btn btn btn-success boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalInfoPersonne" onclick="indexController.AfficherModalInfoPersonne('${personne.id}')">
+                              <button type="button" class="btn btn-success boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalInfoPersonne" onclick="indexController.AfficherModalInfoPersonne('${personne.id}')">
                                   <img src="../FrontEnd/res/IconeDescription.png" height="25px"/>
                               </button>
-                              <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
+                              <button type="button" class="btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
                                   <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
                               </button>
                               <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">

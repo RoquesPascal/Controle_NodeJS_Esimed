@@ -6,8 +6,10 @@ class SiteAPI
         this.lienListeRencontreUtilisateur = "idUtilisateur"
         this.lienListeRencontreDePersonneARencontrer = "listeRencontreDePersonneARencontrer"
         this.lienLogin = "login"
+        this.lienModeration = "moderation"
         this.lienPersonnes = "personnes"
         this.lienRencontres = "rencontres"
+        this.lienRencontresPassees = "rencontres-passees"
         this.rencontresCommunesUtilisateurPersonne = "rencontresCommunes/utilisateurPersonne"
         this.lienSignup = "signup"
         this.lienUtilisateurs = "utilisateurs"
@@ -117,6 +119,24 @@ class SiteAPI
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienRencontres}/${this.lienListeRencontreUtilisateur}/${idUtilisateur}`, {method  : "GET",
                                                                                                                           headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(await response.text())
+                    }
+                    else
+                    {
+                        resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    GetListeRencontresPassees(jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}/${this.lienModeration}/${this.lienRencontresPassees}`, {method  : "GET",
+                                                                                                                        headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
                     if(response.status !== 200)
                     {

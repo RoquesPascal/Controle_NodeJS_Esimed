@@ -63,68 +63,87 @@ router.get('/idUtilisateur/:idUtilisateur',
 
 router.get('/listeRencontreDePersonneARencontrer/:idPersonne',
     async (req, res) =>
+{
+    try
     {
-        try
-        {
-            const tokenDecode = jwtDecode(req.headers.authorization);
-            const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
-                where :
-                {
-                    idUtilisateur        : tokenDecode.id,
-                    idPersonneRencontree : req.params.idPersonne
-                }
-            });
-            if(relationUtilisateurPersonnes.id == null)
-                res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
-
-
-            let listeRencontres = await Table_Rencontres.findAll({
-                where :
-                {
-                    idPersonneRencontree : req.params.idPersonne,
-                    partage              : true
-                },
-                order: [['createdAt', 'DESC']]
-            });
-
-            function EstRencontreDejaFaite(rencontre)
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+            where :
             {
-                const dateActuelle = new Date(Date.now());
-                const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+                idUtilisateur        : tokenDecode.id,
+                idPersonneRencontree : req.params.idPersonne
+            }
+        });
+        if(relationUtilisateurPersonnes.id == null)
+            res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
-                if(dateActuelle.getFullYear() > parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle > année rencontre
+
+        let listeRencontres = await Table_Rencontres.findAll({
+            where :
+            {
+                idPersonneRencontree : req.params.idPersonne,
+                partage              : true
+            },
+            order: [['createdAt', 'DESC']]
+        });
+
+        function EstRencontreDejaFaite(rencontre)
+        {
+            const dateActuelle = new Date(Date.now());
+            const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+
+            if(dateActuelle.getFullYear() > parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle > année rencontre
+                return true;
+            else if(dateActuelle.getFullYear() < parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle < année rencontre
+                return false;
+            else
+            {
+                if(dateActuelle.getMonth() + 1 > parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel > mois rencontre
                     return true;
-                else if(dateActuelle.getFullYear() < parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle < année rencontre
+                else if(dateActuelle.getMonth() + 1 < parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel < mois rencontre
                     return false;
                 else
                 {
-                    if(dateActuelle.getMonth() + 1 > parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel > mois rencontre
+                    if(dateActuelle.getDate() >= parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])) //Jour actuel >= jour rencontre
                         return true;
-                    else if(dateActuelle.getMonth() + 1 < parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel < mois rencontre
+                    else //Jour actuel < jour rencontre
                         return false;
-                    else
-                    {
-                        if(dateActuelle.getDate() >= parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])) //Jour actuel >= jour rencontre
-                            return true;
-                        else //Jour actuel < jour rencontre
-                            return false;
-                    }
                 }
             }
-
-            for(let i = 0 ; i < listeRencontres.length ; i++)
-            {
-                if(!EstRencontreDejaFaite(listeRencontres[i]))
-                    listeRencontres.splice(i, 1);
-            }
-
-            return res.status(200).send(listeRencontres);
         }
-        catch(e)
+
+        for(let i = 0 ; i < listeRencontres.length ; i++)
         {
-            return res.status(400).send("Erreur lors de la récupération de la personne");
+            if(!EstRencontreDejaFaite(listeRencontres[i]))
+                listeRencontres.splice(i, 1);
         }
-    });
+
+        return res.status(200).send(listeRencontres);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération de la personne");
+    }
+});
+
+router.get('/moderation/rencontres-passees',
+    async (req, res) =>
+{
+    try
+    {
+        const listeRencontres = await Table_Rencontres.findAll({
+            where :
+            {
+                partage : true
+            }
+        });
+        return res.status(200).send(listeRencontres);
+    }
+    catch(e)
+    {
+        return res.status(400).send("Erreur lors de la récupération des rencontres");
+    }
+});
 
 router.post('/rencontresCommunes/utilisateurPersonne',
             body('idUtilisateur').isString().notEmpty(),

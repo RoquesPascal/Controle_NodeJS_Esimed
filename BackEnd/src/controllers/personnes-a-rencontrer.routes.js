@@ -6,6 +6,7 @@ const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 const jwtDecode = require("jwt-decode");
+const {EstRole_moderateur} = require("../security/auth");
 
 
 
@@ -55,6 +56,8 @@ router.get('/:id',
     try
     {
         const tokenDecode = jwtDecode(req.headers.authorization);
+        const estModerateur = EstRole_moderateur(tokenDecode);
+
         const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
             where :
             {
@@ -63,10 +66,13 @@ router.get('/:id',
             }
         });
 
+        if(!estModerateur && ((relationUtilisateurPersonnes == null) || (relationUtilisateurPersonnes.id == null)))
+            return res.status(403).send(`Vous n'avez pas le droit d'acceder a cette ressource.`);
+
         const personne = await Table_PersonnesARencontrer.findOne({
             where :
             {
-                id : relationUtilisateurPersonnes.idPersonneRencontree
+                id : req.params.id
             }
         });
         return res.status(200).send(personne);

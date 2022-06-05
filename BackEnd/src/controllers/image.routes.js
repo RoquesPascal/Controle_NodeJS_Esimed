@@ -54,7 +54,7 @@ router.post('/personne-rencontree/:idPersonneRencontree',
         });
 
         if((personne == null) || (personne.id == null))
-            res.status(403).send(`Vous n'avez pas le droit de créer une image pour cette ressource`);
+            return res.status(403).send(`Vous n'avez pas le droit de créer une image pour cette ressource`);
 
 
 
