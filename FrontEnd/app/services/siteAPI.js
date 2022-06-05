@@ -12,6 +12,7 @@ class SiteAPI
         this.lienRencontresPassees = "rencontres-passees"
         this.rencontresCommunesUtilisateurPersonne = "rencontresCommunes/utilisateurPersonne"
         this.lienSignup = "signup"
+        this.lienSupprimerCommentaireRencontre = "supprimer-commentaire"
         this.lienUtilisateurs = "utilisateurs"
     }
 
@@ -294,6 +295,24 @@ class SiteAPI
                     else
                     {
                         resolve(response.text())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    SupprimerCommentaireRencontre(idRencontre, jwt)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienRencontres}/${this.lienSupprimerCommentaireRencontre}/${idRencontre}`, {method  : "PUT",
+                                                                   headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
                     }
                 }).catch(error => reject(error))
         }))

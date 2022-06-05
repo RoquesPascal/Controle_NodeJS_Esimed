@@ -119,8 +119,8 @@ class RencontreUtilisateurController extends BaseController
                                 </button>`;
 
         if(this.EstRole_moderateur() && EstRencontreDejaFaite)
-            bouttons +=        `<button type="button" class="btn btn-warning" onclick="rencontreModerationController.SupprimerCommentaireDeRencontre('${rencontre.id}')">
-                                    <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+            bouttons +=        `<button type="button" class="btn btn-dark" onclick="rencontreModerationController.SupprimerCommentaireDeRencontre('${rencontre.id}')">
+                                    <img src="../FrontEnd/res/IconeCommentaireSuppression.png" height="25px"/>
                                 </button>`;
 
         bouttons +=        `</div>`;

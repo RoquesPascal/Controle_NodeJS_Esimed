@@ -185,6 +185,18 @@ class Sitemodel
         }
     }
 
+    async SupprimerCommentaireRencontre(idRencontre, jwt)
+    {
+        try
+        {
+            return await this.api.SupprimerCommentaireRencontre(idRencontre, jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async SupprimerPersonne(body, jwt)
     {
         try

@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const jwtDecode = require("jwt-decode");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
+const {EstRole_moderateur} = require("../security/auth");
 
 
 
@@ -239,6 +240,41 @@ router.put('/',
         res.status(400).send("Erreur lors de la modification de la rencontre");
     }
 });
+
+router.put('/supprimer-commentaire/:idRencontre',
+    async (req, res) =>
+    {
+        const errors = validationResult(req);
+        if(!errors.isEmpty())
+            return res.status(400).json({ errors: errors.array() });
+
+        try
+        {
+            const tokenDecode = jwtDecode(req.headers.authorization);
+            if(!EstRole_moderateur(tokenDecode))
+                return res.status(403).send(`Vous n'avez pas le droit d'acceder a cette ressource.`);
+
+
+            await Table_Rencontres.update(
+                {
+                    commentaire : "Ce commentaire à été supprimé car il ne respectait pas les conditions d'utilisations",
+                    partage     : false
+                },
+                {
+                    where :
+                    {
+                        id : req.params.idRencontre
+                    }
+                });
+            res.status(200).send("Rencontre modifiée !");
+        }
+        catch(e)
+        {
+            console.log("AAAAAAAAAA")
+            console.log(e)
+            res.status(400).send("Erreur lors de la modification de la rencontre");
+        }
+    });
 
 router.delete('/',
               body('idRencontre').isString().notEmpty(),
