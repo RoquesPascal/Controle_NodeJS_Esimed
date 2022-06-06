@@ -6,7 +6,7 @@ const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 const jwtDecode = require("jwt-decode");
-const {EstRole_moderateur} = require("../security/auth");
+const {EstRole_moderateur} = require("../security/fonctions-back-end");
 
 
 

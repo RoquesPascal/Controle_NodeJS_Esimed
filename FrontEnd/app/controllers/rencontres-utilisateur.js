@@ -112,15 +112,15 @@ class RencontreUtilisateurController extends BaseController
 
         if(!estAffichageModeration && (rencontre.idUtilisateur == this.ParseJwt(this.JWT).id))
             bouttons +=        `<button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                                    <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
+                                    <img src="../FrontEnd/res/IconeModification_Blanche.png" height="25px"/>
                                 </button>
                                 <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                                    <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                                    <img src="../FrontEnd/res/IconeSuppression_Blanche.png" height="25px"/>
                                 </button>`;
 
         if(estAffichageModeration && (this.EstRole_moderateur() && EstRencontreDejaFaite))
             bouttons +=        `<button type="button" class="btn btn-dark" onclick="rencontreModerationController.SupprimerCommentaireDeRencontre('${rencontre.id}')">
-                                    <img src="../FrontEnd/res/IconeCommentaireSuppression.png" height="25px"/>
+                                    <img src="../FrontEnd/res/IconeCommentaireSuppression_Blanche.png" height="25px"/>
                                 </button>`;
 
         bouttons +=        `</div>`;
@@ -144,10 +144,10 @@ class RencontreUtilisateurController extends BaseController
                     </div>
                     <div class="col-1">
                         <button type="button" class="btn btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalModifierRencontre" onclick="rencontreUtilisateurController.InitialiserChamps('${rencontre.id}')">
-                            <img src="../FrontEnd/res/IconeModification.png" height="25px"/>
+                            <img src="../FrontEnd/res/IconeModification_Blanche.png" height="25px"/>
                         </button>
                         <button type="button" class="btn btn-danger" onclick="rencontreUtilisateurController.SupprimerRencontre('${rencontre.id}')">
-                            <img src="../FrontEnd/res/IconeSuppression.png" height="25px"/>
+                            <img src="../FrontEnd/res/IconeSuppression_Blanche.png" height="25px"/>
                         </button>
                     </div>
                 </div>`;
@@ -160,7 +160,7 @@ class RencontreUtilisateurController extends BaseController
                             ${this.CreerLigneAvecNomPrenomUtilisateurOuVous(rencontre, utilisateur, personne)}
                             <div class="row">
                                 <div class="col-1">
-                                    <img src="../FrontEnd/res/IconeNotation.png" height="25px"/>
+                                    <img src="../FrontEnd/res/IconeNotation_Blanche.png" height="25px"/>
                                 </div>
                                 <div class="col-11 marginTop10px">
                                     ${rencontre.note}/10
@@ -168,14 +168,14 @@ class RencontreUtilisateurController extends BaseController
                             </div>
                             <div class="row marginBottom10px">
                                 <div class="col-1">
-                                    <img src="../FrontEnd/res/IconeCommentaire.png" height="25px"/>
+                                    <img src="../FrontEnd/res/IconeCommentaire_Blanche.png" height="25px"/>
                                 </div>
                                 <div class="col-11 texteJustifie">
                                     ${rencontre.commentaire}
                                 </div>
                             </div>`;
         if(rencontre.partage)
-           ligne +=        `<img src="../FrontEnd/res/IconPartage.png" height="25px"/> Commentaire partag&eacute;`;
+           ligne +=        `<img src="../FrontEnd/res/IconePartage_Orange.png" height="25px"/> Commentaire partag&eacute;`;
         ligne +=       `</div>`;
         ligne += this.CreerLigneAvecBouttons_ModifierSupprimer(true, rencontre, estAffichageModeration);
         ligne +=   `</div>`;
@@ -292,10 +292,10 @@ class RencontreUtilisateurController extends BaseController
 
             boutonModifierRencontreModal.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../FrontEnd/res/IconeRetour.png" height="25px"/> Annuler
+                        <img src="../FrontEnd/res/IconeRetour_Blanche.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="rencontreUtilisateurController.ModifierRencontre('${rencontre.id}')">
-                        <img src="../FrontEnd/res/IconeSauvegarder.png" height="25px"/> Enregistrer
+                        <img src="../FrontEnd/res/IconeSauvegarder_Blanche.png" height="25px"/> Enregistrer
                     </button>`;
         }
         catch(e)
