@@ -24,7 +24,7 @@ class RencontreModerationController extends RencontreUtilisateurController
                 const listeRencontres = await this.model.GetListeRencontresPassees(this.JWT);
                 let listeHtmlRencontres = "";
 
-                ulListeRencontres.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
+                ulListeRencontres.innerHTML = '<img src="../../FrontEnd/res/Images/Loader.gif"/>';
 
                 for(const rencontre of listeRencontres)
                 {

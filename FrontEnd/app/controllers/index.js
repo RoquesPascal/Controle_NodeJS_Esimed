@@ -24,8 +24,8 @@ class IndexController extends BaseController
                 let listeHtmlPersonnesRencontrees = "";
                 let listeHtmlPersonnesARencontrer = "";
 
-                ulListePersonnesRencontrees.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
-                ulListePersonnesARencontrer.innerHTML = '<img src="../../FrontEnd/res/Loader.gif"/>';
+                ulListePersonnesRencontrees.innerHTML = '<img src="../../FrontEnd/res/Images/Loader.gif"/>';
+                ulListePersonnesARencontrer.innerHTML = '<img src="../../FrontEnd/res/Images/Loader.gif"/>';
 
                 for(const personne of listePersonnes)
                 {
@@ -67,9 +67,9 @@ class IndexController extends BaseController
         let   titreNomPrenomPersonne        = `${personne.prenom} ${personne.nom}`;
 
         if(personne.sexe == 1)
-            titreNomPrenomPersonne += ` <img src="../FrontEnd/res/IconeSexeMasculin_Bleue.png" height="25px"/>`;
+            titreNomPrenomPersonne += ` <img src="../FrontEnd/res/Images/IconeSexeMasculin_Bleue.png" height="25px"/>`;
         else if(personne.sexe == 0)
-            titreNomPrenomPersonne += ` <img src="../FrontEnd/res/IconeSexeFeminin_Rose.png" height="25px"/>`;
+            titreNomPrenomPersonne += ` <img src="../FrontEnd/res/Images/IconeSexeFeminin_Rose.png" height="25px"/>`;
 
         modalTitreNomPrenomPersonne.innerHTML = titreNomPrenomPersonne;
         if(personne.dateNaissance != null)
@@ -137,22 +137,22 @@ class IndexController extends BaseController
                                ${personne.prenom} ${personne.nom} `
         if(personne.sexe === 1)
         {
-            ligne += `<img src="../FrontEnd/res/IconeSexeMasculin_Bleue.png" height="25px"/>`;
+            ligne += `<img src="../FrontEnd/res/Images/IconeSexeMasculin_Bleue.png" height="25px"/>`;
         }
         else if(personne.sexe === 0)
         {
-            ligne += `<img src="../FrontEnd/res/IconeSexeFeminin_Rose.png" height="25px"/>`;
+            ligne += `<img src="../FrontEnd/res/Images/IconeSexeFeminin_Rose.png" height="25px"/>`;
         }
         ligne +=         `</div>
                           <div class="col-1">
                               <button type="button" class="btn btn-success boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalInfoPersonne" onclick="indexController.AfficherModalInfoPersonne('${personne.id}')">
-                                  <img src="../FrontEnd/res/IconeDescription_Blanche.png" height="25px"/>
+                                  <img src="../FrontEnd/res/Images/IconeDescription_Blanche.png" height="25px"/>
                               </button>
                               <button type="button" class="btn btn-primary boutonModifierRencontre" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.InitialiserChampsModificationPersonne('${personne.id}')">
-                                  <img src="../FrontEnd/res/IconeModification_Blanche.png" height="25px"/>
+                                  <img src="../FrontEnd/res/Images/IconeModification_Blanche.png" height="25px"/>
                               </button>
                               <button type="button" class="btn btn-danger" onclick="indexController.SupprimerPersonne('${personne.id}')">
-                                  <img src="../FrontEnd/res/IconeSuppression_Blanche.png" height="25px"/>
+                                  <img src="../FrontEnd/res/Images/IconeSuppression_Blanche.png" height="25px"/>
                               </button>
                           </div>
                       </div>`;
@@ -179,7 +179,7 @@ class IndexController extends BaseController
                 </div>
                 <div class="row ligneCommentaire">
                     <div class="col-1">
-                        <img src="../FrontEnd/res/IconeCommentaire_Blanche.png" height="25px"/>
+                        <img src="../FrontEnd/res/Images/IconeCommentaire_Blanche.png" height="25px"/>
                     </div>
                     <div class="col-11 texteJustifie">
                         ${rencontre.commentaire}
@@ -353,10 +353,10 @@ class IndexController extends BaseController
         {
             bouttonsModalCreerModifierPersonne.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../FrontEnd/res/IconeRetour_Blanche.png" height="25px"/> Annuler
+                        <img src="../FrontEnd/res/Images/IconeRetour_Blanche.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.CreerPersonne(false)">
-                        <img src="../FrontEnd/res/IconeAjout_Blanche.png" height="25px"/> Ajouter
+                        <img src="../FrontEnd/res/Images/IconeAjout_Blanche.png" height="25px"/> Ajouter
                     </button>`;
         }
     }
@@ -375,10 +375,10 @@ class IndexController extends BaseController
         {
             bouttonsModalCreerModifierPersonne.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <img src="../FrontEnd/res/IconeRetour_Blanche.png" height="25px"/> Annuler
+                        <img src="../FrontEnd/res/Images/IconeRetour_Blanche.png" height="25px"/> Annuler
                     </button>
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="indexController.ModifierPersonne('${idPersonne}')">
-                        <img src="../FrontEnd/res/IconeSauvegarder_Blanche.png" height="25px"/> Enregistrer
+                        <img src="../FrontEnd/res/Images/IconeSauvegarder_Blanche.png" height="25px"/> Enregistrer
                     </button>`;
         }
     }
