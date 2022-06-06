@@ -59,13 +59,19 @@ class IndexController extends BaseController
 
     async AfficherModalInfoPersonne(idPersonne)
     {
-        let modalTitreNomPrenomPersonne   = document.getElementById("modalTitreNomPrenomPersonne");
-        let divInfosPersonne               = document.getElementById("divInfosPersonne");
-        let ulListeCommentairesRencontres = document.getElementById("ulListeCommentairesRencontres");
-        const personne                    = await this.model.GetPersonne(idPersonne, this.JWT);
-        const listeRencontresDePersonne   = await this.model.GetListeRencontresDePersonneARencontrer(this.JWT, idPersonne);
+        let   modalTitreNomPrenomPersonne   = document.getElementById("modalTitreNomPrenomPersonne");
+        let   divInfosPersonne              = document.getElementById("divInfosPersonne");
+        let   ulListeCommentairesRencontres = document.getElementById("ulListeCommentairesRencontres");
+        const personne                      = await this.model.GetPersonne(idPersonne, this.JWT);
+        const listeRencontresDePersonne     = await this.model.GetListeRencontresDePersonneARencontrer(this.JWT, idPersonne);
+        let   titreNomPrenomPersonne        = `${personne.prenom} ${personne.nom}`;
 
-        modalTitreNomPrenomPersonne.innerHTML = `${personne.prenom} ${personne.nom}`;
+        if(personne.sexe == 1)
+            titreNomPrenomPersonne += ` <img src="../FrontEnd/res/IconeSexeMasculin_Bleue.png" height="25px"/>`;
+        else if(personne.sexe == 0)
+            titreNomPrenomPersonne += ` <img src="../FrontEnd/res/IconeSexeFeminin_Rose.png" height="25px"/>`;
+
+        modalTitreNomPrenomPersonne.innerHTML = titreNomPrenomPersonne;
         if(personne.dateNaissance != null)
         {
             if(personne.sexe === 1)
@@ -158,10 +164,18 @@ class IndexController extends BaseController
         return `<li class="liPersonne" id="personne_${personne.id}">${this.CreerLigne(personne)}</li>`;
     }
 
+    CreerLigneAvecPseudoOuVous(utilisateur, rencontre)
+    {
+        if(rencontre.idUtilisateur == this.ParseJwt(this.JWT).id)
+            return `Vous le ${this.AfficherDate(rencontre.dateRencontre)} :`;
+        else
+            return `${utilisateur.pseudo} (${utilisateur.email}) le ${this.AfficherDate(rencontre.dateRencontre)} :`;
+    }
+
     CreerLigneListeCommentaire(utilisateur, rencontre)
     {
         return `<div class="row ligneUtilisateur">
-                    ${utilisateur.pseudo} (${utilisateur.email}) le ${this.AfficherDate(rencontre.dateRencontre)} :
+                    ${this.CreerLigneAvecPseudoOuVous(utilisateur, rencontre)}
                 </div>
                 <div class="row ligneCommentaire">
                     <div class="col-1">

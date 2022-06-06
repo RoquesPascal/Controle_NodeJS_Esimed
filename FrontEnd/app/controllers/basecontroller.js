@@ -23,22 +23,22 @@ class BaseController
         if(dropDown != null)
         {
             let dropDownInnerHTMTL = `<button class="btn btn-secondary dropdown-toggle" type="button" id="dropDownMenu" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                          <li><a class="dropdown-item" onclick="navigate('index');"><img src="../FrontEnd/res/IconeMenuPrincipal_Noire.png" height="25px"/> Menu principal</a></li>
+                                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
+                                          <li><a class="dropdown-item" onclick="navigate('index');"><img src="../FrontEnd/res/IconeMenuPrincipal_Grise.png" height="25px"/> Menu principal</a></li>
                                           <li><hr class="dropdown-divider"></li>
-                                          <li><a class="dropdown-item" onclick="navigate('creer-rencontre');"><img src="../FrontEnd/res/IconeAjout_Noire.png" height="25px"/> Cr&eacute;ez votre rencontre</a></li>
-                                          <li><a class="dropdown-item" onclick="navigate('rencontres-utilisateur');"><img src="../FrontEnd/res/IconeVosRencontres_Noire.png" height="25px"/> Vos rencontres</a></li>`;
+                                          <li><a class="dropdown-item" onclick="navigate('creer-rencontre');"><img src="../FrontEnd/res/IconeAjout_Grise.png" height="25px"/> Cr&eacute;ez votre rencontre</a></li>
+                                          <li><a class="dropdown-item" onclick="navigate('rencontres-utilisateur');"><img src="../FrontEnd/res/IconeVosRencontres_Grise.png" height="25px"/> Vos rencontres</a></li>`;
             if(this.EstRole_moderateur())
                 dropDownInnerHTMTL +=    `<li><hr class="dropdown-divider"></li>
                                           <li>
                                               <span class="dropdown-item-text color_RougeFonce_7A0008 fontSizePlus20Pourcents">
-                                                    <img src="../FrontEnd/res/IconeModerateur_Rouge.png" height="35px"/> Espace mod&eacute;ration <img src="../FrontEnd/res/IconeModerateur_Rouge.png" height="35px"/>
+                                                    <img src="../FrontEnd/res/IconeModerateur_Orange.png" height="35px"/> Espace mod&eacute;ration <img src="../FrontEnd/res/IconeModerateur_Orange.png" height="35px"/>
                                               </span>
                                           </li>
-                                          <li><a class="dropdown-item color_RougeFonce_7A0008" onclick="navigate('rencontres-moderation')"><img src="../FrontEnd/res/IconeRencontres_Rouge.png" height="25px"/> Rencontres des utilisateurs</a></li>`;
+                                          <li><a class="dropdown-item color_RougeFonce_7A0008" onclick="navigate('rencontres-moderation')"><img src="../FrontEnd/res/IconeRencontres_Orange.png" height="25px"/> Rencontres des utilisateurs</a></li>`;
 
             dropDownInnerHTMTL +=        `<li><hr class="dropdown-divider"></li>
-                                          <li><a class="dropdown-item" onclick="indexController.Deconnexion()"><img src="../FrontEnd/res/IconeDeconnexion_Noire.png" height="25px"/> Se d&eacute;connecter</a></li>
+                                          <li><a class="dropdown-item" onclick="indexController.Deconnexion()"><img src="../FrontEnd/res/IconeDeconnexion_Grise.png" height="25px"/> Se d&eacute;connecter</a></li>
                                       </ul>`;
             dropDown.innerHTML = dropDownInnerHTMTL;
             this.AfficherPseudo();
