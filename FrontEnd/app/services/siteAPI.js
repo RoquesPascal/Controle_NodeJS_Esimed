@@ -52,13 +52,15 @@ class SiteAPI
             fetch(`${this.api}/${this.lienImages}/${idUtilisateur}`, {method  : "GET",
                                                                                 headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
-                    if((response.status == 400) || (response.status == 500))
+                    if(response.status === 200)
                     {
-                        reject(response.status)
+                        resolve(response.json())
                     }
+                    else if(response.status === 404)
+                        resolve()
                     else
                     {
-                        console.log(response)
+                        reject(response.status)
                     }
                 }).catch(error => reject(error))
         }))

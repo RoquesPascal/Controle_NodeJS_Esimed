@@ -42,23 +42,6 @@ class IndexController extends BaseController
         }
     }
 
-    async TEST_RecupererFichier()
-    {
-        try
-        {
-            let divTestImage = document.getElementById('divTestImage');
-            let Result = await this.model.TEST_RecupererFichier(this.JWT, '4f01c98a-889d-4eef-a065-3d1f69ca73f6')
-            console.log('Result')
-            console.log(Result)
-            //divTestImage.innerHTML = `<img src="http://localhost:63342/BackEnd/images/eaa6808fabdb95775cc79c6f68281a8a"/>`
-            divTestImage.innerHTML = `<img src="${Result}"/>`
-        }
-        catch(e)
-        {
-            console.log(`erreur = ${e}`)
-        }
-    }
-
     async AfficherListePersonnesARencontrer()
     {
         let ulListePersonnesRencontrees      = document.getElementById("ulListePersonnesRencontrees");
@@ -96,6 +79,13 @@ class IndexController extends BaseController
                 ulListePersonnesRencontrees.innerHTML = listeHtmlPersonnesRencontrees;
                 ulListePersonnesARencontrer.innerHTML = listeHtmlPersonnesARencontrer;
                 this.AfficherTitreBouttonsPersonnesRencontreesEtARencontrer();
+
+                for(const personne of listePersonnes)
+                {
+                    let divPhotoPersonne = document.getElementById(`divPhotoPerosnne_${personne.id}`);
+                    if(divPhotoPersonne != null)
+                        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, 100);
+                }
             }
             catch(e)
             {
@@ -108,6 +98,7 @@ class IndexController extends BaseController
     async AfficherModalInfoPersonne(idPersonne)
     {
         let   modalTitreNomPrenomPersonne   = document.getElementById("modalTitreNomPrenomPersonne");
+        let   divPhotoPersonne              = document.getElementById("divPhotoPersonne");
         let   divInfosPersonne              = document.getElementById("divInfosPersonne");
         let   ulListeCommentairesRencontres = document.getElementById("ulListeCommentairesRencontres");
         const personne                      = await this.model.GetPersonne(idPersonne, this.JWT);
@@ -120,6 +111,7 @@ class IndexController extends BaseController
             titreNomPrenomPersonne += ` <img src="../FrontEnd/res/Images/IconeSexeFeminin_Rose.png" height="25px"/>`;
 
         modalTitreNomPrenomPersonne.innerHTML = titreNomPrenomPersonne;
+        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, 150);
         if(personne.dateNaissance != null)
         {
             if(personne.sexe === 1)
@@ -137,6 +129,29 @@ class IndexController extends BaseController
             listeCommentaires += this.CreerLigneListeCommentaireAvecBalise_Li(utilisateur, rencontre);
         }
         ulListeCommentairesRencontres.innerHTML = listeCommentaires;
+    }
+
+    async AfficherPhotoDeProfilDePersonneARencontrer(personne, largeurImage)
+    {
+        try
+        {
+            let image = await this.model.TEST_RecupererFichier(this.JWT, personne.id)
+            if(image != null)
+                return `<img src="http://localhost:63342/${image.chemin}/${image.nomUnique}" width="${largeurImage}px"/>`;
+            else
+            {
+                if(personne.sexe == 1)
+                    return `<img src="../FrontEnd/res/Images/IconeHomme_Blanche.png" height="${largeurImage}px"/>`;
+                if(personne.sexe == 0)
+                    return `<img src="../FrontEnd/res/Images/IconeFemme_Blanche.png" height="${largeurImage}px"/>`;
+                else
+                    return ``;
+            }
+        }
+        catch(e)
+        {
+            console.log(`erreur = ${e}`)
+        }
     }
 
     AfficherTitreBouttonsPersonnesRencontreesEtARencontrer()
@@ -181,8 +196,9 @@ class IndexController extends BaseController
     CreerLigne(personne)
     {
         let ligne =  `<div class="row">
-                           <div class="col-sm">
-                               ${personne.prenom} ${personne.nom} `
+                          <div class="col-3" id="divPhotoPerosnne_${personne.id}"></div>
+                          <div class="col-sm">
+                              ${personne.prenom} ${personne.nom} `
         if(personne.sexe === 1)
         {
             ligne += `<img src="../FrontEnd/res/Images/IconeSexeMasculin_Bleue.png" height="25px"/>`;

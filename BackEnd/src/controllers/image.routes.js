@@ -11,21 +11,20 @@ const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models
 
 
 
-router.get('/:id', async (req, res) =>
+router.get('/:idPersonne', async (req, res) =>
 {
     try
     {
-        console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
         const image = await Table_Images.findOne({
             where :
             {
-                idPersonneRencontree : req.params.id
+                idPersonneRencontree : req.params.idPersonne
             }
         });
-        console.log(image)
         if(!image)
-            return res.status(400).send('Pas de fichier');
-        res.download(`${image.chemin + image.nomUnique}`, image.nomOriginal);
+            return res.status(404).send('Pas de fichier');
+
+        res.status(200).send(image);
     }
     catch(e)
     {
