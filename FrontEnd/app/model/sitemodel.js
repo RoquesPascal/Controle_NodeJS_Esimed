@@ -5,6 +5,30 @@ class Sitemodel
         this.api = new SiteAPI()
     }
 
+    async TEST_EnregistrerFichier(jwt, body)
+    {
+        try
+        {
+            return await this.api.TEST_EnregistrerFichier(jwt, JSON.stringify(body))
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
+    async TEST_RecupererFichier(jwt, idUtilisateur)
+    {
+        try
+        {
+            return await this.api.TEST_RecupererFichier(jwt, idUtilisateur)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
     async CreerPersonne(body, jwt)
     {
         try

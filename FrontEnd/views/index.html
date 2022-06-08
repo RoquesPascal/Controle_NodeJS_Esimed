@@ -1,6 +1,28 @@
 <div class="dropdown" id="dropDown"></div>
 
 <div class="container">
+    <iframe name="votar" style="display:none;"></iframe>
+    <form action="http://localhost:3000/images/" method="post" enctype="multipart/form-data" target="votar">
+        <input type="file" id="inputFichier" name="inputFichier">
+        <input type="submit" id="inputButon" onclick="/*indexController.TEST_EnregistrerFichier()*/" value="LEZGOOOOOO">
+    </form>
+    <!--<input type="file" id="inputFichier" name="inputFichier">
+    <input type="button" id="inputButon" onclick="indexController.TEST_EnregistrerFichier()" value="LEZGOOOOOO">-->
+
+    <div id="divTestImage"></div>
+    <input type="button" id="inputButon1" onclick="indexController.TEST_RecupererFichier()" value="LEZGOOOOOO v2">
+
+
+
+
+
+
+
+
+
+
+
+
     <h1>Liste des personnes &agrave; rencontrer</h1>
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.ViderChampsNomEtPrenomPersonne()">
         <img src="../FrontEnd/res/Images/IconeAjout_Blanche.png" height="25px"/> Ajouter une personne

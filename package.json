@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-busboy": "^1.0.0",
     "cors": "^2.8.5",
     "dateonly": "^1.2.0",
     "dotenv": "^16.0.0",
@@ -19,6 +20,7 @@
     "express-fileupload": "^1.4.0",
     "express-jwt": "^6.1.1",
     "express-validator": "^6.14.0",
+    "fs": "^0.0.1-security",
     "image-js": "^0.34.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",

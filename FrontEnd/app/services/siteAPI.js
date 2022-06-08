@@ -3,11 +3,13 @@ class SiteAPI
     constructor()
     {
         this.api = "http://localhost:3000"
+        this.lienImages = "images"
         this.lienListeRencontreUtilisateur = "idUtilisateur"
         this.lienListeRencontreDePersonneARencontrer = "listeRencontreDePersonneARencontrer"
         this.lienLogin = "login"
         this.lienModeration = "moderation"
         this.lienPersonnes = "personnes"
+        this.lienPersonneRencontree = "personne-rencontree"
         this.lienRencontres = "rencontres"
         this.lienRencontresPassees = "rencontres-passees"
         this.rencontresCommunesUtilisateurPersonne = "rencontresCommunes/utilisateurPersonne"
@@ -23,12 +25,51 @@ class SiteAPI
                                 'Content-Type'  : 'application/json'})
     }
 
+    TEST_EnregistrerFichier(jwt, body)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienImages}`, {method  : "POST",
+                headers : this.AjouterLeJwtDansLeHeader(jwt),
+                body    : body})
+                .then(async response => {
+                    console.log(`response = `)
+                    console.log(response)
+                    if(response.status !== 201)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    TEST_RecupererFichier(jwt, idUtilisateur)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienImages}/${idUtilisateur}`, {method  : "GET",
+                                                                                headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if((response.status == 400) || (response.status == 500))
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        console.log(response)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
     CreerPersonne(body, jwt)
     {
         return new Promise(((resolve, reject) => {
             fetch(`${this.api}/${this.lienPersonnes}`, {method  : "POST",
-                                                                  headers : this.AjouterLeJwtDansLeHeader(jwt),
-                                                                  body    : body})
+                headers : this.AjouterLeJwtDansLeHeader(jwt),
+                body    : body})
                 .then(async response => {
                     if(response.status !== 201)
                     {

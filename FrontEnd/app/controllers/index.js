@@ -11,6 +11,54 @@ class IndexController extends BaseController
         this.InitialiserChamps().then(r => {})
     }
 
+    async TEST_EnregistrerFichier()
+    {
+        try
+        {
+            let inputFichier = document.getElementById('inputFichier').files[0];
+            console.log(`inputFichier = `)
+            console.log(inputFichier)
+
+
+
+            /*let formData = new FormData();
+            formData.append(`fichier`, inputFichier);
+            formData.set(`fichier`, inputFichier);
+            let Result = await this.model.TEST_EnregistrerFichier(this.JWT, formData, `23ca0b27-a193-4478-8a60-4784403472d8`)*/
+            let Result = await this.model.TEST_EnregistrerFichier(this.JWT, {'fichier' : inputFichier})
+            console.log(`Result = `)
+            console.log(Result)
+
+
+
+
+            /*let request = new XMLHttpRequest();
+            request.open("POST", "http://localhost:3000/images/personne-rencontree/23ca0b27-a193-4478-8a60-4784403472d8");
+            request.send(JSON.stringify({'fichier' : inputFichier}));*/
+        }
+        catch(e)
+        {
+            console.log(`erreur = ${e}`)
+        }
+    }
+
+    async TEST_RecupererFichier()
+    {
+        try
+        {
+            let divTestImage = document.getElementById('divTestImage');
+            let Result = await this.model.TEST_RecupererFichier(this.JWT, '4f01c98a-889d-4eef-a065-3d1f69ca73f6')
+            console.log('Result')
+            console.log(Result)
+            //divTestImage.innerHTML = `<img src="http://localhost:63342/BackEnd/images/eaa6808fabdb95775cc79c6f68281a8a"/>`
+            divTestImage.innerHTML = `<img src="${Result}"/>`
+        }
+        catch(e)
+        {
+            console.log(`erreur = ${e}`)
+        }
+    }
+
     async AfficherListePersonnesARencontrer()
     {
         let ulListePersonnesRencontrees      = document.getElementById("ulListePersonnesRencontrees");
