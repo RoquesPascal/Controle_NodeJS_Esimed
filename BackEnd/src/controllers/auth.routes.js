@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { generateAuthToken, generateHashedPassword, passwordsAreEqual} = require('../security/fonctions-back-end');
+const { GenerateAuthToken, GenerateHashedPassword, PasswordsAreEqual} = require('../security/fonctions-back-end');
 const {body, validationResult} = require("express-validator");
 const uuid = require('uuid');
 const Table_Utilisateurs = require("../models/utilisateur.model");
@@ -23,10 +23,10 @@ router.post('/login',
         }
     })
 
-    if(!utilisateur || !passwordsAreEqual(req.body.motDePasse, utilisateur.motDePasse))
+    if(!utilisateur || !PasswordsAreEqual(req.body.motDePasse, utilisateur.motDePasse))
         return res.status(404).send("Erreur ! Au moins un des champs saisis est incorrect.");
 
-    const token = generateAuthToken(utilisateur);
+    const token = GenerateAuthToken(utilisateur);
     return res.status(200).send(token);
 });
 
@@ -45,10 +45,10 @@ router.post('/signup',
         const utilisateur = await Table_Utilisateurs.create({id         : uuid.v4(),
                                                                    pseudo     : req.body.pseudo,
                                                                    email      : req.body.email,
-                                                                   motDePasse : generateHashedPassword(req.body.motDePasse),
+                                                                   motDePasse : GenerateHashedPassword(req.body.motDePasse),
                                                                    roles      : ["membre"]});
 
-        const token = generateAuthToken(utilisateur);
+        const token = GenerateAuthToken(utilisateur);
         return res.status(201).send(token);
     }
     catch(e)

@@ -6,7 +6,7 @@ const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 const jwtDecode = require("jwt-decode");
-const {EstRole_moderateur} = require("../security/fonctions-back-end");
+const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom} = require("../security/fonctions-back-end");
 
 
 
@@ -33,14 +33,7 @@ router.get('/',
             });
             listePersonnes.push(laPersonne);
         }
-
-        function trierPersonnesParNom(pers1, pers2)
-        {
-            if(pers1.nom < pers2.nom)      return -1;
-            else if(pers1.nom > pers2.nom) return 1;
-            else                           return 0;
-        }
-        listePersonnes.sort(trierPersonnesParNom);
+        listePersonnes = TrierPersonnesParNomPuisPrenom(listePersonnes);
 
         return res.status(200).send(listePersonnes);
     }
