@@ -5,6 +5,7 @@ const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
+const Table_Images = require("../models/image.model");
 const jwtDecode = require("jwt-decode");
 const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom} = require("../security/fonctions-back-end");
 
@@ -90,7 +91,7 @@ router.post('/',
     {
         const tokenDecode = jwtDecode(req.headers.authorization);
 
-        const personne = await Table_PersonnesARencontrer.findOne({
+        let personne = await Table_PersonnesARencontrer.findOne({
             where :
             {
                 nom    : req.body.nom,
@@ -107,7 +108,7 @@ router.post('/',
             else
                 dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
             const idPersonne = uuid.v4();
-            await Table_PersonnesARencontrer.create({id            : idPersonne,
+            personne = await Table_PersonnesARencontrer.create({id            : idPersonne,
                                                            nom           : req.body.nom,
                                                            prenom        : req.body.prenom,
                                                            sexe          : req.body.sexe,
@@ -123,7 +124,7 @@ router.post('/',
                                                                                       idUtilisateur        : tokenDecode.id,
                                                                                       idPersonneRencontree : personne.id});
         }
-        res.status(201).send("Personne ajoutée !");
+        res.status(201).send(personne);
     }
     catch(e)
     {
@@ -198,6 +199,13 @@ router.delete('/',
         });
         if(relationUtilisateurPersonnes.id == null)
             res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+
+        await Table_Images.destroy({
+            where :
+            {
+                idPersonneRencontree : req.body.idPersonneARencontrer
+            }
+        })
 
         await Table_Rencontres.destroy({
             where :

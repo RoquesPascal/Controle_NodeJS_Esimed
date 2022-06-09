@@ -79,7 +79,7 @@ class SiteAPI
                     }
                     else
                     {
-                        resolve(response.status)
+                        resolve(response.json())
                     }
                 }).catch(error => reject(error))
         }))

@@ -11,40 +11,6 @@ class IndexController extends BaseController
         this.InitialiserChamps().then(r => {})
     }
 
-    async TEST_EnregistrerFichier()
-    {
-        try
-        {
-            let inputFichier = document.getElementById('inputFichier').files[0];
-            console.log(`inputFichier = `)
-            console.log(inputFichier)
-
-
-
-            let formData = new FormData();
-            formData.append('fichier', inputFichier);
-            //formData.set(`fichier`, inputFichier);
-            console.log(formData)
-            //let Result = await this.model.TEST_EnregistrerFichier(this.JWT, formData, `4f01c98a-889d-4eef-a065-3d1f69ca73f6`)
-            //let Result = await this.model.TEST_EnregistrerFichier(this.JWT, {'fichier' : inputFichier})
-            //console.log(`Result = `)
-            //console.log(Result)
-
-
-
-
-            let request = new XMLHttpRequest();
-            //request.open("POST", "http://localhost:3000/images/personne-rencontree/4f01c98a-889d-4eef-a065-3d1f69ca73f6");
-            request.open("POST", "http://localhost:3000/images/");
-            request.setRequestHeader('Authorization', 'Bearer ' + this.JWT)
-            request.send(formData);
-        }
-        catch(e)
-        {
-            console.log(`erreur = ${e}`)
-        }
-    }
-
     async AfficherListePersonnesARencontrer()
     {
         let ulListePersonnesRencontrees      = document.getElementById("ulListePersonnesRencontrees");
@@ -277,7 +243,7 @@ class IndexController extends BaseController
 
         try
         {
-            const Result = await this.model.CreerPersonne({
+            const personne = await this.model.CreerPersonne({
                 'nom'                : inputNom.value,
                 'prenom'             : inputPrenom.value,
                 'sexe'               : selectSexe.value,
@@ -286,14 +252,15 @@ class IndexController extends BaseController
                 'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
             }, this.JWT);
 
-            if(Result === 201)
+            if((personne != null) || (personne.id != null))
             {
                 this.toast("toastSuccesCreerPersonne");
+                await this.EnregistrerPhotoPersonneARencontrer(personne.id);
                 if(afficherLaNouvellePersonneDansLaListe)
                     await creerRencontreController.AfficherListePersonnesARencontrer();
                 navigate('index');
             }
-            else if(Result === 400)
+            else
             {
                 this.toast("toastErreurCreerPersonne");
             }
@@ -310,6 +277,26 @@ class IndexController extends BaseController
         sessionStorage.clear();
         localStorage.clear();
         navigate("login");
+    }
+
+    async EnregistrerPhotoPersonneARencontrer(idPersonne)
+    {
+        try
+        {
+            let inputFichier = document.getElementById('inputFichier').files[0];
+            console.log(inputFichier)
+            let formData = new FormData();
+            formData.append('fichier', inputFichier);
+
+            let request = new XMLHttpRequest();
+            request.open("POST", `http://localhost:3000/images/${idPersonne}`);
+            request.setRequestHeader('Authorization', 'Bearer ' + this.JWT)
+            request.send(formData);
+        }
+        catch(e)
+        {
+            console.log(`erreur = ${e}`)
+        }
     }
 
     async InitialiserChamps()
