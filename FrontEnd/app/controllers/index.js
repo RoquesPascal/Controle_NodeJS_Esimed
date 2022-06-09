@@ -284,9 +284,10 @@ class IndexController extends BaseController
 
             if(Result === 201)
             {
+                this.toast("toastSuccesCreerPersonne");
                 if(afficherLaNouvellePersonneDansLaListe)
                     await creerRencontreController.AfficherListePersonnesARencontrer();
-                this.toast("toastSuccesCreerPersonne");
+                navigate('index');
             }
             else if(Result === 400)
             {
@@ -483,6 +484,8 @@ class IndexController extends BaseController
                 {
                     liRencontre.innerHTML = this.CreerLigne(nouvellePersonne);
                 }
+                let divPhotoPerosnne = document.getElementById(`divPhotoPerosnne_${idPersonne}`);
+                divPhotoPerosnne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(nouvellePersonne, 100);
             }
             else if(Result === 400)
             {
