@@ -135,7 +135,8 @@ class IndexController extends BaseController
     {
         try
         {
-            let image = await this.model.TEST_RecupererFichier(this.JWT, personne.id)
+            let image = await this.model.TEST_RecupererFichier(this.JWT, personne.id);
+
             if(image != null)
                 return `<img src="http://localhost:63342/${image.chemin}/${image.nomUnique}" width="${largeurImage}px"/>`;
             else
@@ -196,7 +197,7 @@ class IndexController extends BaseController
     CreerLigne(personne)
     {
         let ligne =  `<div class="row">
-                          <div class="col-3" id="divPhotoPerosnne_${personne.id}"></div>
+                          <div class="col-3" id="divPhotoPerosnne_${personne.id}"><img src="../../FrontEnd/res/Images/Loader.gif"/></div>
                           <div class="col-sm">
                               ${personne.prenom} ${personne.nom} `
         if(personne.sexe === 1)
