@@ -163,7 +163,7 @@ Le partage des remarques concernant les rencontres sera stocké côté serveur. 
 
 - [ ]  Il sera possible de stocker en local l'identifiant de connexion de l'utilisateur s'il le désire.
 
-- [ ]  L'utilisateur pourra prendre une photo de la personne rencontrée et l'associer à la fiche correspondante.
+- [x]  L'utilisateur pourra prendre une photo de la personne rencontrée et l'associer à la fiche correspondante.
 
 - [x]  Certains utilisateurs auront un statut "modérateur" et pourront : 
   
