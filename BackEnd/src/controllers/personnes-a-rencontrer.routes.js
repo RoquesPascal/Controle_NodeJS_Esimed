@@ -7,7 +7,7 @@ const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.mod
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 const Table_Images = require("../models/image.model");
 const jwtDecode = require("jwt-decode");
-const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom, SupprimerFichierImagePersonneARencontrer} = require("../security/fonctions-back-end");
+const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom, SupprimerFichierImagePersonneARencontrer} = require("../fonctions-back-end/fonctions-back-end");
 
 
 

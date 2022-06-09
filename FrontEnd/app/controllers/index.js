@@ -236,6 +236,14 @@ class IndexController extends BaseController
         const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
         const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
         const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+        const inputFichier             = document.getElementById('inputFichier');
+
+
+        if((inputFichier.files[0] != null) && !this.EstFichierDeType_JPG_PNG(inputFichier.value))
+        {
+            this.toast("toastErreurTypePhotoIncorrect");
+            return;
+        }
 
         if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
         {
@@ -254,7 +262,7 @@ class IndexController extends BaseController
                 'dateNaissanceAnnee' : selectDateNaissanceAnnee.value
             }, this.JWT);
 
-            if((personne != null) || (personne.id != null))
+            if((personne != null) && (personne.id != null))
             {
                 this.toast("toastSuccesCreerPersonne");
                 await this.EnregistrerPhotoPersonneARencontrer(personne.id);
@@ -285,9 +293,10 @@ class IndexController extends BaseController
     {
         try
         {
-            let inputFichier = document.getElementById('inputFichier').files[0];
+            const inputFichier = document.getElementById('inputFichier');
+
             let formData = new FormData();
-            formData.append('fichier', inputFichier);
+            formData.append('fichier', inputFichier.files[0]);
 
             let request = new XMLHttpRequest();
             request.open("POST", `http://localhost:3000/images/${idPersonne}`);
@@ -298,6 +307,12 @@ class IndexController extends BaseController
         {
             console.log(`erreur = ${e}`)
         }
+    }
+
+    EstFichierDeType_JPG_PNG(fichier)
+    {
+        const extensionsAutorisees = /(\.jpg|\.JPG|\.png|\.PNG)$/i;
+        return extensionsAutorisees.exec(fichier);
     }
 
     async InitialiserChamps()
@@ -458,6 +473,14 @@ class IndexController extends BaseController
             const selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
             const selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
             const selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+            const inputFichier             = document.getElementById('inputFichier');
+
+
+            if((inputFichier.files[0] != null) && !this.EstFichierDeType_JPG_PNG(inputFichier.value))
+            {
+                this.toast("toastErreurTypePhotoIncorrect");
+                return;
+            }
 
             if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
             {
@@ -480,8 +503,7 @@ class IndexController extends BaseController
                 this.toast("toastSuccesModifierPersonne");
                 const nouvellePersonne = await this.model.GetPersonne(idPersonne, this.JWT);
 
-                let inputFichier = document.getElementById('inputFichier').files[0];
-                if(inputFichier != null)
+                if(inputFichier.files[0] != null)
                 {
                     await this.model.SupprimerPhotoPersonneARencontrer(this.JWT, idPersonne);
                     await this.EnregistrerPhotoPersonneARencontrer(idPersonne);

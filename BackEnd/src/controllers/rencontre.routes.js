@@ -5,7 +5,7 @@ const uuid = require('uuid');
 const Table_Rencontres = require("../models/rencontre.model");
 const jwtDecode = require("jwt-decode");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
-const {EstRencontreDejaFaite, EstRole_moderateur} = require("../security/fonctions-back-end");
+const {EstRencontreDejaFaite, EstRole_moderateur} = require("../fonctions-back-end/fonctions-back-end");
 
 
 

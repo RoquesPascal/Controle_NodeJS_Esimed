@@ -5,6 +5,11 @@ body
     margin     : 1%;
 }
 
+.bold
+{
+    font-weight : bold;
+}
+
 .boutonModifierRencontre
 {
     margin-bottom : 7px;

@@ -8,7 +8,7 @@ const jwtDecode    = require("jwt-decode");
 const fileUpload   = require('express-fileupload');
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
-const {SupprimerFichierImagePersonneARencontrer} = require("../security/fonctions-back-end");
+const {SupprimerFichierImagePersonneARencontrer, EstFichierDeType_JPG_PNG} = require("../fonctions-back-end/fonctions-back-end");
 
 
 
@@ -39,6 +39,10 @@ router.post('/:idPersonneRencontree',
 {
     try
     {
+        const image = req.file;
+        if(!EstFichierDeType_JPG_PNG(image))
+            return res.status(400).send(`Erreur, le fichier n'est pas au format .jpg ou .png`);
+
         const tokenDecode = jwtDecode(req.headers.authorization);
         const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
             where :
@@ -60,7 +64,6 @@ router.post('/:idPersonneRencontree',
 
 
 
-        const image = req.file;
 
         if(!image)
             return res.status(400).send('Pas de fichier');

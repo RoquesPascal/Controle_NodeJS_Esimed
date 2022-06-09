@@ -4,6 +4,10 @@ const fs = require('fs');
 const Table_Images = require("../models/image.model");
 
 
+exports.EstFichierDeType_JPG_PNG = (fichier) =>
+{
+    return fichier.originalname.match(/\.(jpg|JPG|png|PNG|)$/);
+};
 
 exports.EstRencontreDejaFaite = (rencontre) =>
 {
