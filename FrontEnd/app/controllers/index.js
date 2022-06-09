@@ -21,20 +21,23 @@ class IndexController extends BaseController
 
 
 
-            /*let formData = new FormData();
-            formData.append(`fichier`, inputFichier);
-            formData.set(`fichier`, inputFichier);
-            let Result = await this.model.TEST_EnregistrerFichier(this.JWT, formData, `23ca0b27-a193-4478-8a60-4784403472d8`)*/
-            let Result = await this.model.TEST_EnregistrerFichier(this.JWT, {'fichier' : inputFichier})
-            console.log(`Result = `)
-            console.log(Result)
+            let formData = new FormData();
+            formData.append('fichier', inputFichier);
+            //formData.set(`fichier`, inputFichier);
+            console.log(formData)
+            //let Result = await this.model.TEST_EnregistrerFichier(this.JWT, formData, `4f01c98a-889d-4eef-a065-3d1f69ca73f6`)
+            //let Result = await this.model.TEST_EnregistrerFichier(this.JWT, {'fichier' : inputFichier})
+            //console.log(`Result = `)
+            //console.log(Result)
 
 
 
 
-            /*let request = new XMLHttpRequest();
-            request.open("POST", "http://localhost:3000/images/personne-rencontree/23ca0b27-a193-4478-8a60-4784403472d8");
-            request.send(JSON.stringify({'fichier' : inputFichier}));*/
+            let request = new XMLHttpRequest();
+            //request.open("POST", "http://localhost:3000/images/personne-rencontree/4f01c98a-889d-4eef-a065-3d1f69ca73f6");
+            request.open("POST", "http://localhost:3000/images/");
+            request.setRequestHeader('Authorization', 'Bearer ' + this.JWT)
+            request.send(formData);
         }
         catch(e)
         {

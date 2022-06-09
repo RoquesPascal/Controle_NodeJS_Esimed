@@ -33,7 +33,7 @@ router.get('/:idPersonne', async (req, res) =>
 })
 
 router.post('/',
-            upload.single('inputFichier'),
+            upload.single('fichier'),
             async (req, res) =>
 {
     try
