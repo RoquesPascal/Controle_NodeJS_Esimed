@@ -5,30 +5,6 @@ class Sitemodel
         this.api = new SiteAPI()
     }
 
-    async TEST_EnregistrerFichier(jwt, body)
-    {
-        try
-        {
-            return await this.api.TEST_EnregistrerFichier(jwt, JSON.stringify(body))
-        }
-        catch (e)
-        {
-            return e
-        }
-    }
-
-    async TEST_RecupererFichier(jwt, idUtilisateur)
-    {
-        try
-        {
-            return await this.api.TEST_RecupererFichier(jwt, idUtilisateur)
-        }
-        catch (e)
-        {
-            return e
-        }
-    }
-
     async CreerPersonne(body, jwt)
     {
         try
@@ -118,6 +94,18 @@ class Sitemodel
         try
         {
             return await this.api.GetPersonne(id, jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
+    async GetPhotoPersonneARencontrer(jwt, idPersonne)
+    {
+        try
+        {
+            return await this.api.GetPhotoPersonneARencontrer(jwt, idPersonne)
         }
         catch (e)
         {
@@ -226,6 +214,18 @@ class Sitemodel
         try
         {
             return await this.api.SupprimerPersonne(JSON.stringify(body), jwt)
+        }
+        catch (e)
+        {
+            return e
+        }
+    }
+
+    async SupprimerPhotoPersonneARencontrer(jwt, idPersonne)
+    {
+        try
+        {
+            return await this.api.SupprimerPhotoPersonneARencontrer(jwt, idPersonne)
         }
         catch (e)
         {

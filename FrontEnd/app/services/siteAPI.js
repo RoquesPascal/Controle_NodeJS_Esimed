@@ -25,47 +25,6 @@ class SiteAPI
                                 'Content-Type'  : 'application/json'})
     }
 
-    TEST_EnregistrerFichier(jwt, body)
-    {
-        return new Promise(((resolve, reject) => {
-            fetch(`${this.api}/${this.lienImages}`, {method  : "POST",
-                headers : this.AjouterLeJwtDansLeHeader(jwt),
-                body    : body})
-                .then(async response => {
-                    console.log(`response = `)
-                    console.log(response)
-                    if(response.status !== 201)
-                    {
-                        reject(response.status)
-                    }
-                    else
-                    {
-                        resolve(response.status)
-                    }
-                }).catch(error => reject(error))
-        }))
-    }
-
-    TEST_RecupererFichier(jwt, idUtilisateur)
-    {
-        return new Promise(((resolve, reject) => {
-            fetch(`${this.api}/${this.lienImages}/${idUtilisateur}`, {method  : "GET",
-                                                                                headers : this.AjouterLeJwtDansLeHeader(jwt)})
-                .then(async response => {
-                    if(response.status === 200)
-                    {
-                        resolve(response.json())
-                    }
-                    else if(response.status === 404)
-                        resolve()
-                    else
-                    {
-                        reject(response.status)
-                    }
-                }).catch(error => reject(error))
-        }))
-    }
-
     CreerPersonne(body, jwt)
     {
         return new Promise(((resolve, reject) => {
@@ -207,6 +166,26 @@ class SiteAPI
                     else
                     {
                         resolve(response.json())
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    GetPhotoPersonneARencontrer(jwt, idPersonne)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienImages}/${idPersonne}`, {method  : "GET",
+                                                                             headers : this.AjouterLeJwtDansLeHeader(jwt)})
+                .then(async response => {
+                    if(response.status === 200)
+                    {
+                        resolve(response.json())
+                    }
+                    else if(response.status === 404)
+                        resolve()
+                    else
+                    {
+                        reject(response.status)
                     }
                 }).catch(error => reject(error))
         }))
@@ -367,6 +346,24 @@ class SiteAPI
             fetch(`${this.api}/${this.lienPersonnes}`, {method  : "DELETE",
                                                                   headers : this.AjouterLeJwtDansLeHeader(jwt),
                                                                   body    : body})
+                .then(async response => {
+                    if(response.status !== 200)
+                    {
+                        reject(response.status)
+                    }
+                    else
+                    {
+                        resolve(response.status)
+                    }
+                }).catch(error => reject(error))
+        }))
+    }
+
+    SupprimerPhotoPersonneARencontrer(jwt, idPersonne)
+    {
+        return new Promise(((resolve, reject) => {
+            fetch(`${this.api}/${this.lienImages}/${idPersonne}`, {method  : "DELETE",
+                                                                            headers : this.AjouterLeJwtDansLeHeader(jwt)})
                 .then(async response => {
                     if(response.status !== 200)
                     {

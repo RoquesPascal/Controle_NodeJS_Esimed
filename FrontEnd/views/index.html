@@ -1,20 +1,6 @@
 <div class="dropdown" id="dropDown"></div>
 
 <div class="container">
-    <input type="file" id="inputFichier" name="inputFichier">
-    <input type="button" id="inputButon" onclick="indexController.TEST_EnregistrerFichier()" value="LEZGOOOOOO">
-
-
-
-
-
-
-
-
-
-
-
-
     <h1>Liste des personnes &agrave; rencontrer</h1>
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.ViderChampsNomEtPrenomPersonne()">
         <img src="../FrontEnd/res/Images/IconeAjout_Blanche.png" height="25px"/> Ajouter une personne
@@ -75,6 +61,12 @@
                 </div>
                 <div class="col-2">
                     <select id="selectDateNaissanceAnnee"></select>
+                </div>
+            </div>
+            <div class="row marginBottom10px">
+                <div class="col-5">Photo</div>
+                <div class="col-2">
+                    <input type="file" id="inputFichier" name="inputFichier">
                 </div>
             </div>
             <div class="row">

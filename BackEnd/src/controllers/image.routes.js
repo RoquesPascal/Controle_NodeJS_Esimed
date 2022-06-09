@@ -80,4 +80,44 @@ router.post('/:idPersonneRencontree',
     }
 });
 
+router.delete('/:idPersonneRencontree',
+    async (req, res) =>
+    {
+        try
+        {
+            const tokenDecode = jwtDecode(req.headers.authorization);
+            const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+                where :
+                {
+                    idUtilisateur        : tokenDecode.id,
+                    idPersonneRencontree : req.params.idPersonneRencontree
+                }
+            });
+
+            const personne = await Table_PersonnesARencontrer.findOne({
+                where :
+                {
+                    id : relationUtilisateurPersonnes.idPersonneRencontree
+                }
+            });
+
+            if((personne == null) || (personne.id == null))
+                return res.status(403).send(`Vous n'avez pas le droit d'acceder a cette ressource.`);
+
+
+            await Table_Images.destroy({
+                where :
+                {
+                    idPersonneRencontree : req.params.idPersonneRencontree
+                }
+            })
+
+            res.status(201).send(`image creee !`);
+        }
+        catch(e)
+        {
+            res.status(500).send(`erreur de la création de l'image`);
+        }
+    });
+
 exports.initializeRoutes = () => router;

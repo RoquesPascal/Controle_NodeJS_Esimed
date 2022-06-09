@@ -5,6 +5,8 @@ class IndexController extends BaseController
         super()
         this.compteurPersonnesRencontrees = 0;
         this.compteurPersonnesARencontrer = 0;
+        this.taillePhotoDeProfil_100px    = 100;
+        this.taillePhotoDeProfil_150px    = 150;
         this.model = new Sitemodel()
         this.AfficherListePersonnesARencontrer().then(r => {})
         this.ChangerListeAAfficher(true)
@@ -51,9 +53,9 @@ class IndexController extends BaseController
 
                 for(const personne of listePersonnes)
                 {
-                    let divPhotoPersonne = document.getElementById(`divPhotoPerosnne_${personne.id}`);
+                    let divPhotoPersonne = document.getElementById(`divPhotoPersonne_${personne.id}`);
                     if(divPhotoPersonne != null)
-                        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, 100);
+                        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, this.taillePhotoDeProfil_100px);
                 }
             }
             catch(e)
@@ -80,7 +82,7 @@ class IndexController extends BaseController
             titreNomPrenomPersonne += ` <img src="../FrontEnd/res/Images/IconeSexeFeminin_Rose.png" height="25px"/>`;
 
         modalTitreNomPrenomPersonne.innerHTML = titreNomPrenomPersonne;
-        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, 150);
+        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, this.taillePhotoDeProfil_150px);
         if(personne.dateNaissance != null)
         {
             if(personne.sexe === 1)
@@ -104,7 +106,7 @@ class IndexController extends BaseController
     {
         try
         {
-            let image = await this.model.TEST_RecupererFichier(this.JWT, personne.id);
+            const image = await this.model.GetPhotoPersonneARencontrer(this.JWT, personne.id);
 
             if(image != null)
                 return `<img src="http://localhost:63342/${image.chemin}/${image.nomUnique}" width="${largeurImage}px"/>`;
@@ -166,7 +168,7 @@ class IndexController extends BaseController
     CreerLigne(personne)
     {
         let ligne =  `<div class="row">
-                          <div class="col-3" id="divPhotoPerosnne_${personne.id}"><img src="../../FrontEnd/res/Images/Loader.gif"/></div>
+                          <div class="col-3" id="divPhotoPersonne_${personne.id}"><img src="../../FrontEnd/res/Images/Loader.gif"/></div>
                           <div class="col-sm">
                               ${personne.prenom} ${personne.nom} `
         if(personne.sexe === 1)
@@ -284,7 +286,6 @@ class IndexController extends BaseController
         try
         {
             let inputFichier = document.getElementById('inputFichier').files[0];
-            console.log(inputFichier)
             let formData = new FormData();
             formData.append('fichier', inputFichier);
 
@@ -352,6 +353,7 @@ class IndexController extends BaseController
             let selectDateNaissanceJour  = document.getElementById("selectDateNaissanceJour");
             let selectDateNaissanceMois  = document.getElementById("selectDateNaissanceMois");
             let selectDateNaissanceAnnee = document.getElementById("selectDateNaissanceAnnee");
+            let inputFichier             = document.getElementById('inputFichier');
 
             if((selectDateNaissanceJour == null) || (selectDateNaissanceMois == null) || (selectDateNaissanceAnnee == null))
                 return;
@@ -387,6 +389,7 @@ class IndexController extends BaseController
                 selectDateNaissanceMois.value = `${parseInt(dateDeNaissance[5] + dateDeNaissance[6])}`;
                 selectDateNaissanceAnnee.value = `${parseInt(dateDeNaissance[0] + dateDeNaissance[1] + dateDeNaissance[2] + dateDeNaissance[3])}`;
             }
+            inputFichier.value = null;
         }
         catch(e)
         {
@@ -470,13 +473,22 @@ class IndexController extends BaseController
             {
                 this.toast("toastSuccesModifierPersonne");
                 const nouvellePersonne = await this.model.GetPersonne(idPersonne, this.JWT);
+
+                let inputFichier = document.getElementById('inputFichier').files[0];
+                if(inputFichier != null)
+                {
+                    await this.model.SupprimerPhotoPersonneARencontrer(this.JWT, idPersonne);
+                    await this.EnregistrerPhotoPersonneARencontrer(idPersonne);
+                }
+
                 let liRencontre = document.getElementById(`personne_${idPersonne}`);
                 if(liRencontre != null)
                 {
                     liRencontre.innerHTML = this.CreerLigne(nouvellePersonne);
+                    let divPhotoPersonne = document.getElementById(`divPhotoPersonne_${idPersonne}`);
+                    await new Promise(resolve => setTimeout(resolve, 50)); //Truc pourri juste pour laisser le temps à l'image de se créer, avant de l'afficher
+                    divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(nouvellePersonne, this.taillePhotoDeProfil_100px);
                 }
-                let divPhotoPerosnne = document.getElementById(`divPhotoPerosnne_${idPersonne}`);
-                divPhotoPerosnne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(nouvellePersonne, 100);
             }
             else if(Result === 400)
             {
