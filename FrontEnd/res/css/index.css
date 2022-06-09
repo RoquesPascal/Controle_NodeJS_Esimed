@@ -25,6 +25,11 @@ body
     cursor : pointer;
 }
 
+.fontSizeMoins20Pourcents
+{
+    font-size : 0.8em;
+}
+
 .fontSizePlus20Pourcents
 {
     font-size : 1.2em;

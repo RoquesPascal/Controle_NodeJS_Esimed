@@ -402,11 +402,14 @@ class IndexController extends BaseController
     {
         let modalTitre                         = document.getElementById("modalTitre");
         let bouttonsModalCreerModifierPersonne = document.getElementById("bouttonsModalCreerModifierPersonne");
+        let spanInfoInputFile                  = document.getElementById("spanInfoInputFile");
 
         if(modalTitre != null)
         {
             modalTitre.innerHTML = `Cr&eacute;ez une personne`;
         }
+
+        spanInfoInputFile.innerHTML = '';
 
         if(bouttonsModalCreerModifierPersonne != null)
         {
@@ -424,11 +427,14 @@ class IndexController extends BaseController
     {
         let modalTitre                         = document.getElementById("modalTitre");
         let bouttonsModalCreerModifierPersonne = document.getElementById("bouttonsModalCreerModifierPersonne");
+        let spanInfoInputFile                  = document.getElementById("spanInfoInputFile");
 
         if(modalTitre != null)
         {
             modalTitre.innerHTML = `Modifiez cette personne`;
         }
+
+        spanInfoInputFile.innerHTML = `La photo ne sera pas modifi&eacute;e tant que vous n'importez pas un nouveau fichier.`;
 
         if(bouttonsModalCreerModifierPersonne != null)
         {
