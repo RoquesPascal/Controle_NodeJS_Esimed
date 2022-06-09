@@ -239,15 +239,22 @@ class IndexController extends BaseController
         const inputFichier             = document.getElementById('inputFichier');
 
 
-        if((inputFichier.files[0] != null) && !this.EstFichierDeType_JPG_PNG(inputFichier.value))
+
+        if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === '') || (selectDateNaissanceJour.value === '') || (selectDateNaissanceMois.value === '') || (selectDateNaissanceAnnee.value === ''))
         {
-            this.toast("toastErreurTypePhotoIncorrect");
+            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
             return;
         }
 
-        if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
+        if(!this.EstPersonneMajeure(new Date(selectDateNaissanceAnnee.value, selectDateNaissanceMois.value - 1, selectDateNaissanceJour.value)))
         {
-            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+            this.toast("toastErreurLaPersonneDoitEtreMajeure");
+            return;
+        }
+
+        if((inputFichier.files[0] != null) && !this.EstFichierDeType_JPG_PNG(inputFichier.value))
+        {
+            this.toast("toastErreurTypePhotoIncorrect");
             return;
         }
 
@@ -313,6 +320,13 @@ class IndexController extends BaseController
     {
         const extensionsAutorisees = /(\.jpg|\.JPG|\.png|\.PNG)$/i;
         return extensionsAutorisees.exec(fichier);
+    }
+
+    EstPersonneMajeure(dateNaissance)
+    {
+        let dateActuelle18AnsEnArriere = new Date(Date.now());
+        dateActuelle18AnsEnArriere.setFullYear(dateActuelle18AnsEnArriere.getFullYear() - 18);
+        return (dateActuelle18AnsEnArriere >= dateNaissance);
     }
 
     async InitialiserChamps()
@@ -476,15 +490,21 @@ class IndexController extends BaseController
             const inputFichier             = document.getElementById('inputFichier');
 
 
-            if((inputFichier.files[0] != null) && !this.EstFichierDeType_JPG_PNG(inputFichier.value))
+            if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === '') || (selectDateNaissanceJour.value === '') || (selectDateNaissanceMois.value === '') || (selectDateNaissanceAnnee.value === ''))
             {
-                this.toast("toastErreurTypePhotoIncorrect");
+                this.toast("toastErreurCertainsChampsObligatoiresSontVides");
                 return;
             }
 
-            if((inputNom.value === '') || (inputPrenom.value === '') || (selectSexe.value === ''))
+            if(!this.EstPersonneMajeure(new Date(selectDateNaissanceAnnee.value, selectDateNaissanceMois.value - 1, selectDateNaissanceJour.value)))
             {
-                this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                this.toast("toastErreurLaPersonneDoitEtreMajeure");
+                return;
+            }
+
+            if((inputFichier.files[0] != null) && !this.EstFichierDeType_JPG_PNG(inputFichier.value))
+            {
+                this.toast("toastErreurTypePhotoIncorrect");
                 return;
             }
 

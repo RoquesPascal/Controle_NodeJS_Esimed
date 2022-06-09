@@ -7,7 +7,7 @@ const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.mod
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 const Table_Images = require("../models/image.model");
 const jwtDecode = require("jwt-decode");
-const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom, SupprimerFichierImagePersonneARencontrer} = require("../fonctions-back-end/fonctions-back-end");
+const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom, SupprimerFichierImagePersonneARencontrer, EstPersonneMajeure} = require("../fonctions-back-end/fonctions-back-end");
 
 
 
@@ -81,6 +81,9 @@ router.post('/',
             body('nom').isString().notEmpty(),
             body('prenom').isString().notEmpty(),
             body('sexe').isInt().notEmpty(),
+            body('dateNaissanceJour').isInt().notEmpty(),
+            body('dateNaissanceMois').isInt().notEmpty(),
+            body('dateNaissanceAnnee').isInt().notEmpty(),
             async (req, res) =>
 {
     const errors = validationResult(req);
@@ -102,11 +105,11 @@ router.post('/',
 
         if(personne == null) //Si la personne n'existe pas
         {
-            let dateDeNaissance;
-            if((req.body.dateNaissanceJour === "") || (req.body.dateNaissanceMois === "") || (req.body.dateNaissanceAnnee === ""))
-                dateDeNaissance = null;
-            else
-                dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+            const dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+
+            if(!EstPersonneMajeure(dateDeNaissance))
+                return res.status(400).send("La personne n'est pas majeure");
+
             const idPersonne = uuid.v4();
             personne = await Table_PersonnesARencontrer.create({id            : idPersonne,
                                                            nom           : req.body.nom,
@@ -137,6 +140,9 @@ router.put('/',
            body('nom').isString().notEmpty(),
            body('prenom').isString().notEmpty(),
            body('sexe').isInt().notEmpty(),
+           body('dateNaissanceJour').isInt().notEmpty(),
+           body('dateNaissanceMois').isInt().notEmpty(),
+           body('dateNaissanceAnnee').isInt().notEmpty(),
            async (req, res) =>
 {
     const errors = validationResult(req);
@@ -157,11 +163,11 @@ router.put('/',
             return res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
 
-        let dateDeNaissance;
-        if((req.body.dateNaissanceJour === "") || (req.body.dateNaissanceMois === "") || (req.body.dateNaissanceAnnee === ""))
-            dateDeNaissance = null;
-        else
-            dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+        const dateDeNaissance = new Date(req.body.dateNaissanceAnnee, req.body.dateNaissanceMois - 1, req.body.dateNaissanceJour);
+
+        if(!EstPersonneMajeure(dateDeNaissance))
+            return res.status(400).send("La personne n'est pas majeure");
+
         await Table_PersonnesARencontrer.update(
             {
                 nom           : req.body.nom,

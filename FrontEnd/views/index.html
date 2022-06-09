@@ -52,7 +52,7 @@
                 </div>
             </div>
             <div class="row marginBottom10px">
-                <div class="col-5">Date de naissance</div>
+                <div class="col-5">Date de naissance *</div>
                 <div class="col-2">
                     <select id="selectDateNaissanceJour"></select>
                 </div>
@@ -166,6 +166,14 @@
     <div id="toastErreurTypePhotoIncorrect" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body">
             Erreur, la photo doit être au format <span class="bold">.jpg</span> ou <span class="bold">.png</span>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed top-0 end-0" style="z-index: 11">
+    <div id="toastErreurLaPersonneDoitEtreMajeure" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+            Erreur, la personne doit &ecirc;tre majeure.
         </div>
     </div>
 </div>

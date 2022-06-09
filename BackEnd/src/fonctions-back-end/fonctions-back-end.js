@@ -34,6 +34,13 @@ exports.EstRencontreDejaFaite = (rencontre) =>
     }
 };
 
+exports.EstPersonneMajeure = (dateNaissance) =>
+{
+    let dateActuelle18AnsEnArriere = new Date(Date.now());
+    dateActuelle18AnsEnArriere.setFullYear(dateActuelle18AnsEnArriere.getFullYear() - 18);
+    return (dateActuelle18AnsEnArriere >= dateNaissance);
+};
+
 exports.EstRole_moderateur = (jwtDecode) =>
 {
     for(let i = 0 ; i < jwtDecode.roles.length ; i++)
