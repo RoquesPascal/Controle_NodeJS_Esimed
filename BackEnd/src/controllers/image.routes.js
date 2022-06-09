@@ -22,8 +22,8 @@ router.get('/:idPersonne', async (req, res) =>
                 idPersonneRencontree : req.params.idPersonne
             }
         });
-        if(!image)
-            return res.status(404).send('Pas de fichier');
+        /*if(!image)
+            return res.status(404).send('Pas de fichier');*/
 
         return res.status(200).send(image);
     }

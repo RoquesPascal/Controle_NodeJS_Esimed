@@ -108,7 +108,7 @@ class IndexController extends BaseController
         {
             const image = await this.model.GetPhotoPersonneARencontrer(this.JWT, personne.id);
 
-            if(image != null)
+            if((image != null) && (image.chemin != null) && (image.nomUnique != null))
                 return `<img src="http://localhost:63342/${image.chemin}/${image.nomUnique}" width="${largeurImage}px"/>`;
             else
             {
