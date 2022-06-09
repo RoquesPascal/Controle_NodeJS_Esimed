@@ -124,11 +124,11 @@ router.post('/',
                                                                                       idUtilisateur        : tokenDecode.id,
                                                                                       idPersonneRencontree : personne.id});
         }
-        res.status(201).send(personne);
+        return res.status(201).send(personne);
     }
     catch(e)
     {
-        res.status(400).send("Erreur lors de l'ajout de la personne");
+        return res.status(400).send("Erreur lors de l'ajout de la personne");
     }
 });
 
@@ -154,7 +154,7 @@ router.put('/',
             }
         });
         if(relationUtilisateurPersonnes.id == null)
-            res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+            return res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
 
         let dateDeNaissance;
@@ -174,12 +174,11 @@ router.put('/',
                 id : req.body.idPersonneARencontrer
             }
         });
-        res.status(200).send("Personne modifiée !");
+        return res.status(200).send("Personne modifiée !");
     }
     catch(e)
     {
-        console.log(`erreur = ${e}`)
-        res.status(400).send("Erreur lors de la modification de la personne");
+        return res.status(400).send("Erreur lors de la modification de la personne");
     }
 });
 
@@ -198,7 +197,7 @@ router.delete('/',
             }
         });
         if(relationUtilisateurPersonnes.id == null)
-            res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+            return res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
         await Table_Rencontres.destroy({
             where :
@@ -241,11 +240,11 @@ router.delete('/',
             })
         }
 
-        res.status(200).send("Personne Supprimée !");
+        return res.status(200).send("Personne Supprimée !");
     }
     catch(e)
     {
-        res.status(400).send("Erreur lors de la suppression de la personne");
+        return res.status(400).send("Erreur lors de la suppression de la personne");
     }
 });
 

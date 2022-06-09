@@ -25,11 +25,11 @@ router.get('/:idPersonne', async (req, res) =>
         if(!image)
             return res.status(404).send('Pas de fichier');
 
-        res.status(200).send(image);
+        return res.status(200).send(image);
     }
     catch(e)
     {
-        res.status(500).send(`erreur de la récupération de l'image`);
+        return res.status(500).send(`erreur de la récupération de l'image`);
     }
 })
 
@@ -76,11 +76,11 @@ router.post('/:idPersonneRencontree',
                                          type                 : image.mimetype,
                                          taille               : image.size});
 
-        res.status(201).send(`image creee !`);
+        return res.status(201).send(`image creee !`);
     }
     catch(e)
     {
-        res.status(500).send(`erreur de la création de l'image`);
+        return res.status(500).send(`erreur de la création de l'image`);
     }
 });
 
@@ -118,11 +118,11 @@ router.delete('/:idPersonneRencontree',
                 }
             })
 
-            res.status(201).send(`image creee !`);
+            return res.status(201).send(`image creee !`);
         }
         catch(e)
         {
-            res.status(500).send(`erreur de la création de l'image`);
+            return res.status(500).send(`erreur de la création de l'image`);
         }
     });
 

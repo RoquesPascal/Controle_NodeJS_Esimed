@@ -76,7 +76,7 @@ router.get('/listeRencontreDePersonneARencontrer/:idPersonne',
             }
         });
         if(relationUtilisateurPersonnes.id == null)
-            res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+            return res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
 
         let listeRencontres = await Table_Rencontres.findAll({
@@ -171,11 +171,11 @@ router.post('/',
                                              note                 : req.body.note,
                                              commentaire          : req.body.commentaire,
                                              partage              : req.body.partage});
-        res.status(201).send("Rencontre Ajoutée !");
+        return res.status(201).send("Rencontre Ajoutée !");
     }
     catch(e)
     {
-        res.status(400).send("Erreur lors de l'ajout de la rencontre");
+        return res.status(400).send("Erreur lors de l'ajout de la rencontre");
     }
 });
 
@@ -208,11 +208,11 @@ router.put('/',
                 id : req.body.idRencontre
             }
         });
-        res.status(200).send("Rencontre modifiée !");
+        return res.status(200).send("Rencontre modifiée !");
     }
     catch(e)
     {
-        res.status(400).send("Erreur lors de la modification de la rencontre");
+        return res.status(400).send("Erreur lors de la modification de la rencontre");
     }
 });
 
@@ -241,13 +241,11 @@ router.put('/supprimer-commentaire/:idRencontre',
                         id : req.params.idRencontre
                     }
                 });
-            res.status(200).send("Rencontre modifiée !");
+            return res.status(200).send("Rencontre modifiée !");
         }
         catch(e)
         {
-            console.log("AAAAAAAAAA")
-            console.log(e)
-            res.status(400).send("Erreur lors de la modification de la rencontre");
+            return res.status(400).send("Erreur lors de la modification de la rencontre");
         }
     });
 
@@ -263,11 +261,11 @@ router.delete('/',
                     id : req.body.idRencontre
                 }
         })
-        res.status(200).send("Rencontre Supprimée !");
+        return res.status(200).send("Rencontre Supprimée !");
     }
     catch(e)
     {
-        res.status(400).send("Erreur lors de la suppression de la rencontre");
+        return res.status(400).send("Erreur lors de la suppression de la rencontre");
     }
 });
 
