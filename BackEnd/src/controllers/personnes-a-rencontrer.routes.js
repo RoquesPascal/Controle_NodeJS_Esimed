@@ -8,6 +8,7 @@ const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models
 const Table_Images = require("../models/image.model");
 const jwtDecode = require("jwt-decode");
 const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom} = require("../security/fonctions-back-end");
+let   fs = require('fs');
 
 
 
@@ -200,13 +201,6 @@ router.delete('/',
         if(relationUtilisateurPersonnes.id == null)
             res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
 
-        await Table_Images.destroy({
-            where :
-            {
-                idPersonneRencontree : req.body.idPersonneARencontrer
-            }
-        })
-
         await Table_Rencontres.destroy({
             where :
             {
@@ -231,6 +225,21 @@ router.delete('/',
         });
         if(relationsAvecCettePersonne.length == 0)
         {
+            const image = await Table_Images.findOne({
+                where :
+                {
+                    idPersonneRencontree : req.body.idPersonneARencontrer
+                }
+            })
+            fs.unlink(image.chemin + image.nomUnique, function (err) { if(err) throw err; });
+
+            await Table_Images.destroy({
+                where :
+                {
+                    idPersonneRencontree : req.body.idPersonneARencontrer
+                }
+            })
+
             await Table_PersonnesARencontrer.destroy({
                 where :
                 {
