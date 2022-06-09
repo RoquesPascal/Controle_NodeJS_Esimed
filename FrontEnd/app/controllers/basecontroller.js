@@ -16,6 +16,58 @@ class BaseController
         this.AfficherDropDown();
     }
 
+    AfficherChampsNoteEtCommentaireEtPartage()
+    {
+        let selectDateJour                      = document.getElementById("selectDateJour");
+        let selectDateMois                      = document.getElementById("selectDateMois");
+        let selectDateAnnee                     = document.getElementById("selectDateAnnee");
+        let divChampsNoteEtCommentaireEtPartage = document.getElementById("divChampsNoteEtCommentaireEtPartage");
+
+        let date = `${selectDateAnnee.value}`;
+        if(selectDateMois.value < 10)
+            date += `-0${selectDateMois.value}`;
+        else
+            date += `-${selectDateMois.value}`;
+        if(selectDateJour.value < 10)
+            date += `-0${selectDateJour.value}`;
+        else
+            date += `-${selectDateJour.value}`;
+
+        if((!selectDateJour.value) || (!selectDateMois.value) || (!selectDateAnnee.value) || (!this.EstRencontreDejaFaite({'dateRencontre' : date})))
+        {
+            divChampsNoteEtCommentaireEtPartage.innerHTML = '';
+            return;
+        }
+
+        divChampsNoteEtCommentaireEtPartage.innerHTML =
+            `<div class="row marginBottom10px">
+                 <div class="col-5">Notation de 0 &agrave; 10</div>
+                 <div class="col-7">
+                     <select id="selectNote">
+                         <option value="">Note</option>
+                     </select>
+                 </div>
+             </div>
+             <div class="row marginBottom10px">
+                 <div class="col-5">Commentaire</div>
+                 <div class="col-7">
+                     <textarea id="textAreaCommentaire" rows="5" cols="33"></textarea>
+                 </div>
+             </div>
+             <div class="row marginBottom10px">
+                 <div class="col-5">Partager le commentaire ? *</div>
+                 <div class="col-7">
+                     <select id="selectPartage">
+                         <option value="">Partage</option>
+                         <option value="1">Oui</option>
+                         <option value="0">Non</option>
+                     </select>
+                 </div>
+             </div>`;
+
+        this.CreerLeSelectNotePourLesRencontres();
+    }
+
     AfficherDropDown()
     {
         let dropDown = document.getElementById("dropDown");
@@ -66,6 +118,42 @@ class BaseController
     {
         //return      jour       + '/' +        mois       + '/' +                 annee;
         return date[8] + date[9] + '/' + date[5] + date[6] + '/' + date[0] + date[1] + date[2] + date[3];
+    }
+
+    CreerLeSelectNotePourLesRencontres()
+    {
+        let   selectNote = document.getElementById("selectNote");
+        const valeurNote = 10;
+
+        for(let i = 0 ; i <= valeurNote ; i++)
+        {
+            selectNote.innerHTML += `<option value="${i}">${i}</option>`;
+        }
+    }
+
+    EstRencontreDejaFaite(rencontre)
+    {
+        const dateActuelle = new Date(Date.now());
+        const dateDeLaRencontre = rencontre.dateRencontre.toString(); //Car les GetDate() et tout ne fonctionnent pas
+
+        if(dateActuelle.getFullYear() > parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle > année rencontre
+            return true;
+        else if(dateActuelle.getFullYear() < parseInt(dateDeLaRencontre[0] + dateDeLaRencontre[1] + dateDeLaRencontre[2] + dateDeLaRencontre[3])) //Année actuelle < année rencontre
+            return false;
+        else
+        {
+            if(dateActuelle.getMonth() + 1 > parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel > mois rencontre
+                return true;
+            else if(dateActuelle.getMonth() + 1 < parseInt(dateDeLaRencontre[5] + dateDeLaRencontre[6])) //Mois actuel < mois rencontre
+                return false;
+            else
+            {
+                if(dateActuelle.getDate() >= parseInt(dateDeLaRencontre[8] + dateDeLaRencontre[9])) //Jour actuel >= jour rencontre
+                    return true;
+                else //Jour actuel < jour rencontre
+                    return false;
+            }
+        }
     }
 
     EstRole_moderateur()
@@ -122,3 +210,5 @@ class BaseController
         }; history.pushState({}, '');
     }
 }
+
+window.baseController = new BaseController()

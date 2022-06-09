@@ -46,12 +46,10 @@ class CreerRencontreController extends BaseController
         let   selectDateJour           = document.getElementById("selectDateJour");
         let   selectDateMois           = document.getElementById("selectDateMois");
         let   selectDateAnnee          = document.getElementById("selectDateAnnee");
-        let   selectNote               = document.getElementById("selectNote");
         const valeurJour               = 31;
         const valeurMois               = 12;
         const valeurAnnee              = new Date(Date.now()).getFullYear() + 10;
         const valeurAnneeNaissance     = new Date(Date.now()).getFullYear();
-        const valeurNote               = 10;
 
         selectDateNaissanceJour.innerHTML = `<option value="">Jour</option>`;
         selectDateNaissanceMois.innerHTML = `<option value="">Mois</option>`;
@@ -87,13 +85,6 @@ class CreerRencontreController extends BaseController
         {
             selectDateAnnee.innerHTML += `<option value="${i}">${i}</option>`;
         }
-
-
-
-        for(let i = 0 ; i <= valeurNote ; i++)
-        {
-            selectNote.innerHTML += `<option value="${i}">${i}</option>`;
-        }
     }
 
     async CreerRencontre()
@@ -106,23 +97,39 @@ class CreerRencontreController extends BaseController
         const textAreaCommentaire        = document.getElementById("textAreaCommentaire");
         const selectPartage              = document.getElementById("selectPartage");
 
-        if((selectPersonnesARencontrer.value === '') || (selectPartage.value === ''))
-        {
-            this.toast("toastErreurCertainsChampsObligatoiresSontVides");
-            return;
-        }
-
         try
         {
-            const Result = await this.model.CreerRencontre({
-                'idPersonneRencontree' : selectPersonnesARencontrer.value,
-                'dateRencontreJour'    : selectDateJour.value,
-                'dateRencontreMois'    : selectDateMois.value,
-                'dateRencontreAnnee'   : selectDateAnnee.value,
-                'note'                 : selectNote.value,
-                'commentaire'          : textAreaCommentaire.value,
-                'partage'              : selectPartage.value
-            }, this.JWT);
+            let Result;
+            if((selectNote != null) && (textAreaCommentaire != null) && (selectPartage != null))
+            {
+                if((selectPersonnesARencontrer.value === '') || (selectPartage.value === ''))
+                {
+                    this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                    return;
+                }
+
+                Result = await this.model.CreerRencontre({
+                    'idPersonneRencontree' : selectPersonnesARencontrer.value,
+                    'dateRencontreJour'    : selectDateJour.value,
+                    'dateRencontreMois'    : selectDateMois.value,
+                    'dateRencontreAnnee'   : selectDateAnnee.value,
+                    'note'                 : selectNote.value,
+                    'commentaire'          : textAreaCommentaire.value,
+                    'partage'              : selectPartage.value
+                }, this.JWT);
+            }
+            else
+            {
+                Result = await this.model.CreerRencontre({
+                    'idPersonneRencontree' : selectPersonnesARencontrer.value,
+                    'dateRencontreJour'    : selectDateJour.value,
+                    'dateRencontreMois'    : selectDateMois.value,
+                    'dateRencontreAnnee'   : selectDateAnnee.value,
+                    'note'                 : -1,
+                    'commentaire'          : "",
+                    'partage'              : 0
+                }, this.JWT);
+            }
 
             if(Result === 201)
             {

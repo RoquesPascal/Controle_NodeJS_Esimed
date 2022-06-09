@@ -49,9 +49,9 @@ router.get('/idUtilisateur/:idUtilisateur',
     {
         const rencontre = await Table_Rencontres.findAll({
             where :
-                {
-                    idUtilisateur : req.params.idUtilisateur
-                },
+            {
+                idUtilisateur : req.params.idUtilisateur
+            },
             order: [['createdAt', 'DESC']]
         });
         return res.status(200).send(rencontre);
