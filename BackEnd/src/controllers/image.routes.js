@@ -8,6 +8,7 @@ const jwtDecode    = require("jwt-decode");
 const fileUpload   = require('express-fileupload');
 const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.model");
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
+let   fs = require('fs');
 
 
 
@@ -104,6 +105,14 @@ router.delete('/:idPersonneRencontree',
             if((personne == null) || (personne.id == null))
                 return res.status(403).send(`Vous n'avez pas le droit d'acceder a cette ressource.`);
 
+
+            const image = await Table_Images.findOne({
+                where :
+                {
+                    idPersonneRencontree : req.params.idPersonneRencontree
+                }
+            })
+            fs.unlink(image.chemin + image.nomUnique, function (err) { if(err) throw err; });
 
             await Table_Images.destroy({
                 where :
