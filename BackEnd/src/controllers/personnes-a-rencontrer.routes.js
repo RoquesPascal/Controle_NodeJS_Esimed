@@ -7,8 +7,7 @@ const Table_PersonnesARencontrer = require("../models/personnes-a-rencontrer.mod
 const Table_RelationCreationUtilisateurPersonnesARencontrer = require("../models/relation-creation-utilisateur-personne-a-rencontrer.model");
 const Table_Images = require("../models/image.model");
 const jwtDecode = require("jwt-decode");
-const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom} = require("../security/fonctions-back-end");
-let   fs = require('fs');
+const {EstRole_moderateur, TrierPersonnesParNomPuisPrenom, SupprimerFichierImagePersonneARencontrer} = require("../security/fonctions-back-end");
 
 
 
@@ -225,13 +224,7 @@ router.delete('/',
         });
         if(relationsAvecCettePersonne.length == 0)
         {
-            const image = await Table_Images.findOne({
-                where :
-                {
-                    idPersonneRencontree : req.body.idPersonneARencontrer
-                }
-            })
-            fs.unlink(image.chemin + image.nomUnique, function (err) { if(err) throw err; });
+            await SupprimerFichierImagePersonneARencontrer(req.body.idPersonneARencontrer);
 
             await Table_Images.destroy({
                 where :

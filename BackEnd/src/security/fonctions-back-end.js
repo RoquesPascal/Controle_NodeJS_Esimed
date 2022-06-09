@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { sign } = require('jsonwebtoken');
+const fs = require('fs');
+const Table_Images = require("../models/image.model");
 
 
 
@@ -61,6 +63,18 @@ exports.GenerateHashedPassword = (password) =>
 exports.PasswordsAreEqual = (rawPassword, hashedPassword) =>
 {
     return bcrypt.compareSync(rawPassword, hashedPassword);
+}
+
+exports.SupprimerFichierImagePersonneARencontrer = async (idPersonneARencontrer) =>
+{
+    const image = await Table_Images.findOne({
+        where:
+        {
+            idPersonneRencontree : idPersonneARencontrer
+        }
+    })
+    if(image != null)
+        fs.unlink(image.chemin + image.nomUnique, function (err) { if(err) throw err; });
 }
 
 exports.TrierPersonnesParNomPuisPrenom = (listePersonnes) =>
