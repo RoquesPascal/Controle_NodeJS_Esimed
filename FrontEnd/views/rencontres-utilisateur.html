@@ -29,16 +29,16 @@
             <div class="row marginBottom10px">
                 <div class="col-5">Date *</div>
                 <div class="col-2">
-                    <select id="selectDateJour"></select>
+                    <select id="selectDateJour" onchange="baseController.AfficherChampsNoteEtCommentaireEtPartage()"></select>
                 </div>
                 <div class="col-2">
-                    <select id="selectDateMois"></select>
+                    <select id="selectDateMois" onchange="baseController.AfficherChampsNoteEtCommentaireEtPartage()"></select>
                 </div>
                 <div class="col-2">
-                    <select id="selectDateAnnee"></select>
+                    <select id="selectDateAnnee" onchange="baseController.AfficherChampsNoteEtCommentaireEtPartage()"></select>
                 </div>
             </div>
-            <div id="champsNoteEtCommentaireEtPartage"></div>
+            <div id="divChampsNoteEtCommentaireEtPartage"></div>
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-7" id="boutonModifierRencontreModal">

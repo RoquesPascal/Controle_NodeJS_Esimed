@@ -188,18 +188,18 @@ class RencontreUtilisateurController extends BaseController
         {
             const rencontre = await this.model.GetRencontre(idRencontre, this.JWT);
 
-            let selectDateJour                   = document.getElementById("selectDateJour");
-            let selectDateMois                   = document.getElementById("selectDateMois");
-            let selectDateAnnee                  = document.getElementById("selectDateAnnee");
-            let boutonModifierRencontreModal     = document.getElementById("boutonModifierRencontreModal");
-            let champsNoteEtCommentaireEtPartage = document.getElementById("champsNoteEtCommentaireEtPartage");
-            const valeurJour                     = 31;
-            const valeurMois                     = 12;
-            const valeurAnnee                    = new Date(Date.now()).getFullYear() + 10;
-            const valeurNote                     = 10;
+            let   selectDateJour                      = document.getElementById("selectDateJour");
+            let   selectDateMois                      = document.getElementById("selectDateMois");
+            let   selectDateAnnee                     = document.getElementById("selectDateAnnee");
+            let   boutonModifierRencontreModal        = document.getElementById("boutonModifierRencontreModal");
+            let   divChampsNoteEtCommentaireEtPartage = document.getElementById("divChampsNoteEtCommentaireEtPartage");
+            const valeurJour                          = 31;
+            const valeurMois                          = 12;
+            const valeurAnnee                         = new Date(Date.now()).getFullYear() + 10;
+            const valeurNote                          = 10;
 
-            selectDateJour.innerHTML = `<option value="">Jour</option>`;
-            selectDateMois.innerHTML = `<option value="">Mois</option>`;
+            selectDateJour.innerHTML  = `<option value="">Jour</option>`;
+            selectDateMois.innerHTML  = `<option value="">Mois</option>`;
             selectDateAnnee.innerHTML = `<option value="">Ann&eacute;e</option>`;
 
             for(let i = 1 ; i <= valeurJour ; i++)
@@ -222,7 +222,7 @@ class RencontreUtilisateurController extends BaseController
 
             if(this.EstRencontreDejaFaite(rencontre))
             {
-                champsNoteEtCommentaireEtPartage.innerHTML = `
+                divChampsNoteEtCommentaireEtPartage.innerHTML = `
                     <div class="row marginBottom10px">
                         <div class="col-5">Notation de 0 &agrave; 10</div>
                         <div class="col-7">
@@ -263,7 +263,7 @@ class RencontreUtilisateurController extends BaseController
                     selectPartage.value = '0';
             }
             else
-                champsNoteEtCommentaireEtPartage.innerHTML = "";
+                divChampsNoteEtCommentaireEtPartage.innerHTML = "";
 
             boutonModifierRencontreModal.innerHTML = `
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
