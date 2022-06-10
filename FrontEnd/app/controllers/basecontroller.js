@@ -41,7 +41,6 @@ class BaseController
 
         if((divChampsNoteEtCommentaireEtPartage.innerHTML == '') && (selectDateJour.value != null) && (selectDateMois.value != null) && (selectDateAnnee.value != null) && (this.EstRencontreDejaFaite({'dateRencontre' : date})))
         {
-            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA")
             divChampsNoteEtCommentaireEtPartage.innerHTML =
                 `<div class="row marginBottom10px">
                      <div class="col-5">Notation de 0 &agrave; 10</div>
