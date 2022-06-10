@@ -39,33 +39,37 @@ class BaseController
             return;
         }
 
-        divChampsNoteEtCommentaireEtPartage.innerHTML =
-            `<div class="row marginBottom10px">
-                 <div class="col-5">Notation de 0 &agrave; 10</div>
-                 <div class="col-7">
-                     <select id="selectNote">
-                         <option value="">Note</option>
-                     </select>
+        if((divChampsNoteEtCommentaireEtPartage.innerHTML == '') && (selectDateJour.value != null) && (selectDateMois.value != null) && (selectDateAnnee.value != null) && (this.EstRencontreDejaFaite({'dateRencontre' : date})))
+        {
+            console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA")
+            divChampsNoteEtCommentaireEtPartage.innerHTML =
+                `<div class="row marginBottom10px">
+                     <div class="col-5">Notation de 0 &agrave; 10</div>
+                     <div class="col-7">
+                         <select id="selectNote">
+                             <option value="">Note</option>
+                         </select>
+                     </div>
                  </div>
-             </div>
-             <div class="row marginBottom10px">
-                 <div class="col-5">Commentaire</div>
-                 <div class="col-7">
-                     <textarea id="textAreaCommentaire" rows="5" cols="33"></textarea>
+                 <div class="row marginBottom10px">
+                     <div class="col-5">Commentaire</div>
+                     <div class="col-7">
+                         <textarea id="textAreaCommentaire" rows="5" cols="33"></textarea>
+                     </div>
                  </div>
-             </div>
-             <div class="row marginBottom10px">
-                 <div class="col-5">Partager le commentaire ? *</div>
-                 <div class="col-7">
-                     <select id="selectPartage">
-                         <option value="">Partage</option>
-                         <option value="1">Oui</option>
-                         <option value="0">Non</option>
-                     </select>
-                 </div>
-             </div>`;
+                 <div class="row marginBottom10px">
+                     <div class="col-5">Partager le commentaire ? *</div>
+                     <div class="col-7">
+                         <select id="selectPartage">
+                             <option value="">Partage</option>
+                             <option value="1">Oui</option>
+                             <option value="0">Non</option>
+                         </select>
+                     </div>
+                 </div>`;
 
-        this.CreerLeSelectNotePourLesRencontres();
+            this.CreerLeSelectNotePourLesRencontres();
+        }
     }
 
     AfficherDropDown()
