@@ -16,6 +16,25 @@ router.get('/:idPersonne', async (req, res) =>
 {
     try
     {
+        const tokenDecode = jwtDecode(req.headers.authorization);
+        const relationUtilisateurPersonnes = await Table_RelationCreationUtilisateurPersonnesARencontrer.findOne({
+            where :
+            {
+                idUtilisateur        : tokenDecode.id,
+                idPersonneRencontree : req.params.idPersonne
+            }
+        });
+        const personne = await Table_PersonnesARencontrer.findOne({
+            where :
+            {
+                id : relationUtilisateurPersonnes.idPersonneRencontree
+            }
+        });
+        if((personne == null) || (personne.id == null))
+            return res.status(403).send("Vous n'avez pas le droit d'acceder a cette ressource.");
+
+
+
         const image = await Table_Images.findOne({
             where :
             {
