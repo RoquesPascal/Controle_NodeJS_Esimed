@@ -33,8 +33,8 @@ const Table_PersonnesARencontrer = sequelize.define('Table_PersonnesARencontrer'
     dateNaissance :
     {
         type      : DataTypes.DATEONLY,
-        allowNull : true,
-        required  : false
+        allowNull : false,
+        required  : true
     }
 }, {
     // Other model options go here
