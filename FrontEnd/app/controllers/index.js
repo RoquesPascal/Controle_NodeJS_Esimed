@@ -6,7 +6,7 @@ class IndexController extends BaseController
         this.compteurPersonnesRencontrees = 0;
         this.compteurPersonnesARencontrer = 0;
         this.taillePhotoDeProfil_100px    = 100;
-        this.taillePhotoDeProfil_150px    = 150;
+        this.taillePhotoDeProfil_300px    = 300;
         this.model = new Sitemodel()
         this.AfficherListePersonnesARencontrer().then(r => {})
         this.ChangerListeAAfficher(true)
@@ -82,7 +82,7 @@ class IndexController extends BaseController
             titreNomPrenomPersonne += ` <img src="../FrontEnd/res/Images/IconeSexeFeminin_Rose.png" height="25px"/>`;
 
         modalTitreNomPrenomPersonne.innerHTML = titreNomPrenomPersonne;
-        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, this.taillePhotoDeProfil_150px);
+        divPhotoPersonne.innerHTML = await this.AfficherPhotoDeProfilDePersonneARencontrer(personne, this.taillePhotoDeProfil_300px);
         if(personne.dateNaissance != null)
         {
             if(personne.sexe === 1)
