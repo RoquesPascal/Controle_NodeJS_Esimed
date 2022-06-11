@@ -291,8 +291,7 @@ class IndexController extends BaseController
 
     Deconnexion()
     {
-        sessionStorage.clear();
-        localStorage.clear();
+        sessionStorage.removeItem(this.HistoriqueCle);
         navigate("login");
     }
 

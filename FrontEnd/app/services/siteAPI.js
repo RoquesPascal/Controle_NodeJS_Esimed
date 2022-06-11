@@ -255,7 +255,7 @@ class SiteAPI
                 .then(async response => {
                     if(response.status !== 200)
                     {
-                        reject(await response.text())
+                        reject(null)
                     }
                     else
                     {
