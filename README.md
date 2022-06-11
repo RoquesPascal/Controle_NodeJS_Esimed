@@ -161,7 +161,7 @@ Le partage des remarques concernant les rencontres sera stocké côté serveur. 
 
 #### Lot 3
 
-- [ ]  Il sera possible de stocker en local l'identifiant de connexion de l'utilisateur s'il le désire.
+- [x]  Il sera possible de stocker en local l'identifiant de connexion de l'utilisateur s'il le désire.
 
 - [x]  L'utilisateur pourra prendre une photo de la personne rencontrée et l'associer à la fiche correspondante.
 
@@ -175,14 +175,14 @@ Le partage des remarques concernant les rencontres sera stocké côté serveur. 
 
 ### Contraintes non fonctionnelles
 
-- [ ]  L'application devra au maximum simplifier la vie de l'utilisateur :
+- [x]  L'application devra au maximum simplifier la vie de l'utilisateur :
   
   - [x]  Initialisation correcte des formulaires
   
-  - [ ]  Choix pertinents des types de saisies pour les champs textes
+  - [x]  Choix pertinents des types de saisies pour les champs textes
   
-  - [ ]  ...
+  - [x]  ...
 
-- [ ]  Toutes les parties de l'application devront respecter les architectures utilisées en cours.
+- [x]  Toutes les parties de l'application devront respecter les architectures utilisées en cours.
 
 - [ ]  La partie cliente devra être développée avec un design mobile-first.
