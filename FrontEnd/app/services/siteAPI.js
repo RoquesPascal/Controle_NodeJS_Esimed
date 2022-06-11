@@ -312,7 +312,7 @@ class SiteAPI
                 .then(async response => {
                     if(response.status !== 201)
                     {
-                        reject(await response.text())
+                        reject(null)
                     }
                     else
                     {

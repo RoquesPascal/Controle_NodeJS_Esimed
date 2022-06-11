@@ -4,8 +4,6 @@ class LoginController extends BaseController
     {
         super()
         this.model = new Sitemodel()
-
-        this.HistoriqueLoginCle = "HistoriqueLoginAppliRencontre1"
     }
 
     AfficherListeLogin()
@@ -46,18 +44,6 @@ class LoginController extends BaseController
             console.log(e);
             this.toast("toastErreurLogin");
         }
-    }
-
-    MettreLoginDansLeSessionStorage(login)
-    {
-        let listeLoginSessionStorage = JSON.parse(sessionStorage.getItem(this.HistoriqueLoginCle));
-        let listeLogin = [];
-
-        if(listeLoginSessionStorage != null)
-            for(let loginDeLaListe of listeLoginSessionStorage)
-                listeLogin.push(loginDeLaListe);
-        listeLogin.push(login);
-        sessionStorage.setItem(this.HistoriqueLoginCle, JSON.stringify(listeLogin));
     }
 }
 

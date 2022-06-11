@@ -19,14 +19,18 @@ class SignupController extends BaseController
                 'email'      : inputEmail.value,
                 'motDePasse' : inputMotDePasse.value
             })
-            this.MettreLeJWTDansLeSessionStorage(token);
+
+            if(token != null)
+            {
+                this.MettreLoginDansLeSessionStorage(inputEmail.value);
+                this.MettreLeJWTDansLeSessionStorage(token);
+            }
+            else
+                this.toast("toastErreurSignup");
         }
         catch(e)
         {
             console.log(e);
-        }
-        finally
-        {
             this.toast("toastErreurSignup");
         }
     }

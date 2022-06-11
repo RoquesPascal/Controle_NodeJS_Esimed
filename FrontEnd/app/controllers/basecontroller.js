@@ -6,6 +6,8 @@ class BaseController
         this.role_membre     = "membre";
         this.role_moderateur = "moderateur";
 
+        this.HistoriqueLoginCle = "HistoriqueLoginAppliRencontre"
+
         this.HistoriqueCle    = "HistoriqueAppliRencontre"
         const AncienHistorique = sessionStorage.getItem(this.HistoriqueCle)
         if((AncienHistorique != null) && this.JwtEstValide(AncienHistorique))
@@ -187,6 +189,18 @@ class BaseController
             this.JWT = token;
             navigate("index");
         }
+    }
+
+    MettreLoginDansLeSessionStorage(login)
+    {
+        let listeLoginSessionStorage = JSON.parse(sessionStorage.getItem(this.HistoriqueLoginCle));
+        let listeLogin = [];
+
+        if(listeLoginSessionStorage != null)
+            for(let loginDeLaListe of listeLoginSessionStorage)
+                listeLogin.push(loginDeLaListe);
+        listeLogin.push(login);
+        sessionStorage.setItem(this.HistoriqueLoginCle, JSON.stringify(listeLogin));
     }
 
     ParseJwt(token)
