@@ -198,7 +198,11 @@ class BaseController
 
         if(listeLoginSessionStorage != null)
             for(let loginDeLaListe of listeLoginSessionStorage)
+            {
+                if(loginDeLaListe == login)
+                    return;
                 listeLogin.push(loginDeLaListe);
+            }
         listeLogin.push(login);
         sessionStorage.setItem(this.HistoriqueLoginCle, JSON.stringify(listeLogin));
     }
