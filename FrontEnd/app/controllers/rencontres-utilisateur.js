@@ -238,7 +238,7 @@ class RencontreUtilisateurController extends BaseController
                     <div class="row marginBottom10px">
                         <div class="col-5">Commentaire</div>
                         <div class="col-7">
-                            <textarea id="textAreaCommentaire" rows="5" cols="25"></textarea>
+                            <textarea class="form-control" id="textAreaCommentaire" rows="5" cols="25"></textarea>
                         </div>
                     </div>
                     <div class="row marginBottom10px">
