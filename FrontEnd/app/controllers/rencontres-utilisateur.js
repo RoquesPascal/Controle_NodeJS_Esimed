@@ -175,7 +175,11 @@ class RencontreUtilisateurController extends BaseController
                                 </div>
                             </div>`;
         if(rencontre.partage)
-           ligne +=        `<img src="../FrontEnd/res/Images/IconePartage_Orange.png" height="25px"/> Commentaire partag&eacute;`;
+           ligne +=        `<div class="row marginBottom10px">
+                                <div class="col">
+                                    <img src="../FrontEnd/res/Images/IconePartage_Orange.png" height="25px"/> Commentaire partag&eacute;
+                                </div>
+                            </div>`;
         ligne +=       `</div>`;
         ligne += this.CreerLigneAvecBouttons_ModifierSupprimer(true, rencontre, estAffichageModeration);
         ligne +=   `</div>`;
@@ -224,7 +228,7 @@ class RencontreUtilisateurController extends BaseController
             {
                 divChampsNoteEtCommentaireEtPartage.innerHTML = `
                     <div class="row marginBottom10px">
-                        <div class="col-5">Notation de 0 &agrave; 10</div>
+                        <div class="col-5">Notation de 0 &agrave; 10 *</div>
                         <div class="col-7">
                             <select id="selectNote">
                                 <option value="">Note</option>
@@ -301,6 +305,12 @@ class RencontreUtilisateurController extends BaseController
             const EstAncienneRencontreDejaFaite = this.EstRencontreDejaFaite(await this.model.GetRencontre(idRencontre, this.JWT));
             if((selectNote != null) || (textAreaCommentaire != null) || (selectPartage != null))
             {
+                if((selectDateJour.value === '') || (selectDateMois.value === '') || (selectDateAnnee.value === '') || (selectNote.value === '') || (selectPartage.value === ''))
+                {
+                    this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                    return;
+                }
+
                 Result = await this.model.ModifierRencontre({
                     'idRencontre'        : idRencontre,
                     'dateRencontreJour'  : selectDateJour.value,
@@ -313,6 +323,12 @@ class RencontreUtilisateurController extends BaseController
             }
             else
             {
+                if((selectDateJour.value === '') || (selectDateMois.value === '') || (selectDateAnnee.value === ''))
+                {
+                    this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                    return;
+                }
+
                 Result = await this.model.ModifierRencontre({
                     'idRencontre'        : idRencontre,
                     'dateRencontreJour'  : selectDateJour.value,

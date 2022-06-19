@@ -102,7 +102,7 @@ class CreerRencontreController extends BaseController
             let Result;
             if((selectNote != null) && (textAreaCommentaire != null) && (selectPartage != null))
             {
-                if((selectPersonnesARencontrer.value === '') || (selectPartage.value === ''))
+                if((selectPersonnesARencontrer.value === '') || (selectDateJour.value === '') || (selectDateMois.value === '') || (selectDateAnnee.value === '') || (selectNote.value === '') || (selectPartage.value === ''))
                 {
                     this.toast("toastErreurCertainsChampsObligatoiresSontVides");
                     return;
@@ -120,6 +120,12 @@ class CreerRencontreController extends BaseController
             }
             else
             {
+                if((selectPersonnesARencontrer.value === '') || (selectDateJour.value === '') || (selectDateMois.value === '') || (selectDateAnnee.value === ''))
+                {
+                    this.toast("toastErreurCertainsChampsObligatoiresSontVides");
+                    return;
+                }
+
                 Result = await this.model.CreerRencontre({
                     'idPersonneRencontree' : selectPersonnesARencontrer.value,
                     'dateRencontreJour'    : selectDateJour.value,

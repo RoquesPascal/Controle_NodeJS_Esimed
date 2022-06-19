@@ -61,9 +61,19 @@ body
     margin-bottom : 10px;
 }
 
+.marginBottom30px
+{
+    margin-bottom : 30px;
+}
+
 .marginTop10px
 {
     margin-top : 10px;
+}
+
+.marginTop30px
+{
+    margin-top : 30px;
 }
 
 .modal-content

@@ -1,25 +1,28 @@
 <div class="dropdown" id="dropDown"></div>
 
 <div class="container">
-    <h1>Liste des personnes &agrave; rencontrer</h1>
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.ViderChampsNomEtPrenomPersonne()">
-        <img src="../FrontEnd/res/Images/IconeAjout_Blanche.png" height="25px"/> Ajouter une personne
-    </button>
+    <h1 class="marginBottom30px">Liste des personnes &agrave; rencontrer</h1>
     <div class="row" id="bouttonsPersonnesRecontrees">
         <div class="col-md-auto">
             <button class="btn btn-primary" type="button" id="buttonListeRencontres_Bleu" onclick="indexController.ChangerListeAAfficher(true)">Personnes rencontr&eacute;es</button>
             <button class="btn btn-secondary" type="button" id="buttonListeRencontresAVenir_Gris" onclick="indexController.ChangerListeAAfficher(false)">Personnes &agrave; rencontrer</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.ViderChampsNomEtPrenomPersonne()">
+                <img src="../FrontEnd/res/Images/IconeAjout_Blanche.png" height="25px"/>
+            </button>
         </div>
     </div>
     <div class="row" id="bouttonsPersonnesARencontrer">
         <div class="col-md-auto">
             <button class="btn btn-secondary" type="button" id="buttonListeRencontres_Gris" onclick="indexController.ChangerListeAAfficher(true)">Personnes rencontr&eacute;es</button>
             <button class="btn btn-primary" type="button" id="buttonListeRencontresAVenir_Bleu" onclick="indexController.ChangerListeAAfficher(false)">Personnes &agrave; rencontrer</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalCreerPersonne" onclick="indexController.ViderChampsNomEtPrenomPersonne()">
+                <img src="../FrontEnd/res/Images/IconeAjout_Blanche.png" height="25px"/>
+            </button>
         </div>
     </div>
 
-    <ul id="ulListePersonnesRencontrees"></ul>
-    <ul id="ulListePersonnesARencontrer"></ul>
+    <ul class="marginTop10px" id="ulListePersonnesRencontrees"></ul>
+    <ul class="marginTop10px" id="ulListePersonnesARencontrer"></ul>
 </div>
 
 <div class="modal fade" id="modalCreerPersonne" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

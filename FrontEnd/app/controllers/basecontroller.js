@@ -45,7 +45,7 @@ class BaseController
         {
             divChampsNoteEtCommentaireEtPartage.innerHTML =
                 `<div class="row marginBottom10px">
-                     <div class="col-5">Notation de 0 &agrave; 10</div>
+                     <div class="col-5">Notation de 0 &agrave; 10 *</div>
                      <div class="col-7">
                          <select id="selectNote">
                              <option value="">Note</option>
